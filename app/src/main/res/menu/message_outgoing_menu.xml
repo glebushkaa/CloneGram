@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/deleteOutgoingMessageForMe"
+        android:title="@string/delete_messages_for_me">
+    </item>
+
+    <item
+        android:id="@+id/deleteOutgoingMessageForBoth"
+        android:title="@string/delete_message_for_both">
+    </item>
+
+    <item
+        android:id="@+id/editMessage"
+        android:title="@string/edit">
+    </item>
+
+</menu>

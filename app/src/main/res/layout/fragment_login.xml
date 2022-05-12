@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".ui.login.fragments.LoginFragment"
+    tools:layout_editor_absoluteX="24dp"
+    tools:layout_editor_absoluteY="7dp">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/montserrat_sb"
+        android:text="@string/enter_your_phone"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_sb"
+        android:gravity="center"
+        android:text="@string/text_under_enter_phone"
+        android:textColor="@color/white"
+        android:alpha="0.8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+    </TextView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bCountries"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:maxLength="25"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/shape_of_country_button"
+        android:singleLine="true"
+        android:fontFamily="@font/montserrat_sb"
+        android:hint="@string/country"
+        android:gravity="start"
+        android:textAllCaps="false"
+        android:textColor="@color/text_black"
+        android:textSize="14sp"
+        app:backgroundTint="@color/background_color_instead_white"
+        app:icon="@drawable/ic_countries_next"
+        app:iconGravity="end"
+        app:iconTint="@color/grey_85"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.139" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bCountries">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1.8"
+            android:paddingStart="12dp"
+            android:gravity="center"
+            android:background="@drawable/shape_country_code"
+            android:fontFamily="@font/montserrat_sb"
+            android:textColor="@color/black"
+            android:text="@string/plus">
+        </TextView>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etCode"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1.5"
+            android:maxLength="4"
+            android:layout_marginStart="-1dp"
+            android:paddingStart="5dp"
+            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_sb"
+            android:background="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.6"
+            android:maxLength="15"
+            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:paddingStart="10dp"
+            android:layout_marginStart="1dp"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_sb"
+            android:background="@drawable/shape_phone_number">
+
+        </androidx.appcompat.widget.AppCompatEditText>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bSignIn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:backgroundTint="@color/background_color_instead_white"
+        app:borderWidth="0dp"
+        app:fabCustomSize="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat3"
+        app:maxImageSize="24dp"
+        app:srcCompat="@drawable/ic_go_next"
+        app:tint="?appColor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

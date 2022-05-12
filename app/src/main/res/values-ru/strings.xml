@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Clonegram</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_start">StartActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="direct">Direct</string>
+    <string name="password">Пароль</string>
+    <string name="phone">Номер телефона</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <!-- Strings related to login -->
+    <string name="action_sign_in_short">Войти</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="invalid_username">Недействительное имя пользователя</string>
+    <string name="invalid_password">Пароль должен состоять более чем из 5 символов</string>
+    <string name="login_failed">"Не удалось войти в систему"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="mute_notifications">Отключить уведомления</string>
+    <string name="message">Сообщение</string>
+    <string name="verification_code">Проверочный код</string>
+    <string name="send_code_again">Отправить код еще раз через</string>
+    <string name="country">Страна</string>
+    <string name="enter_code">Введите код</string>
+    <string name="sent_message">Мы отправили SMS с проверочным кодом на ваш телефон</string>
+    <string name="optional">необязательно*</string>
+    <string name="enter_your_phone">Ваш номер телефона</string>
+    <string name="welcome_to_login">Добро пожаловать,</string>
+    <string name="register_text">Введите свое имя и фамилию \nЕго смогут увидеть другие людям</string>
+    <string name="enter_correct_name">Укажите правильное имя!</string>
+    <string name="plus">+</string>
+    <string name="sync_contacts">Sync contacts</string>
+    <string name="settings">Настройки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Поиск</string>
+    <string name="enter_country">Укажите страну :</string>
+    <string name="text_under_enter_phone">Пожалуйста, подтвердите свой код и введите номер телефона.</string>
+    <string name="wrong_code">Неверный проверочный код</string>
+    <string name="delete_account">Удаление аккаунта</string>
+    <string name="sign_out">Выйти из системы</string>
+    <string name="ask_a_question">Задать вопрос</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="change_username">Сменить имя пользователя</string>
+    <string name="too_short_name">Слишком короткое имя!</string>
+    <string name="clonegram_version_1_0">Clonegram version: 1.0</string>
+    <string name="change_theme_color">Изменение цвета темы</string>
+    <string name="change_theme_will_be">Цвет темы будет изменен при следующем запуске</string>
+    <string name="change_lang_will_be">Язык будет изменен при следующем запуске</string>
+    <string name="change_language">Изменение языка</string>
+    <string name="russian">Русский</string>
+    <string name="ukrainian">Украинский</string>
+    <string name="english">Английский</string>
+    <string name="find_user">Поиск пользователей</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="seen">Seen</string>
+    <string name="lang">ru</string>
+    <string name="delete_messages_for_me">Удалить сообщение для меня</string>
+    <string name="delete_message_for_both">Удалить сообщение для обоих</string>
+    <string name="code_length">Code must contain 6 characters!</string>
+
+</resources>

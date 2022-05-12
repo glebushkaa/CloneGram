@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Clonegram</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_start">StartActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="direct">Direct</string>
+    <string name="password">Password</string>
+    <string name="phone">Phone number</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <!-- Strings related to login -->
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be more than 5 characters long</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="mute_notifications">Mute notifications</string>
+    <string name="message">Message</string>
+    <string name="verification_code">Verification code</string>
+    <string name="send_code_again">Send code again in</string>
+    <string name="country">Country</string>
+    <string name="enter_code">Enter code</string>
+    <string name="sent_message">We\'ve sent a SMS with verification code to your phone</string>
+    <string name="optional">optional*</string>
+    <string name="enter_your_phone">Your phone number</string>
+    <string name="welcome_to_login" >Welcome,</string>
+    <string name="register_text">Enter your name and surname\nIt will be displayed to others</string>
+    <string name="enter_correct_name">Enter correct name!</string>
+    <string name="plus">+</string>
+    <string name="sync_contacts">Sync contacts</string>
+    <string name="settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="enter_country">Enter country :</string>
+    <string name="text_under_enter_phone">Please confirm your code and enter your phone number.</string>
+    <string name="wrong_code">Wrong verification code</string>
+    <string name="delete_account">Delete account</string>
+    <string name="sign_out">Sign out</string>
+    <string name="ask_a_question">Ask a question</string>
+    <string name="confirm">Confirm</string>
+    <string name="change_username">Change username</string>
+    <string name="too_short_name">Too short name!</string>
+    <string name="clonegram_version_1_0">Clonegram version: 1.0</string>
+    <string name="change_theme_color">Change theme color</string>
+    <string name="change_theme_will_be">Theme color will be changed on next launch</string>
+    <string name="change_lang_will_be">Language will be changed on next launch</string>
+    <string name="change_language">Change language</string>
+    <string name="russian">Russian</string>
+    <string name="ukrainian">Ukrainian</string>
+    <string name="english">English</string>
+    <string name="find_user">Find user</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_messages_for_me">Delete messages for me</string>
+    <string name="delete_message_for_both">Delete message for both</string>
+    <string name="seen">Seen</string>
+    <string name="lang">en</string>
+    <string name="code_length">Code must contain 6 characters!</string>
+
+</resources>

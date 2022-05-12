@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.clonegramtestproject.ui.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/start_to_login"
+            app:destination="@id/login_navigation"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@+id/startFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/start_to_message"
+            app:destination="@id/message_navigation"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@+id/startFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <navigation
+        android:id="@+id/login_navigation"
+        app:startDestination="@id/loginFragment">
+
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.example.clonegramtestproject.ui.login.fragments.LoginFragment"
+            android:label=" "
+            tools:layout="@layout/fragment_login" >
+            <action
+                android:id="@+id/login_to_verify"
+                app:destination="@id/verifyNumberFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                />
+            <action
+                android:id="@+id/login_to_country"
+                app:destination="@id/countryFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        </fragment>
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="com.example.clonegramtestproject.ui.login.fragments.RegisterFragment"
+            android:label="fragment_register"
+            tools:layout="@layout/fragment_register" >
+            <action
+                android:id="@+id/register_to_general"
+                app:destination="@id/message_navigation"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpToInclusive="true"
+                app:popUpTo="@id/login_navigation"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/verifyNumberFragment"
+            android:name="com.example.clonegramtestproject.ui.login.fragments.VerifyNumberFragment"
+            android:label="fragment_verify_number"
+            tools:layout="@layout/fragment_verify_number" >
+            <action
+                android:id="@+id/verify_to_register"
+                app:destination="@id/registerFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            <action
+                android:id="@+id/verify_to_general"
+                app:destination="@id/message_navigation"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpToInclusive="true"
+                app:popUpTo="@id/login_navigation"/>
+        </fragment>
+
+        <fragment
+            android:id="@+id/countryFragment"
+            android:name="com.example.clonegramtestproject.ui.login.fragments.CountryFragment"
+            android:label="fragment_country"
+            tools:layout="@layout/fragment_country"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <action
+                android:id="@+id/country_to_login"
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        </fragment>
+
+    </navigation>
+
+
+    <navigation
+        android:id="@+id/message_navigation"
+        app:startDestination="@id/generalMessageFragment">
+
+        <fragment
+            android:id="@+id/generalMessageFragment"
+            android:name="com.example.clonegramtestproject.ui.message.fragments.GeneralMessageFragment"
+            android:label="fragment_general_message"
+            tools:layout="@layout/fragment_general_message" >
+            <action
+                android:id="@+id/general_to_direct"
+                app:destination="@id/directMessageFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            <action
+                android:id="@+id/general_to_settings"
+                app:destination="@id/settingsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+            <action
+                android:id="@+id/general_to_find_user"
+                app:destination="@+id/findNewUserFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                />
+        </fragment>
+        <fragment
+            android:id="@+id/directMessageFragment"
+            android:name="com.example.clonegramtestproject.ui.message.fragments.DirectMessageFragment"
+            android:label="fragment_direct_message"
+            tools:layout="@layout/fragment_direct_message" >
+            <action
+                android:id="@+id/direct_to_general"
+                app:destination="@+id/generalMessageFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/message_navigation"
+                app:popUpToInclusive="true"
+                />
+        </fragment>
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.example.clonegramtestproject.ui.message.fragments.SettingsFragment"
+            android:label="fragment_settings"
+            tools:layout="@layout/fragment_settings" >
+            <action
+                android:id="@+id/settings_to_login"
+                app:destination="@+id/login_navigation"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/message_navigation"
+                app:popUpToInclusive="true"
+                />
+        </fragment>
+        <fragment
+            android:id="@+id/findNewUserFragment"
+            android:name="com.example.clonegramtestproject.ui.message.fragments.FindNewUserFragment"
+            android:label="fragment_find_new_user"
+            tools:layout="@layout/fragment_find_new_user" >
+
+            <action
+                android:id="@+id/find_user_to_general"
+                app:destination="@+id/generalMessageFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                />
+
+            <action
+                android:id="@+id/find_user_to_direct"
+                app:destination="@+id/directMessageFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/findNewUserFragment"
+                app:popUpToInclusive="true"
+                />
+
+        </fragment>
+
+    </navigation>
+
+</navigation>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "875788513415",
+    "project_id": "clomproject",
+    "storage_bucket": "clomproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875788513415:android:ba02d764c5f225b4848822",
+        "android_client_info": {
+          "package_name": "com.example.clonegramtestproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875788513415-huesj7dmfjtcfi0uj6i6l1r47lrpt3cs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyraftL0L2Rl7k7gNOKDschSkUm6YbTg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875788513415-huesj7dmfjtcfi0uj6i6l1r47lrpt3cs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

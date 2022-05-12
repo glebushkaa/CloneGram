@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="appColor" format="color" />
+    <attr name="startBackgroundGradientColor" format="color"/>
+    <attr name="endBackgroundGradientColor" format="color"/>
+    <attr name="centerBackgroundGradientColor" format="color"/>
+    <attr name="highlightAppColor" format="color"/>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="orange_story">#FF6100</color>
+    <color name="login_color">#C4C4C4</color>
+    <color name="app_color_yellow">#FF9C00</color>
+    <color name="app_color_green">#56A76F</color>
+    <color name="app_color_red">#FF6482</color>
+    <color name="app_color_purple">#9E97CF</color>
+    <color name="app_color_blue">#005CB2</color>
+    <color name="subtitle_color">#BFD1D8</color>
+    <color name="background_color_instead_white">#FAFAFA</color>
+    <color name="incoming_message_color">#B8B8B8</color>
+    <color name="grey_95">#959595</color>
+    <color name="grey_85">#858585</color>
+    <color name="sign_up_in_login">#5A5A5A</color>
+    <color name="sign_up_back_login">#C4C4C4</color>
+    <color name="hint_color">#CCCCCC</color>
+    <color name="outgoing_color">#A797CF</color>
+    <color name="text_black">#1C1616</color>
+    <color name="login_text">#404040</color>
+    <color name="small_text_color">#DFDFDF</color>
+    <color name="red">#FF0000</color>
+    <color name="selected_blue">#041BE8</color>
+    <color name="dark_white_background">#EFEFEF</color>
+    <color name="message_hint_color">#E3E2E2</color>
+</resources>

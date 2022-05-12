@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Delete chat for me"
+        android:id="@+id/deleteChatForMe"
+        android:orderInCategory="1">
+    </item>
+
+    <item
+        android:id="@+id/deleteChatForBoth"
+        android:orderInCategory="2"
+        android:title="Delete chat for both">
+    </item>
+
+</menu>
