@@ -61,12 +61,12 @@
     <string name="ukrainian">Українська</string>
     <string name="english">Англійська</string>
     <string name="find_user">Пошук користувачів</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="seen">Seen</string>
+    <string name="edit">Змінити</string>
+    <string name="delete">Видалити</string>
+    <string name="seen">Переглянуто</string>
     <string name="lang">uk</string>
-    <string name="delete_messages_for_me">Видалити повідомлення для мене</string>
-    <string name="delete_message_for_both">Видалити повідомлення для обох</string>
-    <string name="code_length">Code must contain 6 characters!</string>
+    <string name="delete_messages_for_me">Видалити для мене</string>
+    <string name="delete_message_for_both">Видалити для обох</string>
+    <string name="code_length">Код має містити 6 символів!</string>
 
 </resources>

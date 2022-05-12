@@ -22,7 +22,8 @@ class DirectMessageViewModel : ViewModel() {
 
     private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
 
-    val messageLiveData = MutableLiveData<List<MessageData>>()
+    val messagesLiveData = MutableLiveData<List<MessageData>>()
+    val messageLiveData = MutableLiveData<MessageData?>()
 
 
     fun setMessageListener(chatUID: String) {
@@ -44,9 +45,9 @@ class DirectMessageViewModel : ViewModel() {
                         }
                     }
                     setSeenParameter(messageData, chatUID)
-                    messageLiveData.value = messageData
+                    messagesLiveData.value = messageData
                 } else {
-                    messageLiveData.value = arrayListOf()
+                    messagesLiveData.value = arrayListOf()
                 }
             }
 

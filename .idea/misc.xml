@@ -90,7 +90,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/country_item.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/direct_recycler_item.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_country.xml" value="0.33" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.33" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.25" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_find_new_user.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_first.xml" value="0.20625" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_general_message.xml" value="0.24444444444444444" />
@@ -98,7 +98,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml (land)" value="0.20833333333333334" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login_land.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_register.xml" value="0.33" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_sign_up.xml" value="0.22" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.26849080803762293" />

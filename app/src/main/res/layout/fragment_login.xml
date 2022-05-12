@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:fontFamily="@font/montserrat_sb"
+        android:fontFamily="@font/inter_bold"
         android:text="@string/enter_your_phone"
         android:textColor="@color/white"
         android:textSize="24sp"

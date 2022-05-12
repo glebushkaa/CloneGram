@@ -61,12 +61,12 @@
     <string name="ukrainian">Украинский</string>
     <string name="english">Английский</string>
     <string name="find_user">Поиск пользователей</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="seen">Seen</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="seen">Просмотрено</string>
     <string name="lang">ru</string>
-    <string name="delete_messages_for_me">Удалить сообщение для меня</string>
-    <string name="delete_message_for_both">Удалить сообщение для обоих</string>
-    <string name="code_length">Code must contain 6 characters!</string>
+    <string name="delete_messages_for_me">Удалить для меня</string>
+    <string name="delete_message_for_both">Удалить для обоих</string>
+    <string name="code_length">Код должен содержать 6 символов!</string>
 
 </resources>

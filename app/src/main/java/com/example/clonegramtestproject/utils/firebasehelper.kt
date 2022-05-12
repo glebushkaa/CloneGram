@@ -15,6 +15,7 @@ const val MESSAGE_NODE = "message"
 const val UID_PERMISSION_NODE = "uidPermission"
 const val SEEN_NODE = "seen"
 const val USER_PICTURE_NODE = "userPicture"
+const val EDITED_NODE = "edited"
 
 //Firebase Storage Database Nodes
 

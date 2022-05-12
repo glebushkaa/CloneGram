@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,9 +19,11 @@ import com.example.clonegramtestproject.utils.CHATS_PICTURES_NODE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 
 class DirectAdapter(
+    private val liveData: MutableLiveData<MessageData?>,
     private val user: CommonModel?,
     private val context: Context,
     private val chatUID: String
@@ -136,7 +139,7 @@ class DirectAdapter(
                     .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
                 R.id.deleteOutgoingMessageForMe -> firebaseOperator
                     .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
-                R.id.editMessage -> ""
+                R.id.editMessage -> liveData.value = userMessageData
             }
             false
         }

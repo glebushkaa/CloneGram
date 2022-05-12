@@ -45,7 +45,6 @@
             tools:listitem="@layout/incoming_message_item">
         </androidx.recyclerview.widget.RecyclerView>
 
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"

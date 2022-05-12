@@ -22,7 +22,7 @@ import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
-import com.example.clonegramtestproject.utils.getSoftInputMode
+import com.example.clonegramtestproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,6 +46,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     private val rtOperator = RealtimeOperator()
     private val rtChanger = RealtimeChanger()
     private val sOperator = StorageOperator()
+
+    private var isEditMessage = false
+    private var editedMessageInfo: MessageData? = null
 
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
@@ -73,7 +76,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         setListeners()
         setLiveDataObservers()
 
-        user?.userPicture?.let{
+        user?.userPicture?.let {
             Glide.with(requireContext())
                 .load(it)
                 .circleCrop()
@@ -122,17 +125,26 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     }
 
     private fun initAdapter() {
-        adapter = DirectAdapter(user, requireContext(), chatUID.orEmpty())
+        adapter =
+            DirectAdapter(viewModel.messageLiveData, user, requireContext(), chatUID.orEmpty())
         binding.rvMessages.adapter = adapter
         binding.rvMessages.itemAnimator = null
     }
 
     private fun setLiveDataObservers() {
-        viewModel.messageLiveData.observe(
+        viewModel.messagesLiveData.observe(
             viewLifecycleOwner
         ) {
             adapter.setData(it)
             binding.rvMessages.scrollToPosition(it.size - 1)
+        }
+
+        viewModel.messageLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            binding.etMessageField.setText(it?.message)
+            isEditMessage = true
+            editedMessageInfo = it
         }
     }
 
@@ -150,7 +162,14 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
             bSendMessage.setOnClickListener {
                 val text = etMessageField.text.toString().trim()
-                sendMessage(text)
+                requireContext().showToast(isEditMessage.toString())
+                if (isEditMessage) {
+                    editMessage(text)
+                    isEditMessage = false
+                    editedMessageInfo = null
+                } else {
+                    sendMessage(text)
+                }
                 etMessageField.setText("")
             }
 
@@ -186,6 +205,14 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 )
             )
         }
+    }
+
+    private fun editMessage(message: String) {
+        rtOperator.editMessage(
+            message,
+            chatUID.orEmpty(),
+            editedMessageInfo?.messageUid.orEmpty()
+        )
     }
 
     override fun onPause() {
