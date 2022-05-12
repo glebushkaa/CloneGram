@@ -9,6 +9,5 @@ class MessageData(
     val uidPermission : ArrayList<String>? = null,
     val messageUid : String? = null,
     val seen : ArrayList<String>? = null,
-    val picture : Boolean = false,
-    val edited : Boolean = false
+    val picture : Boolean = false
 )

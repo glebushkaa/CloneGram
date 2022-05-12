@@ -162,7 +162,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
             bSendMessage.setOnClickListener {
                 val text = etMessageField.text.toString().trim()
-                requireContext().showToast(isEditMessage.toString())
                 if (isEditMessage) {
                     editMessage(text)
                     isEditMessage = false

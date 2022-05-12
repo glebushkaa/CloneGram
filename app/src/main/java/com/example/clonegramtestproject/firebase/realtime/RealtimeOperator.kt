@@ -63,13 +63,8 @@ class RealtimeOperator {
             .child(chatUID)
             .child(MESSAGES_NODE)
             .child(messageUID)
-            .let {
-                it.child(MESSAGE_NODE)
-                .setValue(text)
-
-                it.child(EDITED_NODE)
-                    .setValue(true)
-            }
+            .child(MESSAGE_NODE)
+            .setValue(text)
     }
 
     fun deleteMessage(chatUID: String, messageUID: String) {
