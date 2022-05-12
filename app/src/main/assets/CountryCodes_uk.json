@@ -1,0 +1,1215 @@
+[
+  {
+    "name": "Австралія",
+    "dial_code": "+61",
+    "code": "AU"
+  },
+  {
+    "name": "Австрія",
+    "dial_code": "+43",
+    "code": "AT"
+  },
+  {
+    "name": "Азербайджан",
+    "dial_code": "+994",
+    "code": "AZ"
+  },
+  {
+    "name": "Аландські острови",
+    "dial_code": "+358",
+    "code": "AX"
+  },
+  {
+    "name": "Албанія",
+    "dial_code": "+355",
+    "code": "AL"
+  },
+  {
+    "name": "Алжир",
+    "dial_code": "+213",
+    "code": "DZ"
+  },
+  {
+    "name": "Американське Самоа",
+    "dial_code": "+1684",
+    "code": "AS"
+  },
+  {
+    "name": "Андорра",
+    "dial_code": "+376",
+    "code": "AD"
+  },
+  {
+    "name": "Ангола",
+    "dial_code": "+244",
+    "code": "AO"
+  },
+  {
+    "name": "Ангілья",
+    "dial_code": "+1264",
+    "code": "AI"
+  },
+  {
+    "name": "Антарктида",
+    "dial_code": "+672",
+    "code": "AQ"
+  },
+  {
+    "name": "Антигуа та Барбуда",
+    "dial_code": "+1268",
+    "code": "AG"
+  },
+  {
+    "name": "Аргентина",
+    "dial_code": "+54",
+    "code": "AR"
+  },
+  {
+    "name": "Аруба",
+    "dial_code": "+297",
+    "code": "AW"
+  },
+  {
+    "name": "Афганістан",
+    "dial_code": "+93",
+    "code": "AF"
+  },
+  {
+    "name": "Багами",
+    "dial_code": "+1242",
+    "code": "BS"
+  },
+  {
+    "name": "Бахрейн",
+    "dial_code": "+973",
+    "code": "BH"
+  },
+  {
+    "name": "Бангладеш",
+    "dial_code": "+880",
+    "code": "BD"
+  },
+  {
+    "name": "Барбадос",
+    "dial_code": "+1246",
+    "code": "BB"
+  },
+  {
+    "name": "Бенін",
+    "dial_code": "+229",
+    "code": "BJ"
+  },
+  {
+    "name": "Білорусь",
+    "dial_code": "+375",
+    "code": "BY"
+  },
+  {
+    "name": "Бельгія",
+    "dial_code": "+32",
+    "code": "BE"
+  },
+  {
+    "name": "Беліз",
+    "dial_code": "+501",
+    "code": "BZ"
+  },
+  {
+    "name": "Бермуди",
+    "dial_code": "+1441",
+    "code": "BM"
+  },
+  {
+    "name": "Бутан",
+    "dial_code": "+975",
+    "code": "BT"
+  },
+  {
+    "name": "Болівія, Багатонаціональна Держава",
+    "dial_code": "+591",
+    "code": "BO"
+  },
+  {
+    "name": "Боснія і Герцеговина",
+    "dial_code": "+387",
+    "code": "BA"
+  },
+  {
+    "name": "Ботсвана",
+    "dial_code": "+267",
+    "code": "BW"
+  },
+  {
+    "name": "Бразилія",
+    "dial_code": "+55",
+    "code": "BR"
+  },
+  {
+    "name": "Британська територія Індійського океану",
+    "dial_code": "+246",
+    "code": "IO"
+  },
+  {
+    "name": "Бруней-Даруссалам",
+    "dial_code": "+673",
+    "code": "BN"
+  },
+  {
+    "name": "Болгарія",
+    "dial_code": "+359",
+    "code": "BG"
+  },
+  {
+    "name": "Буркіна-Фасо",
+    "dial_code": "+226",
+    "code": "BF"
+  },
+  {
+    "name": "Бурунді",
+    "dial_code": "+257",
+    "code": "BI"
+  },
+  {
+    "name": "Возз'єднання",
+    "dial_code": "+262",
+    "code": "RE"
+  },
+  {
+    "name": "Вірменія",
+    "dial_code": "+374",
+    "code": "AM"
+  },
+  {
+    "name": "Вануату",
+    "dial_code": "+678",
+    "code": "VU"
+  },
+  {
+    "name": "Венесуела, Боліваріанська Республіка Венесуела",
+    "dial_code": "+58",
+    "code": "VE"
+  },
+  {
+    "name": "В'єтнам",
+    "dial_code": "+84",
+    "code": "VN"
+  },
+  {
+    "name": "Віргінські острови, Британські",
+    "dial_code": "+1284",
+    "code": "VG"
+  },
+  {
+    "name": "Віргінські острови, США",
+    "dial_code": "+1340",
+    "code": "VI"
+  },
+  {
+    "name": "Габон",
+    "dial_code": "+241",
+    "code": "GA"
+  },
+  {
+    "name": "Гамбія",
+    "dial_code": "+220",
+    "code": "GM"
+  },
+  {
+    "name": "Грузія",
+    "dial_code": "+995",
+    "code": "GE"
+  },
+  {
+    "name": "Гана",
+    "dial_code": "+233",
+    "code": "GH"
+  },
+  {
+    "name": "Гібралтар",
+    "dial_code": "+350",
+    "code": "GI"
+  },
+  {
+    "name": "Греція",
+    "dial_code": "+30",
+    "code": "GR"
+  },
+  {
+    "name": "Гренландія",
+    "dial_code": "+299",
+    "code": "GL"
+  },
+  {
+    "name": "Гренада",
+    "dial_code": "+1473",
+    "code": "GD"
+  },
+  {
+    "name": "Гваделупа",
+    "dial_code": "+590",
+    "code": "GP"
+  },
+  {
+    "name": "Гуам",
+    "dial_code": "+1671",
+    "code": "GU"
+  },
+  {
+    "name": "Гватемала",
+    "dial_code": "+502",
+    "code": "GT"
+  },
+  {
+    "name": "Гернсі",
+    "dial_code": "+44",
+    "code": "GG"
+  },
+  {
+    "name": "Гвінея",
+    "dial_code": "+224",
+    "code": "GN"
+  },
+  {
+    "name": "Гвінея-Бісау",
+    "dial_code": "+245",
+    "code": "GW"
+  },
+  {
+    "name": "Гайана",
+    "dial_code": "+595",
+    "code": "GY"
+  },
+  {
+    "name": "Гондурас",
+    "dial_code": "+504",
+    "code": "HN"
+  },
+  {
+    "name": "Гонконг",
+    "dial_code": "+852",
+    "code": "HK"
+  },
+  {
+    "name": "Гаїті",
+    "dial_code": "+509",
+    "code": "HT"
+  },
+  {
+    "name": "Данія",
+    "dial_code": "+45",
+    "code": "DK"
+  },
+  {
+    "name": "Джібуті",
+    "dial_code": "+253",
+    "code": "DJ"
+  },
+  {
+    "name": "Джерсі",
+    "dial_code": "+44",
+    "code": "JE"
+  },
+  {
+    "name": "Домініка",
+    "dial_code": "+1767",
+    "code": "DM"
+  },
+  {
+    "name": "Домініканська республіка",
+    "dial_code": "+1849",
+    "code": "DO"
+  },
+  {
+    "name": "Екваторіальна Гвінея",
+    "dial_code": "+240",
+    "code": "GQ"
+  },
+  {
+    "name": "Еритрея",
+    "dial_code": "+291",
+    "code": "ER"
+  },
+  {
+    "name": "Естонія",
+    "dial_code": "+372",
+    "code": "EE"
+  },
+  {
+    "name": "Ефіопія",
+    "dial_code": "+251",
+    "code": "ET"
+  },
+
+  {
+    "name": "Еквадор",
+    "dial_code": "+593",
+    "code": "EC"
+  },
+  {
+    "name": "Ємен",
+    "dial_code": "+967",
+    "code": "YE"
+  },
+  {
+    "name": "Єгипет",
+    "dial_code": "+20",
+    "code": "EG"
+  },
+  {
+    "name": "Замбія",
+    "dial_code": "+260",
+    "code": "ZM"
+  },
+  {
+    "name": "Зімбабве",
+    "dial_code": "+263",
+    "code": "ZW"
+  },
+
+  {
+    "name": "Ісландія",
+    "dial_code": "+354",
+    "code": "IS"
+  },
+  {
+    "name": "Індія",
+    "dial_code": "+91",
+    "code": "IN"
+  },
+  {
+    "name": "Індонезія",
+    "dial_code": "+62",
+    "code": "ID"
+  },
+  {
+    "name": "Іран, Ісламська Республіка Перської затоки",
+    "dial_code": "+98",
+    "code": "IR"
+  },
+  {
+    "name": "Ірак",
+    "dial_code": "+964",
+    "code": "IQ"
+  },
+  {
+    "name": "Ірландія",
+    "dial_code": "+353",
+    "code": "IE"
+  },
+  {
+    "name": "Іспанія",
+    "dial_code": "+34",
+    "code": "ES"
+  },
+  {
+    "name": "Ізраїль",
+    "dial_code": "+972",
+    "code": "IL"
+  },
+  {
+    "name": "Італія",
+    "dial_code": "+39",
+    "code": "IT"
+  },
+  {
+    "name": "Йорданія",
+    "dial_code": "+962",
+    "code": "JO"
+  },
+  {
+    "name": "Камбоджа",
+    "dial_code": "+855",
+    "code": "KH"
+  },
+  {
+    "name": "Камерун",
+    "dial_code": "+237",
+    "code": "CM"
+  },
+  {
+    "name": "Канада",
+    "dial_code": "+1",
+    "code": "CA"
+  },
+  {
+    "name": "Кабо-Верде",
+    "dial_code": "+238",
+    "code": "CV"
+  },
+  {
+    "name": "Кайманові острови",
+    "dial_code": "+ 345",
+    "code": "KY"
+  },
+  {
+    "name": "Китай",
+    "dial_code": "+86",
+    "code": "CN"
+  },
+  {
+    "name": "Коста-Ріка",
+    "dial_code": "+506",
+    "code": "CR"
+  },
+  {
+    "name": "Кот-д'Івуар",
+    "dial_code": "+225",
+    "code": "CI"
+  },
+  {
+    "name": "Куба",
+    "dial_code": "+53",
+    "code": "CU"
+  },
+  {
+    "name": "Кіпр",
+    "dial_code": "+357",
+    "code": "CY"
+  },
+  {
+    "name": "Кокосові (Кілінг) острови",
+    "dial_code": "+61",
+    "code": "CC"
+  },
+  {
+    "name": "Колумбія",
+    "dial_code": "+57",
+    "code": "CO"
+  },
+  {
+    "name": "Комори",
+    "dial_code": "+269",
+    "code": "KM"
+  },
+  {
+    "name": "Конго",
+    "dial_code": "+242",
+    "code": "CG"
+  },
+  {
+    "name": "Конго, Демократична Республіка Конго",
+    "dial_code": "+243",
+    "code": "CD"
+  },
+  {
+    "name": "Казахстан",
+    "dial_code": "+77",
+    "code": "KZ"
+  },
+  {
+    "name": "Кенія",
+    "dial_code": "+254",
+    "code": "KE"
+  },
+  {
+    "name": "Кірібаті",
+    "dial_code": "+686",
+    "code": "KI"
+  },
+  {
+    "name": "Катар",
+    "dial_code": "+974",
+    "code": "QA"
+  },
+  {
+    "name": "Корея, Корейська Народно-Демократична Республіка",
+    "dial_code": "+850",
+    "code": "KP"
+  },
+  {
+    "name": "Корея, Республіка Південна Корея",
+    "dial_code": "+82",
+    "code": "KR"
+  },
+  {
+    "name": "Кувейт",
+    "dial_code": "+965",
+    "code": "KW"
+  },
+  {
+    "name": "Киргизстан",
+    "dial_code": "+996",
+    "code": "KG"
+  },
+  {
+    "name": "Лаос",
+    "dial_code": "+856",
+    "code": "LA"
+  },
+  {
+    "name": "Латвія",
+    "dial_code": "+371",
+    "code": "LV"
+  },
+  {
+    "name": "Ліван",
+    "dial_code": "+961",
+    "code": "LB"
+  },
+  {
+    "name": "Лесото",
+    "dial_code": "+266",
+    "code": "LS"
+  },
+  {
+    "name": "Ліберія",
+    "dial_code": "+231",
+    "code": "LR"
+  },
+  {
+    "name": "Лівійська арабська джамахірія",
+    "dial_code": "+218",
+    "code": "LY"
+  },
+  {
+    "name": "Ліхтенштейн",
+    "dial_code": "+423",
+    "code": "LI"
+  },
+  {
+    "name": "Литва",
+    "dial_code": "+370",
+    "code": "LT"
+  },
+  {
+    "name": "Люксембург",
+    "dial_code": "+352",
+    "code": "LU"
+  },
+  {
+    "name": "Макао",
+    "dial_code": "+853",
+    "code": "MO"
+  },
+  {
+    "name": "Македонія",
+    "dial_code": "+389",
+    "code": "MK"
+  },
+  {
+    "name": "Мадагаскар",
+    "dial_code": "+261",
+    "code": "MG"
+  },
+  {
+    "name": "Малаві",
+    "dial_code": "+265",
+    "code": "MW"
+  },
+  {
+    "name": "Малайзія",
+    "dial_code": "+60",
+    "code": "MY"
+  },
+  {
+    "name": "Мальдіви",
+    "dial_code": "+960",
+    "code": "MV"
+  },
+  {
+    "name": "Малі",
+    "dial_code": "+223",
+    "code": "ML"
+  },
+  {
+    "name": "Мальта",
+    "dial_code": "+356",
+    "code": "MT"
+  },
+  {
+    "name": "Маршаллові острови",
+    "dial_code": "+692",
+    "code": "MH"
+  },
+  {
+    "name": "Мартініка",
+    "dial_code": "+596",
+    "code": "MQ"
+  },
+  {
+    "name": "Мавританія",
+    "dial_code": "+222",
+    "code": "MR"
+  },
+  {
+    "name": "Маврикій",
+    "dial_code": "+230",
+    "code": "MU"
+  },
+  {
+    "name": "Майотта",
+    "dial_code": "+262",
+    "code": "YT"
+  },
+  {
+    "name": "Мексика",
+    "dial_code": "+52",
+    "code": "MX"
+  },
+  {
+    "name": "Мікронезія, Федеративні Штати Мікронезії",
+    "dial_code": "+691",
+    "code": "FM"
+  },
+  {
+    "name": "Молдова",
+    "dial_code": "+373",
+    "code": "MD"
+  },
+  {
+    "name": "Монако",
+    "dial_code": "+377",
+    "code": "MC"
+  },
+  {
+    "name": "Монголія",
+    "dial_code": "+976",
+    "code": "MN"
+  },
+  {
+    "name": "Монтсеррат",
+    "dial_code": "+1664",
+    "code": "MS"
+  },
+  {
+    "name": "Марокко",
+    "dial_code": "+212",
+    "code": "MA"
+  },
+  {
+    "name": "Мозамбік",
+    "dial_code": "+258",
+    "code": "MZ"
+  },
+  {
+    "name": "М'янма",
+    "dial_code": "+95",
+    "code": "MM"
+  },
+  {
+    "name": "Намібія",
+    "dial_code": "+264",
+    "code": "NA"
+  },
+  {
+    "name": "Науру",
+    "dial_code": "+674",
+    "code": "NR"
+  },
+  {
+    "name": "Непал",
+    "dial_code": "+977",
+    "code": "NP"
+  },
+  {
+    "name": "Нідерланди",
+    "dial_code": "+31",
+    "code": "NL"
+  },
+  {
+    "name": "Німеччина",
+    "dial_code": "+49",
+    "code": "DE"
+  },
+  {
+    "name": "Нідерландські Антильські острови",
+    "dial_code": "+599",
+    "code": "AN"
+  },
+  {
+    "name": "Нова Каледонія",
+    "dial_code": "+687",
+    "code": "NC"
+  },
+  {
+    "name": "Нова Зеландія",
+    "dial_code": "+64",
+    "code": "NZ"
+  },
+  {
+    "name": "Нікарагуа",
+    "dial_code": "+505",
+    "code": "NI"
+  },
+  {
+    "name": "Нігер",
+    "dial_code": "+227",
+    "code": "NE"
+  },
+  {
+    "name": "Нігерія",
+    "dial_code": "+234",
+    "code": "NG"
+  },
+  {
+    "name": "Ніуе",
+    "dial_code": "+683",
+    "code": "NU"
+  },
+  {
+    "name": "Норвегія",
+    "dial_code": "+47",
+    "code": "NO"
+  },
+  {
+    "name": "Острів Норфолк",
+    "dial_code": "+672",
+    "code": "NF"
+  },
+  {
+    "name": "Острів Мен",
+    "dial_code": "+44",
+    "code": "IM"
+  },
+  {
+    "name": "Острів Різдва",
+    "dial_code": "+61",
+    "code": "CX"
+  },
+  {
+    "name": "Острови Кука",
+    "dial_code": "+682",
+    "code": "CK"
+  },
+  {
+    "name": "Острова Теркс та Кайкос",
+    "dial_code": "+1649",
+    "code": "TC"
+  },
+  {
+    "name": "Об'єднані Арабські Емірати",
+    "dial_code": "+971",
+    "code": "AE"
+  },
+  {
+    "name": "Об'єднане Королівство",
+    "dial_code": "+44",
+    "code": "GB"
+  },
+  {
+    "name": "Оман",
+    "dial_code": "+968",
+    "code": "OM"
+  },
+  {
+    "name": "Пакистан",
+    "dial_code": "+92",
+    "code": "PK"
+  },
+  {
+    "name": "Палау",
+    "dial_code": "+680",
+    "code": "PW"
+  },
+  {
+    "name": "Палестинська територія, окупована",
+    "dial_code": "+970",
+    "code": "PS"
+  },
+  {
+    "name": "Південна Африка",
+    "dial_code": "+27",
+    "code": "ZA"
+  },
+  {
+    "name": "Південний Судан",
+    "dial_code": "+211",
+    "code": "SS"
+  },
+  {
+    "name": "Південна Георгія та Південні Сандвічеві острови",
+    "dial_code": "+500",
+    "code": "GS"
+  },
+  {
+    "name": "Панама",
+    "dial_code": "+507",
+    "code": "PA"
+  },
+  {
+    "name": "Папуа Нова Гвінея",
+    "dial_code": "+675",
+    "code": "PG"
+  },
+  {
+    "name": "Парагвай",
+    "dial_code": "+595",
+    "code": "PY"
+  },
+  {
+    "name": "Перу",
+    "dial_code": "+51",
+    "code": "PE"
+  },
+  {
+    "name": "Піткерн",
+    "dial_code": "+872",
+    "code": "PN"
+  },
+  {
+    "name": "Польща",
+    "dial_code": "+48",
+    "code": "PL"
+  },
+  {
+    "name": "Португалія",
+    "dial_code": "+351",
+    "code": "PT"
+  },
+  {
+    "name": "Північні Маріанські острови",
+    "dial_code": "+1670",
+    "code": "MP"
+  },
+  {
+    "name": "Пуерто-Ріко",
+    "dial_code": "+1939",
+    "code": "PR"
+  },
+  {
+    "name": "Румунія",
+    "dial_code": "+40",
+    "code": "RO"
+  },
+  {
+    "name": "Росія",
+    "dial_code": "+7",
+    "code": "RU"
+  },
+  {
+    "name": "Руанда",
+    "dial_code": "+250",
+    "code": "RW"
+  },
+  {
+    "name": "Святий Престол (місто-держава Ватикан)",
+    "dial_code": "+379",
+    "code": "VA"
+  },
+  {
+    "name": "Сен-Бартельмі",
+    "dial_code": "+590",
+    "code": "BL"
+  },
+  {
+    "name": "Свята Олена, Вознесіння і Трістан-да-Кунья",
+    "dial_code": "+290",
+    "code": "SH"
+  },
+  {
+    "name": "Сент-Китс и Невис",
+    "dial_code": "+1869",
+    "code": "KN"
+  },
+  {
+    "name": "Сент-Люсія",
+    "dial_code": "+1758",
+    "code": "LC"
+  },
+  {
+    "name": "Сен-Мартен",
+    "dial_code": "+590",
+    "code": "MF"
+  },
+  {
+    "name": "Сен-П'єр та Мікелон",
+    "dial_code": "+508",
+    "code": "PM"
+  },
+  {
+    "name": "Святий Вінсент та Гренадини",
+    "dial_code": "+1784",
+    "code": "VC"
+  },
+  {
+    "name": "Самоа",
+    "dial_code": "+685",
+    "code": "WS"
+  },
+  {
+    "name": "Сан-Маріно",
+    "dial_code": "+378",
+    "code": "SM"
+  },
+  {
+    "name": "Сан-Томе та Прінсіпі",
+    "dial_code": "+239",
+    "code": "ST"
+  },
+  {
+    "name": "Саудівська Аравія",
+    "dial_code": "+966",
+    "code": "SA"
+  },
+  {
+    "name": "Сенегал",
+    "dial_code": "+221",
+    "code": "SN"
+  },
+  {
+    "name": "Сербія",
+    "dial_code": "+381",
+    "code": "RS"
+  },
+  {
+    "name": "Сейшели",
+    "dial_code": "+248",
+    "code": "SC"
+  },
+  {
+    "name": "Сьєрра-Леоне",
+    "dial_code": "+232",
+    "code": "SL"
+  },
+  {
+    "name": "Сінгапур",
+    "dial_code": "+65",
+    "code": "SG"
+  },
+  {
+    "name": "Словаччина",
+    "dial_code": "+421",
+    "code": "SK"
+  },
+  {
+    "name": "Словенія",
+    "dial_code": "+386",
+    "code": "SI"
+  },
+  {
+    "name": "Соломонові острови",
+    "dial_code": "+677",
+    "code": "SB"
+  },
+  {
+    "name": "Сомалі",
+    "dial_code": "+252",
+    "code": "SO"
+  },
+  {
+    "name": "Судан",
+    "dial_code": "+249",
+    "code": "SD"
+  },
+  {
+    "name": "Сурінам",
+    "dial_code": "+597",
+    "code": "SR"
+  },
+  {
+    "name": "Свазіленд",
+    "dial_code": "+268",
+    "code": "SZ"
+  },
+  {
+    "name": "Сполучені Штати",
+    "dial_code": "+1",
+    "code": "US"
+  },
+  {
+    "name": "Сальвадор",
+    "dial_code": "+503",
+    "code": "SV"
+  },
+  {
+    "name": "Сирійська Арабська Республіка",
+    "dial_code": "+963",
+    "code": "SY"
+  },
+  {
+    "name": "Тайвань",
+    "dial_code": "+886",
+    "code": "TW"
+  },
+  {
+    "name": "Таджикистан",
+    "dial_code": "+992",
+    "code": "TJ"
+  },
+  {
+    "name": "Танзанія, Об'єднана Республіка Танзанія",
+    "dial_code": "+255",
+    "code": "TZ"
+  },
+  {
+    "name": "Таїланд",
+    "dial_code": "+66",
+    "code": "TH"
+  },
+  {
+    "name": "Тимор-Лешті",
+    "dial_code": "+670",
+    "code": "TL"
+  },
+  {
+    "name": "Того",
+    "dial_code": "+228",
+    "code": "TG"
+  },
+  {
+    "name": "Токелау",
+    "dial_code": "+690",
+    "code": "TK"
+  },
+  {
+    "name": "Тонга",
+    "dial_code": "+676",
+    "code": "TO"
+  },
+  {
+    "name": "Трінідад і Тобаго",
+    "dial_code": "+1868",
+    "code": "TT"
+  },
+  {
+    "name": "Туніс",
+    "dial_code": "+216",
+    "code": "TN"
+  },
+  {
+    "name": "Туреччина",
+    "dial_code": "+90",
+    "code": "TR"
+  },
+  {
+    "name": "Туркменістан",
+    "dial_code": "+993",
+    "code": "TM"
+  },
+  {
+    "name": "Тувалу",
+    "dial_code": "+688",
+    "code": "TV"
+  },
+  {
+    "name": "Уганда",
+    "dial_code": "+256",
+    "code": "UG"
+  },
+  {
+    "name": "Угорщина",
+    "dial_code": "+36",
+    "code": "HU"
+  },
+  {
+    "name": "Україна",
+    "dial_code": "+380",
+    "code": "UA"
+  },
+  {
+    "name": "Уругвай",
+    "dial_code": "+598",
+    "code": "UY"
+  },
+  {
+    "name": "Уолліс та Футуна",
+    "dial_code": "+681",
+    "code": "WF"
+  },
+  {
+    "name": "Узбекистан",
+    "dial_code": "+998",
+    "code": "UZ"
+  },
+  {
+    "name": "Філіппіни",
+    "dial_code": "+63",
+    "code": "PH"
+  },
+  {
+    "name": "Фолклендські (Мальвінські) острови",
+    "dial_code": "+500",
+    "code": "FK"
+  },
+  {
+    "name": "Фарерські острови",
+    "dial_code": "+298",
+    "code": "FO"
+  },
+  {
+    "name": "Фіджі",
+    "dial_code": "+679",
+    "code": "FJ"
+  },
+  {
+    "name": "Фінляндія",
+    "dial_code": "+358",
+    "code": "FI"
+  },
+  {
+    "name": "Франція",
+    "dial_code": "+33",
+    "code": "FR"
+  },
+  {
+    "name": "Французька Гвіана",
+    "dial_code": "+594",
+    "code": "GF"
+  },
+  {
+    "name": "Французька Полінезія",
+    "dial_code": "+689",
+    "code": "PF"
+  },
+  {
+    "name": "Хорватія",
+    "dial_code": "+385",
+    "code": "HR"
+  },
+  {
+    "name": "Центрально-Африканська Республіка",
+    "dial_code": "+236",
+    "code": "CF"
+  },
+  {
+    "name": "Чад",
+    "dial_code": "+235",
+    "code": "TD"
+  },
+  {
+    "name": "Чилі",
+    "dial_code": "+56",
+    "code": "CL"
+  },
+  {
+    "name": "Чорногорія",
+    "dial_code": "+382",
+    "code": "ME"
+  },
+
+  {
+    "name": "Чешская Республика",
+    "dial_code": "+420",
+    "code": "CZ"
+  },
+  {
+    "name": "Шрі Ланка",
+    "dial_code": "+94",
+    "code": "LK"
+  },
+  {
+    "name": "Шпіцберген та Ян-Майєн",
+    "dial_code": "+47",
+    "code": "SJ"
+  },
+  {
+    "name": "Швеція",
+    "dial_code": "+46",
+    "code": "SE"
+  },
+  {
+    "name": "Швейцарія",
+    "dial_code": "+41",
+    "code": "CH"
+  },
+  {
+    "name": "Ямайка",
+    "dial_code": "+1876",
+    "code": "JM"
+  },
+  {
+    "name": "Японія",
+    "dial_code": "+81",
+    "code": "JP"
+  }
+]

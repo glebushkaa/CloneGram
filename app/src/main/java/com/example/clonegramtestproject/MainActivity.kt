@@ -9,7 +9,6 @@ import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
 import com.example.clonegramtestproject.utils.languagePreferencesName
 import com.example.clonegramtestproject.utils.settingsName
-import com.example.clonegramtestproject.utils.showToast
 import com.example.clonegramtestproject.utils.themePreferencesName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,19 +18,21 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
+
     val countryCodeArrayList = arrayListOf<CountriesCodes>()
+    private var lang = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getInfoFromSharedPrefs()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
         setArrayOfFlags()
     }
 
     private fun setArrayOfFlags() {
-        val inputStream: InputStream = assets.open("CountryCodes.json")
+        val inputStream: InputStream = assets.open("CountryCodes_$lang.json")
         lifecycleScope.launch(Dispatchers.IO) {
 
             val json = inputStream.bufferedReader().use { it.readText() }
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (sharedPreferences.contains(languagePreferencesName)) {
+            lang = sharedPreferences.getString(languagePreferencesName, "").orEmpty()
             setLanguage(sharedPreferences.getString(languagePreferencesName, "").orEmpty())
         }else{
             sharedPreferences.edit()?.putString(
