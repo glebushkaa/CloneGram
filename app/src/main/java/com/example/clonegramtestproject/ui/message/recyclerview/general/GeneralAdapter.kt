@@ -1,7 +1,6 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,6 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
             userData: CommonModel,
             itemClickListener: OnItemClickListener
         ) {
-            Log.d(userData.phone,userData.userPicture.toString())
             userData.userPicture?.let {
                 Glide.with(context)
                     .load(it)
@@ -48,7 +46,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
             usernameField.text = userData.username
             lastMessageField.text = userData.lastMessage?.message
             userData.lastMessage?.timestamp?.let {
-                timestamp.text = SimpleDateFormat("HH:mm")
+                timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                     .format(it)
             }
 

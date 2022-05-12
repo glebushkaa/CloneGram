@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
+class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private val viewModel by viewModels<GeneralMessageViewModel>()
 
@@ -65,6 +65,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
+            initAdapter()
             with((Dispatchers.IO)) {
                 user = firebaseGetter.getUser(currentUID)
                 username = user?.username
@@ -87,7 +88,13 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                     uidList = getUidList()
                     visibleDataList = sortVisibleGeneralData()
                 }
-                initAdapter()
+                visibleDataList.let { list->
+                    list.sortBy {
+                        it.lastMessage?.timestamp
+                    }
+                    list.reverse()
+                    adapter?.setData(list)
+                }
             }
         }
     }
@@ -107,7 +114,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                 }
             })
             rvGeneral.adapter = adapter
-            adapter?.setData(visibleDataList)
+            rvGeneral.itemAnimator = null
         }
     }
 

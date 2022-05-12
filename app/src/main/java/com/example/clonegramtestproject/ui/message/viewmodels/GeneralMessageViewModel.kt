@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.ui.message.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.clonegramtestproject.data.CommonModel
@@ -30,12 +31,11 @@ class GeneralMessageViewModel : ViewModel() {
                     for (item in snapshot.children) {
                         item.getValue(CommonModel::class.java)
                             ?.let {
-                                if(it.permissionUidArray?.get(currentUID) == true){
+                                if (it.permissionUidArray?.get(currentUID) == true) {
                                     allMessagedUsersList.add(it)
                                 }
                             }
                     }
-
                     allMessagedUsersLiveData.value = allMessagedUsersList
                 } else {
                     allMessagedUsersLiveData.value = arrayListOf()

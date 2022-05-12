@@ -12,8 +12,9 @@ class GeneralDiffUtil(
 
     override fun getNewListSize() = newArrayList.size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldArrayList == newArrayList
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+        oldArrayList[oldItemPosition].userPicture == newArrayList[newItemPosition].userPicture
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldArrayList[oldItemPosition].lastMessage == newArrayList[newItemPosition].lastMessage
+        oldArrayList[oldItemPosition] == newArrayList[newItemPosition]
 }
