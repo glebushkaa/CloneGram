@@ -1,6 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
 
+    <style name="Theme.ClearClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/app_color_yellow</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@null</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:colorEdgeEffect">@null</item>
+        <item name="fontFamily">@font/montserrat_sb</item>
+
+        <item name="appColor">@null</item>
+        <item name="startBackgroundGradientColor">@null</item>
+        <item name="endBackgroundGradientColor">@null</item>
+        <item name="centerBackgroundGradientColor">@null</item>
+        <item name="highlightAppColor">@null</item>
+        <!-- Customize your theme here. -->
+    </style>
+
     <style name="Theme.YellowClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/app_color_yellow</item>

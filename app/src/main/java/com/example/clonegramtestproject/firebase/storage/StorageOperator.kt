@@ -2,6 +2,7 @@ package com.example.clonegramtestproject.firebase.storage
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.MessageData
 import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
@@ -48,7 +49,9 @@ class StorageOperator {
         uri: Uri, user: CommonModel,
         username: String, chatUID: String
     ) {
-        chatsPicturesRef.child(uri.lastPathSegment.toString())
+        chatsPicturesRef
+            .child(chatUID)
+            .child(uri.lastPathSegment.toString())
             .putFile(uri).addOnSuccessListener {
 
                 it.metadata?.reference?.downloadUrl

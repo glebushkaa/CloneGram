@@ -14,6 +14,7 @@ import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
 import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
+import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import java.text.SimpleDateFormat
 
 class GeneralAdapter(
@@ -24,6 +25,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
 
     private val firebaseChanger = RealtimeChanger()
     private val firebaseOperator = RealtimeOperator()
+    private val storageOperator = StorageOperator()
 
     private val oldUsersArrayList = ArrayList<CommonModel>()
 
@@ -61,7 +63,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                         R.id.deleteChatForMe -> firebaseChanger
                             .deleteChatForCurrentUser(userData.chatUID.orEmpty())
                         R.id.deleteChatForBoth -> firebaseOperator
-                            .deleteChat(userData.chatUID.orEmpty())
+                                .deleteChat(userData.chatUID.orEmpty())
                     }
                     false
                 }

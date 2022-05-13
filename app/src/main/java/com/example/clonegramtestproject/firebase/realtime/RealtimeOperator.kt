@@ -16,7 +16,9 @@ class RealtimeOperator {
     private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
 
     fun sendMessage(
-        userUID: String, messageData: MessageData, chatUID: String
+        userUID: String,
+        messageData: MessageData,
+        chatUID: String
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             databaseRefMessages
