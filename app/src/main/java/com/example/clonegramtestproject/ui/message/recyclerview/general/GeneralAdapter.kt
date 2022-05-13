@@ -46,7 +46,11 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                     .into(userIcon)
             }
             usernameField.text = userData.username
-            lastMessageField.text = userData.lastMessage?.message
+            if(userData.lastMessage?.picture == true){
+                lastMessageField.text = context.getString(R.string.picture)
+            }else{
+                lastMessageField.text = userData.lastMessage?.message
+            }
             userData.lastMessage?.timestamp?.let {
                 timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                     .format(it)

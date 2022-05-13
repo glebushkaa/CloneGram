@@ -2,7 +2,10 @@ package com.example.clonegramtestproject.ui.message.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
+import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.example.clonegramtestproject.utils.SEEN_NODE
 import com.example.clonegramtestproject.utils.USERS_MESSAGES_NODE
@@ -25,8 +28,9 @@ class DirectMessageViewModel : ViewModel() {
     val messagesLiveData = MutableLiveData<List<MessageData>>()
     val messageLiveData = MutableLiveData<MessageData?>()
 
+    private val realtimeChanger = RealtimeChanger()
 
-    fun setMessageListener(chatUID: String) {
+    fun setMessageListener(chatUID: String,picture : String) {
 
         val messageData = ArrayList<MessageData>()
         messageListener = object : ValueEventListener {
@@ -46,8 +50,33 @@ class DirectMessageViewModel : ViewModel() {
                     }
                     setSeenParameter(messageData, chatUID)
                     messagesLiveData.value = messageData
+                    if(messageData.last().picture){
+                        realtimeChanger.setLastMessageForUser(
+                            chatUID,
+                            LastMessageData(
+                                uid = currentUID,
+                                message = null,
+                                timestamp = System.currentTimeMillis(),
+                                picture = true
+                            )
+                        )
+                    }else{
+                        realtimeChanger.setLastMessageForUser(
+                            chatUID,
+                            LastMessageData(
+                                uid= currentUID,
+                                message = messageData.last().message,
+                                timestamp = System.currentTimeMillis(),
+                                picture = false
+                            )
+                        )
+                    }
                 } else {
                     messagesLiveData.value = arrayListOf()
+                    realtimeChanger.setLastMessageForUser(
+                        chatUID,
+                        LastMessageData()
+                    )
                 }
             }
 

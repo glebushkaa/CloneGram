@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 class LastMessageData(
     val uid: String? = null,
     val message: String? = null,
-    val timestamp: Long? = null
+    val timestamp: Long? = null,
+    val picture : Boolean = false
 ) : Parcelable

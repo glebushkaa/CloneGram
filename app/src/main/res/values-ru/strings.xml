@@ -68,5 +68,6 @@
     <string name="delete_messages_for_me">Удалить для меня</string>
     <string name="delete_message_for_both">Удалить для обоих</string>
     <string name="code_length">Код должен содержать 6 символов!</string>
+    <string name="picture">изображение</string>
 
 </resources>

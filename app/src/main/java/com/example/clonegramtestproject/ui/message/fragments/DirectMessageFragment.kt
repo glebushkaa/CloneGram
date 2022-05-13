@@ -91,7 +91,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onStart() {
         super.onStart()
-        viewModel.setMessageListener(chatUID.orEmpty())
+        viewModel.setMessageListener(chatUID.orEmpty(),getString(R.string.picture))
     }
 
     private fun setBackgroundHeight() {
@@ -194,14 +194,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                     picture = false
                 ),
                 chatUID.orEmpty()
-            )
-
-            rtChanger.setLastMessageForUser(
-                chatUID.orEmpty(),
-                LastMessageData(
-                    currentUID, text,
-                    System.currentTimeMillis()
-                )
             )
         }
     }
