@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
 
     val countryCodeArrayList = arrayListOf<CountriesCodes>()
-    private var lang = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getInfoFromSharedPrefs()
@@ -32,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setArrayOfFlags() {
-        val inputStream: InputStream = assets.open("CountryCodes_$lang.json")
+        val inputStream: InputStream = assets.open(
+            "CountryCodes_${getString(R.string.lang)}.json")
         lifecycleScope.launch(Dispatchers.IO) {
 
             val json = inputStream.bufferedReader().use { it.readText() }
@@ -64,10 +64,10 @@ class MainActivity : AppCompatActivity() {
             sharedPreferences.edit()?.putString(
                 themePreferencesName, "yellow"
             )?.apply()
+            theme.applyStyle(R.style.Theme_YellowClonegram, true)
         }
 
         if (sharedPreferences.contains(languagePreferencesName)) {
-            lang = sharedPreferences.getString(languagePreferencesName, "").orEmpty()
             setLanguage(sharedPreferences.getString(languagePreferencesName, "").orEmpty())
         }else{
             sharedPreferences.edit()?.putString(

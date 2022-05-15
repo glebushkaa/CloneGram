@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 class CommonModel(
     val username : String? = null,
     val phone : String? = null,
-    val lastMessage : LastMessageData? = null,
+    val lastMessage : Map<String,LastMessageData>? = null,
     val chatUID : String? = null,
     val uidArray : ArrayList<String?>? = null,
     val permissionUidArray : Map<String,Boolean>? = null,

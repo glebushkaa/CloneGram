@@ -1,6 +1,7 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
 import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 
 class GeneralAdapter(
@@ -26,6 +29,8 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
     private val firebaseChanger = RealtimeChanger()
     private val firebaseOperator = RealtimeOperator()
     private val storageOperator = StorageOperator()
+
+    private val currentUID = Firebase.auth.currentUser?.uid
 
     private val oldUsersArrayList = ArrayList<CommonModel>()
 
@@ -46,12 +51,13 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                     .into(userIcon)
             }
             usernameField.text = userData.username
-            if(userData.lastMessage?.picture == true){
+            Log.d("CHECK", userData?.lastMessage?.get(currentUID.toString())?.message.toString())
+            if(userData.lastMessage?.get(currentUID)?.picture == true){
                 lastMessageField.text = context.getString(R.string.picture)
             }else{
-                lastMessageField.text = userData.lastMessage?.message
+                lastMessageField.text = userData.lastMessage?.get(currentUID)?.message
             }
-            userData.lastMessage?.timestamp?.let {
+            userData.lastMessage?.get(currentUID)?.timestamp?.let {
                 timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                     .format(it)
             }

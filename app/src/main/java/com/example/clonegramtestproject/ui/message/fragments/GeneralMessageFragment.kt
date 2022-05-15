@@ -90,7 +90,7 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                 }
                 visibleDataList.let { list->
                     list.sortBy {
-                        it.lastMessage?.timestamp
+                        it.lastMessage?.get(currentUID)?.timestamp
                     }
                     list.reverse()
                     adapter?.setData(list)

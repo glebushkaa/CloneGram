@@ -69,9 +69,13 @@ class RealtimeChanger {
                             user.uid.orEmpty() to true
                         ),
                         chatUID = key,
-                        lastMessage = LastMessageData(
-                            "",
-                            ""
+                        lastMessage = mapOf(
+                            currentUID to LastMessageData(
+                                message = ""
+                            ),
+                            user.uid.orEmpty() to LastMessageData(
+                                message = ""
+                            )
                         )
                     )
                 )
@@ -133,6 +137,7 @@ class RealtimeChanger {
         databaseRefMessages
             .child(chatUID)
             .child(LAST_MESSAGE_NODE)
+            .child(currentUID)
             .setValue(message)
     }
 

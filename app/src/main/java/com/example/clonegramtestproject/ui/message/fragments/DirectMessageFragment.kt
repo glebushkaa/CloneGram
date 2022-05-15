@@ -208,7 +208,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onPause() {
         super.onPause()
-        viewModel.removeMessageListener(uid.orEmpty())
+        viewModel.removeMessageListener(chatUID.orEmpty())
     }
 
     override fun onDestroy() {

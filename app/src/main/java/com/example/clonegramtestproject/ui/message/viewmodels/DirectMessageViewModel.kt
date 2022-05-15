@@ -30,7 +30,7 @@ class DirectMessageViewModel : ViewModel() {
 
     private val realtimeChanger = RealtimeChanger()
 
-    fun setMessageListener(chatUID: String,picture : String) {
+    fun setMessageListener(chatUID: String, picture: String) {
 
         val messageData = ArrayList<MessageData>()
         messageListener = object : ValueEventListener {
@@ -48,29 +48,29 @@ class DirectMessageViewModel : ViewModel() {
                             }
                         }
                     }
-                    setSeenParameter(messageData, chatUID)
-                    messagesLiveData.value = messageData
-                    if(messageData.last().picture){
+                    if (messageData.last().picture) {
                         realtimeChanger.setLastMessageForUser(
                             chatUID,
                             LastMessageData(
                                 uid = currentUID,
                                 message = null,
-                                timestamp = System.currentTimeMillis(),
+                                timestamp = messageData.last().timestamp,
                                 picture = true
                             )
                         )
-                    }else{
+                    } else {
                         realtimeChanger.setLastMessageForUser(
                             chatUID,
                             LastMessageData(
-                                uid= currentUID,
+                                uid = currentUID,
                                 message = messageData.last().message,
-                                timestamp = System.currentTimeMillis(),
+                                timestamp = messageData.last().timestamp,
                                 picture = false
                             )
                         )
                     }
+                    setSeenParameter(messageData, chatUID)
+                    messagesLiveData.value = messageData
                 } else {
                     messagesLiveData.value = arrayListOf()
                     realtimeChanger.setLastMessageForUser(
@@ -90,10 +90,15 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
-    private fun setSeenParameter(messageData: ArrayList<MessageData>, chatUID: String) {
+    private fun setSeenParameter(
+        messageData: ArrayList<MessageData>,
+        chatUID: String
+    ) {
         if (messageData.isNotEmpty()) {
-            messageData[messageData.size - 1].let {
-                if (it.uid != currentUID) {
+            messageData.forEach {
+                if (it.uid != currentUID &&
+                    it.seen?.isEmpty() == true
+                ) {
                     databaseRefMessages
                         .child(chatUID)
                         .child(MESSAGES_NODE)
@@ -102,16 +107,28 @@ class DirectMessageViewModel : ViewModel() {
                         .setValue(arrayListOf(currentUID))
                 }
             }
+
+            /*messageData.last().let {
+                if (it.uid != currentUID) {
+                    databaseRefMessages
+                        .child(chatUID)
+                        .child(MESSAGES_NODE)
+                        .child(it.messageUid.orEmpty())
+                        .child(SEEN_NODE)
+                        .setValue(arrayListOf(currentUID))
+                }
+            }*/
         }
     }
 
-    fun removeMessageListener(uid: String) {
+    fun removeMessageListener(chatUID: String) {
         messageListener?.let {
             databaseRefMessages
-                .child(uid)
+                .child(chatUID)
+                .child(MESSAGES_NODE)
                 .removeEventListener(it)
         }
     }
-
-
 }
+
+

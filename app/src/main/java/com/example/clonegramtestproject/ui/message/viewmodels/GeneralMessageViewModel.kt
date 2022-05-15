@@ -37,6 +37,7 @@ class GeneralMessageViewModel : ViewModel() {
                             }
                     }
                     allMessagedUsersLiveData.value = allMessagedUsersList
+                    Log.d("CHECKER", allMessagedUsersList[0].uidArray?.get(0).toString())
                 } else {
                     allMessagedUsersLiveData.value = arrayListOf()
                 }
