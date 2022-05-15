@@ -11,7 +11,7 @@ import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentFindNewUserBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
+import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.ui.message.recyclerview.newuser.NewUserAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
     private var changedFilteredList = ArrayList<CommonModel>()
     private var messagesList = ArrayList<String>()
 
-    private var firebaseUserChanger = RealtimeChanger()
+    private var rtNewUser = RealtimeNewUser()
 
     private val animations = Animations()
 
@@ -81,7 +81,7 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
                 var messageUID : String?
                 lifecycleScope.launch {
                     with(Dispatchers.IO) {
-                        messageUID = firebaseUserChanger.addUserToMessages(user)
+                        messageUID = rtNewUser.addUserToMessages(user)
                     }
                     findNavController().navigate(
                         R.id.find_user_to_direct,

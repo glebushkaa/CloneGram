@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.databinding.FragmentRegisterBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
+import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.utils.showSnackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private var username: String? = null
     private var isRegisterCompleted = false
 
-    private val firebaseUserChanger = RealtimeChanger()
+    private val rtNewUser = RealtimeNewUser()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentRegisterBinding.bind(view)
@@ -83,7 +83,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         setUsername()
 
         lifecycleScope.launch(Dispatchers.IO) {
-            firebaseUserChanger.addNewUser(
+            rtNewUser.addNewUser(
                 username.orEmpty(),
                 auth.currentUser?.uid.orEmpty(),
                 phoneNumber.orEmpty()

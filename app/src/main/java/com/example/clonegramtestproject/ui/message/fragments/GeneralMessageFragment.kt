@@ -48,13 +48,14 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     private var visibleDataList = ArrayList<CommonModel>()
     private var filteredUsersList = ArrayList<CommonModel>()
 
-    private val firebaseGetter = RealtimeGetter()
+    private val rtGetter = RealtimeGetter()
     private val animations = Animations()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
 
-        val editText : EditText = binding!!.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+        val editText : EditText = binding!!.searchView
+            .findViewById(androidx.appcompat.R.id.search_src_text)
         editText.background = null
         editText.setTextColor(resources.getColor(R.color.white,null))
 
@@ -67,9 +68,9 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
         lifecycleScope.launch {
             initAdapter()
             with((Dispatchers.IO)) {
-                user = firebaseGetter.getUser(currentUID)
+                user = rtGetter.getUser(currentUID)
                 username = user?.username
-                allUsersList = firebaseGetter.getAllUsersList()
+                allUsersList = rtGetter.getAllUsersList()
                 viewModel.addAllMessagedUsersListener()
 
                 addObserverListeners()

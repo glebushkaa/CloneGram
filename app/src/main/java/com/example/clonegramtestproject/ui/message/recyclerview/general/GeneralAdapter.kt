@@ -1,7 +1,6 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
-import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -26,8 +25,8 @@ class GeneralAdapter(
 ) : RecyclerView.
 Adapter<GeneralAdapter.GeneralViewHolder>() {
 
-    private val firebaseChanger = RealtimeChanger()
-    private val firebaseOperator = RealtimeOperator()
+    private val firebaseChanger = RealtimeUser()
+    private val firebaseOperator = RealtimeMessage()
     private val storageOperator = StorageOperator()
 
     private val currentUID = Firebase.auth.currentUser?.uid
@@ -37,8 +36,8 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
     inner class GeneralViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val usernameField: TextView = itemView.findViewById(R.id.tvTitle)
         private val lastMessageField: TextView = itemView.findViewById(R.id.tvSubtitle)
-        private val timestamp : TextView = itemView.findViewById(R.id.timestamp)
-        private val userIcon : AppCompatImageView = itemView.findViewById(R.id.userIcon)
+        private val timestamp: TextView = itemView.findViewById(R.id.timestamp)
+        private val userIcon: AppCompatImageView = itemView.findViewById(R.id.userIcon)
 
         fun bind(
             userData: CommonModel,
@@ -51,12 +50,13 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                     .into(userIcon)
             }
             usernameField.text = userData.username
-            Log.d("CHECK", userData?.lastMessage?.get(currentUID.toString())?.message.toString())
-            if(userData.lastMessage?.get(currentUID)?.picture == true){
+
+            if (userData.lastMessage?.get(currentUID)?.picture == true) {
                 lastMessageField.text = context.getString(R.string.picture)
-            }else{
+            } else {
                 lastMessageField.text = userData.lastMessage?.get(currentUID)?.message
             }
+
             userData.lastMessage?.get(currentUID)?.timestamp?.let {
                 timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                     .format(it)
@@ -73,7 +73,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                         R.id.deleteChatForMe -> firebaseChanger
                             .deleteChatForCurrentUser(userData.chatUID.orEmpty())
                         R.id.deleteChatForBoth -> firebaseOperator
-                                .deleteChat(userData.chatUID.orEmpty())
+                            .deleteChat(userData.chatUID.orEmpty())
                     }
                     false
                 }

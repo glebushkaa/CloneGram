@@ -45,7 +45,7 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
     private var sharedPrefs: SharedPreferences? = null
     private var codeLang: String? = null
 
-    private val firebaseGetter = RealtimeGetter()
+    private val rtGetter = RealtimeGetter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentVerifyNumberBinding.bind(view)
@@ -174,7 +174,7 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
                         lifecycleScope.launch {
                             with(Dispatchers.IO) {
-                                username = firebaseGetter
+                                username = rtGetter
                                     .getUsername(auth.currentUser?.uid.orEmpty())
                             }
                             findNavController().navigate(

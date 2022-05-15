@@ -2,10 +2,11 @@ package com.example.clonegramtestproject.ui.message.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
+import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.example.clonegramtestproject.utils.SEEN_NODE
 import com.example.clonegramtestproject.utils.USERS_MESSAGES_NODE
@@ -28,9 +29,9 @@ class DirectMessageViewModel : ViewModel() {
     val messagesLiveData = MutableLiveData<List<MessageData>>()
     val messageLiveData = MutableLiveData<MessageData?>()
 
-    private val realtimeChanger = RealtimeChanger()
+    private val rtMessage = RealtimeMessage()
 
-    fun setMessageListener(chatUID: String, picture: String) {
+    fun setMessageListener(chatUID: String, user : CommonModel) {
 
         val messageData = ArrayList<MessageData>()
         messageListener = object : ValueEventListener {
@@ -49,20 +50,18 @@ class DirectMessageViewModel : ViewModel() {
                         }
                     }
                     if (messageData.last().picture) {
-                        realtimeChanger.setLastMessageForUser(
+                        rtMessage.changeLastMessage(
                             chatUID,
                             LastMessageData(
-                                uid = currentUID,
                                 message = null,
                                 timestamp = messageData.last().timestamp,
                                 picture = true
                             )
                         )
                     } else {
-                        realtimeChanger.setLastMessageForUser(
+                        rtMessage.changeLastMessage(
                             chatUID,
                             LastMessageData(
-                                uid = currentUID,
                                 message = messageData.last().message,
                                 timestamp = messageData.last().timestamp,
                                 picture = false
@@ -73,9 +72,9 @@ class DirectMessageViewModel : ViewModel() {
                     messagesLiveData.value = messageData
                 } else {
                     messagesLiveData.value = arrayListOf()
-                    realtimeChanger.setLastMessageForUser(
-                        chatUID,
-                        LastMessageData()
+
+                    rtMessage.changeLastMessage(
+                        chatUID, LastMessageData()
                     )
                 }
             }
@@ -96,8 +95,8 @@ class DirectMessageViewModel : ViewModel() {
     ) {
         if (messageData.isNotEmpty()) {
             messageData.forEach {
-                if (it.uid != currentUID &&
-                    it.seen?.isEmpty() == true
+                if (it.uid != currentUID
+                    && it.seen == null
                 ) {
                     databaseRefMessages
                         .child(chatUID)
@@ -107,17 +106,6 @@ class DirectMessageViewModel : ViewModel() {
                         .setValue(arrayListOf(currentUID))
                 }
             }
-
-            /*messageData.last().let {
-                if (it.uid != currentUID) {
-                    databaseRefMessages
-                        .child(chatUID)
-                        .child(MESSAGES_NODE)
-                        .child(it.messageUid.orEmpty())
-                        .child(SEEN_NODE)
-                        .setValue(arrayListOf(currentUID))
-                }
-            }*/
         }
     }
 

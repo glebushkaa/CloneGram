@@ -22,7 +22,7 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private val firebaseDatabase = Firebase.database
     private val auth = FirebaseAuth.getInstance()
 
-    private val realtimeGetter = RealtimeGetter()
+    private val rtGetter = RealtimeGetter()
 
     private var user: CommonModel? = null
 
@@ -35,7 +35,7 @@ class StartFragment : Fragment(R.layout.fragment_start) {
             lifecycleScope.launch {
                 with(Dispatchers.IO)
                 {
-                    user = realtimeGetter
+                    user = rtGetter
                         .getUser(auth.uid.orEmpty())
                 }
                 checkHasUserName()

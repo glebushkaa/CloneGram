@@ -86,8 +86,8 @@
         <item name="fontFamily">@font/montserrat_sb</item>
 
         <item name="appColor">@color/app_color_green</item>
-        <item name="startBackgroundGradientColor">#56C700</item>
-        <item name="endBackgroundGradientColor">#56A76F</item>
+        <item name="startBackgroundGradientColor">#56A76F</item>
+        <item name="endBackgroundGradientColor">#3E8F2E</item>
         <item name="centerBackgroundGradientColor">#56A24F</item>
         <item name="highlightAppColor">#56A16F</item>
         <!-- Customize your theme here. -->

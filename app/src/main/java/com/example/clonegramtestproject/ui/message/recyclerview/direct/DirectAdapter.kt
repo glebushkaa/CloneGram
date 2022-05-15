@@ -13,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
-import com.example.clonegramtestproject.utils.CHATS_PICTURES_NODE
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 
 class DirectAdapter(
@@ -33,10 +31,7 @@ class DirectAdapter(
     private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
     private val messageList = ArrayList<MessageData>()
 
-    private val storageRef = Firebase.storage.reference
-    private val chatsPicturesRef = storageRef.child(CHATS_PICTURES_NODE)
-
-    private val firebaseOperator = RealtimeOperator()
+    private val rtMessage = RealtimeMessage()
 
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var message: TextView? = null
@@ -135,9 +130,10 @@ class DirectAdapter(
         popUp.inflate(R.menu.message_outgoing_menu)
         popUp.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.deleteOutgoingMessageForBoth -> firebaseOperator
-                    .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
-                R.id.deleteOutgoingMessageForMe -> firebaseOperator
+                R.id.deleteOutgoingMessageForBoth -> {
+                    deleteMessageForBoth(userMessageData)
+                }
+                R.id.deleteOutgoingMessageForMe -> rtMessage
                     .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
                 R.id.editMessage -> liveData.value = userMessageData
             }
@@ -149,9 +145,10 @@ class DirectAdapter(
         popUp.inflate(R.menu.message_incoming_menu)
         popUp.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.deleteIncomingMessageForBoth -> firebaseOperator
-                    .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
-                R.id.deleteIncomingMessageForMe -> firebaseOperator
+                R.id.deleteIncomingMessageForBoth -> {
+                    deleteMessageForBoth(userMessageData)
+                }
+                R.id.deleteIncomingMessageForMe -> rtMessage
                     .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
             }
             false
@@ -169,6 +166,24 @@ class DirectAdapter(
                 val seen: TextView = itemView.findViewById(R.id.tvSeen)
                 seen.visibility = View.GONE
             }
+        }
+    }
+
+    private fun deleteMessageForBoth(userMessageData: MessageData){
+        rtMessage
+            .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
+        if(messageList.last() == userMessageData){
+            rtMessage.setLastMessage(
+                arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
+                chatUID,
+                messageList[messageList.indexOf(userMessageData) - 1].let { messageInfo ->
+                    LastMessageData(
+                        message = messageInfo.message,
+                        timestamp = messageInfo.timestamp,
+                        picture = messageInfo.picture
+                    )
+                }
+            )
         }
     }
 

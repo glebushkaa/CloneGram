@@ -1,5 +1,7 @@
 package com.example.clonegramtestproject.firebase.realtime
 
+import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
 import com.example.clonegramtestproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
@@ -8,12 +10,41 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class RealtimeOperator {
+class RealtimeMessage {
 
     private val firebaseDatabase = Firebase.database
     private val databaseRefMessages = firebaseDatabase.getReference(USERS_MESSAGES_NODE)
-    private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
+    private val firebaseAuth = FirebaseAuth.getInstance()
+
+    private val currentUID = firebaseAuth.currentUser?.uid.orEmpty()
+
+    fun setLastMessage(
+        uidArray: ArrayList<String>,
+        chatUID: String,
+        message: LastMessageData
+    ) {
+        uidArray.forEach {
+            databaseRefMessages
+                .child(chatUID)
+                .child(LAST_MESSAGE_NODE)
+                .child(it)
+                .setValue(message)
+        }
+    }
+
+    fun changeLastMessage(
+        chatUID: String,
+        message: LastMessageData
+    ) {
+        databaseRefMessages
+            .child(chatUID)
+            .child(LAST_MESSAGE_NODE)
+            .child(currentUID)
+            .setValue(message)
+    }
 
     fun sendMessage(
         userUID: String,
@@ -42,7 +73,7 @@ class RealtimeOperator {
         }
     }
 
-    private fun checkIsUserDeletedChat(userUID: String, messageUID: String) {
+    fun checkIsUserDeletedChat(userUID: String, messageUID: String) {
         databaseRefMessages
             .child(messageUID)
             .child(PERMISSION_UID_ARRAY_NODE)

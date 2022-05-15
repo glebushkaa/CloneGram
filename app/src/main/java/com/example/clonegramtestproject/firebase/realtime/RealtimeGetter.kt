@@ -11,20 +11,19 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class RealtimeGetter{
+class RealtimeGetter {
 
     private val firebaseDatabase = Firebase.database
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
-    private val databaseRefMessages = firebaseDatabase.getReference(USERS_MESSAGES_NODE)
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun getAllUsersList() =
         suspendCoroutine<ArrayList<CommonModel>> { emitter ->
             databaseRefUsers.get().addOnSuccessListener {
                 val allUsersList = ArrayList<CommonModel>()
-                for (user in it.children){
-                    user.getValue(CommonModel :: class.java)?.let { info ->
-                        if(info.uid != firebaseAuth.currentUser?.uid){
+                for (user in it.children) {
+                    user.getValue(CommonModel::class.java)?.let { info ->
+                        if (info.uid != firebaseAuth.currentUser?.uid) {
                             allUsersList.add(info)
                         }
                     }
@@ -52,12 +51,12 @@ class RealtimeGetter{
                 }
         }
 
-    suspend fun getUser(uid : String) = suspendCoroutine<CommonModel?> { emitter ->
+    suspend fun getUser(uid: String) = suspendCoroutine<CommonModel?> { emitter ->
         databaseRefUsers
             .child(uid)
             .get()
             .addOnSuccessListener { snapshot ->
-                val user : CommonModel? = snapshot.getValue(CommonModel :: class.java)
+                val user: CommonModel? = snapshot.getValue(CommonModel::class.java)
                 emitter.resume(user)
             }.addOnFailureListener { exception ->
                 emitter.resumeWithException(exception)

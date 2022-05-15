@@ -17,8 +17,7 @@ import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeChanger
-import com.example.clonegramtestproject.firebase.realtime.RealtimeOperator
+import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
@@ -43,8 +42,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     private var originalSoftInputMode: Int? = null
 
-    private val rtOperator = RealtimeOperator()
-    private val rtChanger = RealtimeChanger()
+    private val rtMessage = RealtimeMessage()
     private val sOperator = StorageOperator()
 
     private var isEditMessage = false
@@ -91,7 +89,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onStart() {
         super.onStart()
-        viewModel.setMessageListener(chatUID.orEmpty(),getString(R.string.picture))
+        user?.let { viewModel.setMessageListener(chatUID.orEmpty(), it) }
     }
 
     private fun setBackgroundHeight() {
@@ -181,7 +179,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     private fun sendMessage(text: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            rtOperator.sendMessage(
+            rtMessage.sendMessage(
                 userUID = user?.uid.orEmpty(),
                 MessageData(
                     uidPermission = arrayListOf(
@@ -195,11 +193,21 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 ),
                 chatUID.orEmpty()
             )
+
+            rtMessage.setLastMessage(
+                arrayListOf(currentUID.orEmpty(),user?.uid.orEmpty()),
+                chatUID.orEmpty(),
+                LastMessageData(
+                    message = text,
+                    timestamp = System.currentTimeMillis(),
+                    picture = false
+                )
+            )
         }
     }
 
     private fun editMessage(message: String) {
-        rtOperator.editMessage(
+        rtMessage.editMessage(
             message,
             chatUID.orEmpty(),
             editedMessageInfo?.messageUid.orEmpty()

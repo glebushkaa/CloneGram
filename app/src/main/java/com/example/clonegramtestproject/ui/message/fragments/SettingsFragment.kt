@@ -19,6 +19,7 @@ import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
@@ -35,14 +36,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private var currentUID = FirebaseAuth.getInstance().currentUser?.uid
 
-    private val firebaseDatabase = Firebase.database
-
-    private val databaseRef = firebaseDatabase.getReference(USERS_NODE)
-    private val auth = FirebaseAuth.getInstance()
-
     private var phoneNumber = FirebaseAuth.getInstance().currentUser?.phoneNumber
     private var user: CommonModel? = null
     private var username: String? = null
+
+    private val rtUser = RealtimeUser()
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -119,14 +117,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
             bSignOut.setOnClickListener {
-                auth.signOut()
+                rtUser.signOut()
                 findNavController().navigate(R.id.settings_to_login)
             }
 
             bDelete.setOnClickListener {
-                databaseRef.child(currentUID.orEmpty()).removeValue()
-                auth.currentUser?.delete()
-                auth.signOut()
+                rtUser.deleteUser()
                 findNavController().navigate(R.id.settings_to_login)
             }
 
@@ -141,10 +137,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                     showSoftKeyboard(etUsername, requireActivity())
                 } else {
                     username = etUsername.text.toString().trim()
-                    databaseRef.child(currentUID.orEmpty())
-                        .updateChildren(
-                            mapOf(USERNAME_NODE to username)
-                        )
+                    rtUser.changeUsername(username)
                 }
             }
         }
