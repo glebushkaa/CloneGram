@@ -15,9 +15,11 @@ import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class DirectAdapter(
@@ -61,9 +63,19 @@ class DirectAdapter(
             itemView.setOnLongClickListener {
                 val popUp: PopupMenu =
                     if (itemViewType == 0 || itemViewType == 2) {
-                        PopupMenu(context, message)
+                        PopupMenu(
+                            context, message,
+                            0,
+                            0,
+                            R.style.CustomPopUpStyle
+                        )
                     } else {
-                        PopupMenu(context, picture)
+                        PopupMenu(
+                            context, picture,
+                            0,
+                            0,
+                            R.style.CustomPopUpStyle
+                        )
                     }
                 if (itemViewType == 0) {
                     setOutgoingMessageMenu(popUp, userMessageData)
@@ -133,8 +145,10 @@ class DirectAdapter(
                 R.id.deleteOutgoingMessageForBoth -> {
                     deleteMessageForBoth(userMessageData)
                 }
-                R.id.deleteOutgoingMessageForMe -> rtMessage
-                    .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                R.id.deleteOutgoingMessageForMe -> CoroutineScope(Dispatchers.IO).launch {
+                    rtMessage
+                        .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                }
                 R.id.editMessage -> liveData.value = userMessageData
             }
             false
@@ -148,8 +162,10 @@ class DirectAdapter(
                 R.id.deleteIncomingMessageForBoth -> {
                     deleteMessageForBoth(userMessageData)
                 }
-                R.id.deleteIncomingMessageForMe -> rtMessage
-                    .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                R.id.deleteIncomingMessageForMe -> CoroutineScope(Dispatchers.IO).launch {
+                    rtMessage
+                        .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                }
             }
             false
         }
@@ -169,22 +185,25 @@ class DirectAdapter(
         }
     }
 
-    private fun deleteMessageForBoth(userMessageData: MessageData){
-        rtMessage
-            .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
-        if(messageList.last() == userMessageData){
-            rtMessage.setLastMessage(
-                arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
-                chatUID,
-                messageList[messageList.indexOf(userMessageData) - 1].let { messageInfo ->
-                    LastMessageData(
-                        message = messageInfo.message,
-                        timestamp = messageInfo.timestamp,
-                        picture = messageInfo.picture
-                    )
-                }
-            )
+    private fun deleteMessageForBoth(userMessageData: MessageData) {
+        CoroutineScope(Dispatchers.IO).launch {
+            rtMessage
+                .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
+            if (messageList.last() == userMessageData) {
+                rtMessage.setLastMessage(
+                    arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
+                    chatUID,
+                    messageList[messageList.indexOf(userMessageData) - 1].let { messageInfo ->
+                        LastMessageData(
+                            message = messageInfo.message,
+                            timestamp = messageInfo.timestamp,
+                            picture = messageInfo.picture
+                        )
+                    }
+                )
+            }
         }
+
     }
 
 }

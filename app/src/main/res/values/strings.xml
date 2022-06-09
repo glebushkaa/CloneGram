@@ -67,6 +67,7 @@
     <string name="seen">Seen</string>
     <string name="lang">en</string>
     <string name="code_length">Code must contain 6 characters!</string>
-    <string name="picture">picture</string>
+    <string name="picture">*picture*</string>
+    <string name="default_notification_channel_id">com.domain.appname.urgent</string>
 
 </resources>

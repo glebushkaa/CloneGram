@@ -139,4 +139,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="yourstyle" parent="">
+
+        <item name="android:textSize">50sp</item>
+        <item name="android:textColor">@color/grey_85</item>
+
+    </style>
+
 </resources>

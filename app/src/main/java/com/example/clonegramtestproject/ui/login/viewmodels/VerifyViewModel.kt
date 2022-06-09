@@ -4,7 +4,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class VerifyNumberFragmentViewModel : ViewModel() {
+class VerifyViewModel : ViewModel() {
     var chronometerLiveData = MutableLiveData<Long>()
     var countDownTime = 60L
     var countDownTimerStarted = false

@@ -8,11 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.TokenData
 import com.example.clonegramtestproject.databinding.FragmentRegisterBinding
+import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.showSnackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -26,6 +29,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private var isRegisterCompleted = false
 
     private val rtNewUser = RealtimeNewUser()
+    private val rtUser = RealtimeUser()
+    private val cmHelper = CMHelper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentRegisterBinding.bind(view)
@@ -81,12 +86,19 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private fun inputDataToDatabase() {
         setUsername()
-
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             rtNewUser.addNewUser(
-                username.orEmpty(),
-                auth.currentUser?.uid.orEmpty(),
-                phoneNumber.orEmpty()
+                CommonModel(
+                    username = username.orEmpty(),
+                    uid = auth.currentUser?.uid.orEmpty(),
+                    phone = phoneNumber.orEmpty()
+                )
+            )
+            rtUser.setUserToken(
+                TokenData(
+                    cmHelper.getToken(),
+                    System.currentTimeMillis()
+                )
             )
         }
     }

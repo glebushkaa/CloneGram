@@ -3,17 +3,25 @@ package com.example.clonegramtestproject
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.JsonReader
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
+import com.example.clonegramtestproject.databinding.CountryItemBinding
 import com.example.clonegramtestproject.utils.languagePreferencesName
 import com.example.clonegramtestproject.utils.settingsName
+import com.example.clonegramtestproject.utils.showToast
 import com.example.clonegramtestproject.utils.themePreferencesName
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 
 
@@ -60,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 "purple" -> theme.applyStyle(R.style.Theme_PurpleClonegram, true)
                 "blue" -> theme.applyStyle(R.style.Theme_BlueClonegram, true)
             }
-        }else{
+        } else {
             sharedPreferences.edit()?.putString(
                 themePreferencesName, "yellow"
             )?.apply()
@@ -69,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         if (sharedPreferences.contains(languagePreferencesName)) {
             setLanguage(sharedPreferences.getString(languagePreferencesName, "").orEmpty())
-        }else{
+        } else {
             sharedPreferences.edit()?.putString(
                 languagePreferencesName, getString(R.string.lang)
             )?.apply()
@@ -85,6 +93,5 @@ class MainActivity : AppCompatActivity() {
             baseContext.resources.displayMetrics
         )
     }
-
 
 }

@@ -22,10 +22,11 @@ import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
+class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private val viewModel by viewModels<GeneralMessageViewModel>()
 
@@ -54,10 +55,10 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
 
-        val editText : EditText = binding!!.searchView
+        val editText: EditText = binding!!.searchView
             .findViewById(androidx.appcompat.R.id.search_src_text)
         editText.background = null
-        editText.setTextColor(resources.getColor(R.color.white,null))
+        editText.setTextColor(resources.getColor(R.color.white, null))
 
         setOnClickListeners()
         setDrawerNavigation()
@@ -67,15 +68,14 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
         super.onStart()
         lifecycleScope.launch {
             initAdapter()
-            with((Dispatchers.IO)) {
-                user = rtGetter.getUser(currentUID)
-                username = user?.username
-                allUsersList = rtGetter.getAllUsersList()
-                viewModel.addAllMessagedUsersListener()
+            user = rtGetter.getUser(currentUID)
+            username = user?.username
+            allUsersList = rtGetter.getAllUsersList()
+            viewModel.addAllMessagedUsersListener()
 
-                addObserverListeners()
-                addOnQueryTextListener()
-            }
+            addObserverListeners()
+            addOnQueryTextListener()
+
             setTextForViews()
         }
     }
@@ -83,13 +83,13 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     private fun addObserverListeners() {
         viewModel.allMessagedUsersLiveData.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-                with(Dispatchers.IO) {
-                    messagesList.clear()
-                    messagesList.addAll(it)
-                    uidList = getUidList()
-                    visibleDataList = sortVisibleGeneralData()
-                }
-                visibleDataList.let { list->
+
+                messagesList.clear()
+                messagesList.addAll(it)
+                uidList = getUidList()
+                visibleDataList = sortVisibleGeneralData()
+
+                visibleDataList.let { list ->
                     list.sortBy {
                         it.lastMessage?.get(currentUID)?.timestamp
                     }
@@ -102,7 +102,8 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private fun initAdapter() {
         binding?.apply {
-            adapter = GeneralAdapter(requireContext(), object : GeneralAdapter.OnItemClickListener {
+            adapter = GeneralAdapter(requireContext(), object :
+                GeneralAdapter.OnItemClickListener {
                 override fun onItemClicked(user: CommonModel) {
                     lifecycleScope.launch {
                         findNavController().navigate(
@@ -188,18 +189,20 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
         }
     }
 
-    private suspend fun getUidList() = suspendCoroutine<ArrayList<String?>> { emitter ->
+    private suspend fun getUidList() = withContext(Dispatchers.IO) {
+        suspendCoroutine<ArrayList<String?>> { emitter ->
 
-        val listOfUID = ArrayList<String?>()
+            val listOfUID = ArrayList<String?>()
 
-        messagesList.forEach {
-            it.uidArray?.forEach { uid ->
-                if (uid != auth.currentUser?.uid) {
-                    listOfUID.add(uid)
+            messagesList.forEach {
+                it.uidArray?.forEach { uid ->
+                    if (uid != auth.currentUser?.uid) {
+                        listOfUID.add(uid)
+                    }
                 }
             }
+            emitter.resume(listOfUID)
         }
-        emitter.resume(listOfUID)
     }
 
     private fun addOnQueryTextListener() {
@@ -213,11 +216,11 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                     override fun onQueryTextChange(newText: String?): Boolean {
                         if (newText?.isNotEmpty() == true) {
                             lifecycleScope.launch {
-                                with(Dispatchers.IO) {
-                                    filteredUsersList.clear()
-                                    filteredUsersList
-                                        .addAll(filterUsersArray(newText.orEmpty()))
-                                }
+
+                                filteredUsersList.clear()
+                                filteredUsersList
+                                    .addAll(filterUsersArray(newText.orEmpty()))
+
                                 adapter?.setData(filteredUsersList)
                             }
                         } else if (newText.orEmpty().isEmpty()) {
@@ -232,44 +235,49 @@ class   GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     }
 
     private suspend fun filterUsersArray(filterText: String) =
-        suspendCoroutine<ArrayList<CommonModel>> { emitter ->
-            val arrayList = ArrayList<CommonModel>()
+        withContext(Dispatchers.IO) {
+            suspendCoroutine<ArrayList<CommonModel>> { emitter ->
+                val arrayList = ArrayList<CommonModel>()
 
-            visibleDataList.forEach {
-                if (it.username?.contains(filterText) == true &&
-                    it.uid != currentUID
-                ) {
-                    arrayList.add(it)
+                visibleDataList.forEach {
+                    if (it.username?.contains(filterText) == true &&
+                        it.uid != currentUID
+                    ) {
+                        arrayList.add(it)
+                    }
                 }
+                emitter.resume(arrayList)
             }
-            emitter.resume(arrayList)
         }
 
 
     private suspend fun sortVisibleGeneralData() =
-        suspendCoroutine<ArrayList<CommonModel>> { emitter ->
-            val generalVisibleData = ArrayList<CommonModel>()
+        withContext(Dispatchers.IO) {
+            suspendCoroutine<ArrayList<CommonModel>> { emitter ->
+                val generalVisibleData = ArrayList<CommonModel>()
 
-            allUsersList.forEach {
-                uidList.forEach { uid ->
-                    if (it.uid == uid) {
-                        val messageItem = messagesList[uidList.indexOf(uid)]
-                        generalVisibleData.add(
-                            CommonModel(
-                                username = it.username,
-                                phone = it.phone,
-                                lastMessage = messageItem
-                                    .lastMessage,
-                                chatUID = messageItem
-                                    .chatUID,
-                                uid = it.uid,
-                                userPicture = it.userPicture
+                allUsersList.forEach {
+                    uidList.forEach { uid ->
+                        if (it.uid == uid) {
+                            val messageItem = messagesList[uidList.indexOf(uid)]
+                            generalVisibleData.add(
+                                CommonModel(
+                                    username = it.username,
+                                    phone = it.phone,
+                                    lastMessage = messageItem
+                                        .lastMessage,
+                                    chatUID = messageItem
+                                        .chatUID,
+                                    uid = it.uid,
+                                    userPicture = it.userPicture,
+                                    tokens = it.tokens
+                                )
                             )
-                        )
+                        }
                     }
                 }
+                emitter.resume(generalVisibleData)
             }
-            emitter.resume(generalVisibleData)
         }
 
 

@@ -7,6 +7,8 @@ import com.example.clonegramtestproject.utils.USERS_NODE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -17,7 +19,7 @@ class RealtimeGetter {
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    suspend fun getAllUsersList() =
+    suspend fun getAllUsersList() = withContext(Dispatchers.IO) {
         suspendCoroutine<ArrayList<CommonModel>> { emitter ->
             databaseRefUsers.get().addOnSuccessListener {
                 val allUsersList = ArrayList<CommonModel>()
@@ -33,8 +35,9 @@ class RealtimeGetter {
                 emitter.resumeWithException(it)
             }
         }
+    }
 
-    suspend fun getUsername(uid: String) =
+    suspend fun getUsername(uid: String) = withContext(Dispatchers.IO) {
         suspendCoroutine<String?> { emitter ->
             databaseRefUsers
                 .child(uid)
@@ -50,17 +53,21 @@ class RealtimeGetter {
                     emitter.resumeWithException(it)
                 }
         }
+    }
 
-    suspend fun getUser(uid: String) = suspendCoroutine<CommonModel?> { emitter ->
-        databaseRefUsers
-            .child(uid)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val user: CommonModel? = snapshot.getValue(CommonModel::class.java)
-                emitter.resume(user)
-            }.addOnFailureListener { exception ->
-                emitter.resumeWithException(exception)
-            }
+    suspend fun getUser(uid: String) = withContext(Dispatchers.IO) {
+        suspendCoroutine<CommonModel?> { emitter ->
+            databaseRefUsers
+                .child(uid)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    val user: CommonModel? = snapshot
+                        .getValue(CommonModel::class.java)
+                    emitter.resume(user)
+                }.addOnFailureListener { exception ->
+                    emitter.resumeWithException(exception)
+                }
+        }
     }
 
 

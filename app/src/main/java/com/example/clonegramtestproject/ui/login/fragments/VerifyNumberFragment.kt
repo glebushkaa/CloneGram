@@ -12,12 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.TokenData
 import com.example.clonegramtestproject.databinding.FragmentVerifyNumberBinding
+import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
-import com.example.clonegramtestproject.ui.login.viewmodels.VerifyNumberFragmentViewModel
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.ui.login.viewmodels.VerifyViewModel
 import com.example.clonegramtestproject.utils.languagePreferencesName
 import com.example.clonegramtestproject.utils.settingsName
 import com.example.clonegramtestproject.utils.showSnackbar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -25,13 +29,14 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
     private val auth = FirebaseAuth.getInstance()
 
-    private val viewModel by viewModels<VerifyNumberFragmentViewModel>()
+    private val viewModel by viewModels<VerifyViewModel>()
     private var binding: FragmentVerifyNumberBinding? = null
 
     private var phoneNumber: String? = null
@@ -46,6 +51,8 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
     private var codeLang: String? = null
 
     private val rtGetter = RealtimeGetter()
+    private val rtUser = RealtimeUser()
+    private val cmHelper = CMHelper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentVerifyNumberBinding.bind(view)
@@ -90,18 +97,16 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
     private fun sendVerifyCode() {
         auth.setLanguageCode(codeLang.orEmpty())
-        lifecycleScope.launch {
-            with(Dispatchers.IO) {
-                callback?.let {
-                    PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                        .setPhoneNumber(phoneNumber.orEmpty())
-                        .setTimeout(TIMEOUT_MESSAGE, TimeUnit.SECONDS)
-                        .setActivity(requireActivity())
-                        .setCallbacks(it)
-                        .build()
-                }?.let {
-                    PhoneAuthProvider.verifyPhoneNumber(it)
-                }
+        lifecycleScope.launch(Dispatchers.IO) {
+            callback?.let {
+                PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                    .setPhoneNumber(phoneNumber.orEmpty())
+                    .setTimeout(TIMEOUT_MESSAGE, TimeUnit.SECONDS)
+                    .setActivity(requireActivity())
+                    .setCallbacks(it)
+                    .build()
+            }?.let {
+                PhoneAuthProvider.verifyPhoneNumber(it)
             }
         }
     }
@@ -114,11 +119,13 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
             override fun onVerificationFailed(exception: FirebaseException) {
                 try {
-                    showSnackbar(
+                    Snackbar.make(
                         requireView(),
                         getString(R.string.wrong_code),
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(
                         resources.getColor(R.color.red, null)
-                    )
+                    ).show()
                 } catch (e: Exception) {
                 }
             }
@@ -149,11 +156,18 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                         checkVerificationCode(credential)
                     } catch (e: Exception) {
                         bNext.isEnabled = true
-                        showSnackbar(
+
+                        Snackbar.make(
                             requireView(),
                             getString(R.string.wrong_code),
-                            resources.getColor(R.color.red, null)
-                        )
+                            Snackbar.LENGTH_LONG
+                        ).setBackgroundTint(
+                            resources.getColor(
+                                R.color.red,
+                                null
+                            )
+                        ).show()
+
                     }
                 }
             }
@@ -173,14 +187,20 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                     if (!user?.isNewUser!!) {
 
                         lifecycleScope.launch {
-                            with(Dispatchers.IO) {
-                                username = rtGetter
-                                    .getUsername(auth.currentUser?.uid.orEmpty())
-                            }
+                            username = rtGetter
+                                .getUsername(auth.currentUser?.uid.orEmpty())
+
                             findNavController().navigate(
                                 R.id.verify_to_general,
                                 bundleOf(
                                     "username" to username
+                                )
+                            )
+
+                            rtUser.setUserToken(
+                                TokenData(
+                                    cmHelper.getToken(),
+                                    System.currentTimeMillis()
                                 )
                             )
                         }

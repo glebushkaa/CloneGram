@@ -1,6 +1,7 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
 import android.content.Context
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,9 @@ import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class GeneralAdapter(
@@ -27,7 +31,6 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
 
     private val firebaseChanger = RealtimeUser()
     private val firebaseOperator = RealtimeMessage()
-    private val storageOperator = StorageOperator()
 
     private val currentUID = Firebase.auth.currentUser?.uid
 
@@ -66,14 +69,24 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                 itemClickListener.onItemClicked(userData)
             }
             itemView.setOnLongClickListener {
-                val popUp = PopupMenu(context, usernameField)
+
+                val popUp = PopupMenu(context, userIcon,
+                    0,
+                    0,
+                    R.style.CustomPopUpStyle)
+
                 popUp.inflate(R.menu.general_item_menu)
                 popUp.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.deleteChatForMe -> firebaseChanger
-                            .deleteChatForCurrentUser(userData.chatUID.orEmpty())
-                        R.id.deleteChatForBoth -> firebaseOperator
-                            .deleteChat(userData.chatUID.orEmpty())
+                        R.id.deleteChatForMe -> CoroutineScope(Dispatchers.IO).launch{
+                            firebaseChanger
+                                .deleteChatForCurrentUser(userData.chatUID.orEmpty())
+                        }
+                        R.id.deleteChatForBoth ->
+                            CoroutineScope(Dispatchers.IO).launch{
+                                firebaseOperator
+                                    .deleteChat(userData.chatUID.orEmpty())
+                            }
                     }
                     false
                 }

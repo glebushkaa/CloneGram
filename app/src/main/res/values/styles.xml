@@ -98,5 +98,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="CustomPopUpStyle" parent="">
+        <item name="android:popupBackground">@drawable/menu_shape</item>
+    </style>
+
+
 
 </resources>

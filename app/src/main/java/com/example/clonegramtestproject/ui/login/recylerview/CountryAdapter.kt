@@ -32,7 +32,7 @@ class CountryAdapter(
 
         init {
             itemView.setOnClickListener {
-                listener.onItemClick(bindingAdapterPosition)
+                listener.onItemClick(adapterPosition)
             }
         }
     }

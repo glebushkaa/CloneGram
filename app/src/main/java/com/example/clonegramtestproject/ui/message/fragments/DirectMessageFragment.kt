@@ -2,6 +2,7 @@ package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
@@ -12,19 +13,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
+import com.example.clonegramtestproject.data.NotificationData
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
 import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
-import com.example.clonegramtestproject.utils.*
+import com.example.clonegramtestproject.utils.getSoftInputMode
+import com.example.clonegramtestproject.utils.showToast
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
@@ -54,10 +58,22 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
                 user?.let { user ->
-                    sOperator.pushMessagePicture(
-                        it,
-                        user, username.orEmpty(), chatUID.orEmpty()
-                    )
+                    lifecycleScope.launch {
+                        sOperator.pushMessagePicture(
+                            it,
+                            user, username.orEmpty(), chatUID.orEmpty()
+                        )
+                    }
+                    user?.tokens?.forEach { token ->
+                        (requireActivity().application as MyApp)
+                            .sendNotification(
+                                token.value?.token.toString(),
+                                NotificationData(
+                                    username.orEmpty(),
+                                    getString(R.string.picture)
+                                )
+                            )
+                    }
                 }
             }
         }
@@ -89,7 +105,11 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onStart() {
         super.onStart()
-        user?.let { viewModel.setMessageListener(chatUID.orEmpty(), it) }
+        user?.let {
+            lifecycleScope.launch {
+                viewModel.setMessageListener(chatUID.orEmpty(), it)
+            }
+        }
     }
 
     private fun setBackgroundHeight() {
@@ -168,6 +188,18 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                     sendMessage(text)
                 }
                 etMessageField.setText("")
+
+                user?.tokens?.forEach {
+                    (requireActivity().application as MyApp)
+                        .sendNotification(
+                            it.value?.token.toString(),
+                            NotificationData(
+                                username.orEmpty(),
+                                text
+                            )
+                        )
+                }
+
             }
 
             bBack.setOnClickListener {
@@ -178,7 +210,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     }
 
     private fun sendMessage(text: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             rtMessage.sendMessage(
                 userUID = user?.uid.orEmpty(),
                 MessageData(
@@ -195,7 +227,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             )
 
             rtMessage.setLastMessage(
-                arrayListOf(currentUID.orEmpty(),user?.uid.orEmpty()),
+                arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
                 chatUID.orEmpty(),
                 LastMessageData(
                     message = text,
@@ -207,11 +239,13 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     }
 
     private fun editMessage(message: String) {
-        rtMessage.editMessage(
-            message,
-            chatUID.orEmpty(),
-            editedMessageInfo?.messageUid.orEmpty()
-        )
+        lifecycleScope.launch {
+            rtMessage.editMessage(
+                message,
+                chatUID.orEmpty(),
+                editedMessageInfo?.messageUid.orEmpty()
+            )
+        }
     }
 
     override fun onPause() {

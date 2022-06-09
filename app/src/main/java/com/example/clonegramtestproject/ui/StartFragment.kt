@@ -8,8 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.TokenData
+import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
+import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.USERS_NODE
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -23,6 +27,8 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private val auth = FirebaseAuth.getInstance()
 
     private val rtGetter = RealtimeGetter()
+    private val rtUser = RealtimeUser()
+    private val cmHelper = CMHelper()
 
     private var user: CommonModel? = null
 
@@ -49,6 +55,20 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private fun checkHasUserName() {
         user?.username?.let {
             lifecycleScope.launch {
+
+                cmHelper.getToken().let {
+                    rtUser.setUserToken(
+                        TokenData(
+                            it,
+                            System.currentTimeMillis()
+                        )
+                    )
+                }
+
+                user?.let {
+                    rtUser.clearOldTokens(it)
+                }
+
                 findNavController().navigate(
                     R.id.start_to_message, bundleOf(
                         "user" to user
@@ -58,7 +78,10 @@ class StartFragment : Fragment(R.layout.fragment_start) {
         } ?: run {
             firebaseDatabase.reference
                 .child(USERS_NODE)
-                .child(auth.currentUser?.phoneNumber.orEmpty()).removeValue()
+                .child(
+                    auth.currentUser
+                        ?.phoneNumber.orEmpty()
+                ).removeValue()
             auth.currentUser?.delete()
             auth.signOut()
             findNavController().navigate(R.id.start_to_login)

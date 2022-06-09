@@ -6,9 +6,7 @@ import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
 import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
-import com.example.clonegramtestproject.utils.SEEN_NODE
 import com.example.clonegramtestproject.utils.USERS_MESSAGES_NODE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -16,6 +14,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DirectMessageViewModel : ViewModel() {
 
@@ -31,8 +32,8 @@ class DirectMessageViewModel : ViewModel() {
 
     private val rtMessage = RealtimeMessage()
 
-    fun setMessageListener(chatUID: String, user : CommonModel) {
-
+    suspend fun setMessageListener(chatUID: String, user : CommonModel) =
+        withContext(Dispatchers.IO){
         val messageData = ArrayList<MessageData>()
         messageListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -50,32 +51,40 @@ class DirectMessageViewModel : ViewModel() {
                         }
                     }
                     if (messageData.last().picture) {
-                        rtMessage.changeLastMessage(
-                            chatUID,
-                            LastMessageData(
-                                message = null,
-                                timestamp = messageData.last().timestamp,
-                                picture = true
+                        launch {
+                            rtMessage.changeLastMessage(
+                                chatUID,
+                                LastMessageData(
+                                    message = null,
+                                    timestamp = messageData.last().timestamp,
+                                    picture = true
+                                )
                             )
-                        )
+                        }
                     } else {
-                        rtMessage.changeLastMessage(
-                            chatUID,
-                            LastMessageData(
-                                message = messageData.last().message,
-                                timestamp = messageData.last().timestamp,
-                                picture = false
-                            )
-                        )
+                       launch {
+                           rtMessage.changeLastMessage(
+                               chatUID,
+                               LastMessageData(
+                                   message = messageData.last().message,
+                                   timestamp = messageData.last().timestamp,
+                                   picture = false
+                               )
+                           )
+                       }
                     }
-                    setSeenParameter(messageData, chatUID)
+                    launch {
+                        rtMessage.setSeenParameter(messageData, chatUID)
+                    }
                     messagesLiveData.value = messageData
                 } else {
                     messagesLiveData.value = arrayListOf()
 
-                    rtMessage.changeLastMessage(
-                        chatUID, LastMessageData()
-                    )
+                    launch {
+                        rtMessage.changeLastMessage(
+                            chatUID, LastMessageData()
+                        )
+                    }
                 }
             }
 
@@ -89,25 +98,7 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
-    private fun setSeenParameter(
-        messageData: ArrayList<MessageData>,
-        chatUID: String
-    ) {
-        if (messageData.isNotEmpty()) {
-            messageData.forEach {
-                if (it.uid != currentUID
-                    && it.seen == null
-                ) {
-                    databaseRefMessages
-                        .child(chatUID)
-                        .child(MESSAGES_NODE)
-                        .child(it.messageUid.orEmpty())
-                        .child(SEEN_NODE)
-                        .setValue(arrayListOf(currentUID))
-                }
-            }
-        }
-    }
+
 
     fun removeMessageListener(chatUID: String) {
         messageListener?.let {

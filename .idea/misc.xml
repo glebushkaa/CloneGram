@@ -26,6 +26,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_edit_user_photo.xml" value="0.148" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_go_next.xml" value="0.16" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_image.xml" value="0.126" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1385" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_logo.xml" value="0.3135" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/ic_logotype.xml" value="0.2835" />
@@ -50,8 +51,10 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/icon_sign_in.xml" value="0.325" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/incoming_message_shape.xml" value="0.2195" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/login_shape.xml" value="0.22291666666666668" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/menu_shape.xml" value="0.1455" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/purple_polygon_backgorund.xml" value="0.325" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/purple_polygon_background.xml" value="0.3635" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/rounded_corners_shape.xml" value="0.251" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/s.xml" value="0.336" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/settings_opener.xml" value="0.2195" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_active_language.xml" value="0.297" />
@@ -81,6 +84,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/comfortaa.xml" value="0.20625" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/comfortaa_bold.xml" value="0.20625" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/montserrat_semibold.xml" value="0.22278481012658227" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout-land/fragment_general_message.xml" value="0.4322916666666667" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/activity_main.xml" value="0.1921875" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/activity_message.xml" value="0.2520833333333333" />
@@ -90,10 +94,10 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/country_item.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/direct_recycler_item.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_country.xml" value="0.33" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.25" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_find_new_user.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_first.xml" value="0.20625" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_general_message.xml" value="0.24444444444444444" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_general_message.xml" value="0.2975630611372381" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml (land)" value="0.20833333333333334" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login_land.xml" value="0.20833333333333334" />
@@ -107,7 +111,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/header.xml" value="0.25" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/incoming_message_item.xml" value="0.25" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/incoming_picture_message_item.xml" value="0.284737067122702" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.7414272474513438" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.27247191011235955" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.67" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/outging_message_item.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/outgoing_message_item.xml" value="0.25" />

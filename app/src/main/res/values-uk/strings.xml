@@ -69,5 +69,6 @@
     <string name="delete_message_for_both">Видалити для обох</string>
     <string name="code_length">Код має містити 6 символів!</string>
     <string name="picture">*зображення*</string>
+    <string name="default_notification_channel_id">com.domain.appname.urgent</string>
 
 </resources>

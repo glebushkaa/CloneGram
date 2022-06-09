@@ -19,13 +19,12 @@ import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
+import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -34,13 +33,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private var binding: FragmentSettingsBinding? = null
 
-    private var currentUID = FirebaseAuth.getInstance().currentUser?.uid
-
     private var phoneNumber = FirebaseAuth.getInstance().currentUser?.phoneNumber
     private var user: CommonModel? = null
     private var username: String? = null
 
     private val rtUser = RealtimeUser()
+    private val cmHelper = CMHelper()
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -60,9 +58,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         animator.showItem(progressBar, 1f)
                         changeIsEnabledAllViews(true)
 
-                        with(Dispatchers.IO) {
-                            storageOperator.pushUserPicture(it)
-                        }
+                        storageOperator.pushUserPicture(it)
 
                         Glide.with(requireContext())
                             .load(it)
@@ -117,18 +113,31 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
             bSignOut.setOnClickListener {
-                rtUser.signOut()
-                findNavController().navigate(R.id.settings_to_login)
+                lifecycleScope.launch {
+
+                    cmHelper.getToken().let {
+                        rtUser.deleteToken(it)
+                    }
+
+                    rtUser.signOut()
+                    findNavController().navigate(R.id.settings_to_login)
+                }
             }
 
             bDelete.setOnClickListener {
-                rtUser.deleteUser()
-                findNavController().navigate(R.id.settings_to_login)
+               lifecycleScope.launch {
+                   rtUser.deleteUser()
+                   findNavController().navigate(R.id.settings_to_login)
+               }
             }
 
             bAskQuestion.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://t.me/mykotlinapps")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://t.me/mykotlinapps")
+                    )
+                )
             }
 
 
@@ -137,7 +146,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                     showSoftKeyboard(etUsername, requireActivity())
                 } else {
                     username = etUsername.text.toString().trim()
-                    rtUser.changeUsername(username)
+                    lifecycleScope.launch{
+                        rtUser.changeUsername(username)
+                    }
                 }
             }
         }

@@ -15,6 +15,7 @@ import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.ui.message.recyclerview.newuser.NewUserAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -80,9 +81,8 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
             override fun onItemClicked(user: CommonModel) {
                 var messageUID : String?
                 lifecycleScope.launch {
-                    with(Dispatchers.IO) {
-                        messageUID = rtNewUser.addUserToMessages(user)
-                    }
+                    messageUID = rtNewUser.addUserToMessages(user)
+
                     findNavController().navigate(
                         R.id.find_user_to_direct,
                         bundleOf(
@@ -134,7 +134,7 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
                     override fun onQueryTextChange(newText: String?): Boolean {
                         if (newText?.isNotEmpty() == true) {
                             lifecycleScope.launch {
-                                with(Dispatchers.IO) {
+                                withContext(Dispatchers.IO) {
                                     changedFilteredList.clear()
                                     changedFilteredList
                                         .addAll(filterUsersArray(newText.orEmpty()))
