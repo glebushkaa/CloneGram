@@ -24,12 +24,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class GeneralAdapter(
-    private val context: Context,
-    private val clickListener: OnItemClickListener
-) : RecyclerView.
-Adapter<GeneralAdapter.GeneralViewHolder>() {
+    private val clickListener: (user: CommonModel) -> Unit
+) : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
 
-    private val firebaseChanger = RealtimeUser()
+    private val firebaseChanger = RealtimeUser() // TODO
     private val firebaseOperator = RealtimeMessage()
 
     private val currentUID = Firebase.auth.currentUser?.uid
@@ -43,11 +41,12 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
         private val userIcon: AppCompatImageView = itemView.findViewById(R.id.userIcon)
 
         fun bind(
-            userData: CommonModel,
-            itemClickListener: OnItemClickListener
         ) {
+            val  userData: CommonModel = oldUsersArrayList[adapterPosition]
+
+
             userData.userPicture?.let {
-                Glide.with(context)
+                Glide.with(itemView.context)
                     .load(it)
                     .circleCrop()
                     .into(userIcon)
@@ -55,22 +54,22 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
             usernameField.text = userData.username
 
             if (userData.lastMessage?.get(currentUID)?.picture == true) {
-                lastMessageField.text = context.getString(R.string.picture)
+                lastMessageField.text = itemView.context.getString(R.string.picture)
             } else {
                 lastMessageField.text = userData.lastMessage?.get(currentUID)?.message
             }
 
             userData.lastMessage?.get(currentUID)?.timestamp?.let {
-                timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
+                timestamp.text = SimpleDateFormat("HH:mm\nd/MM") // TODO
                     .format(it)
             }
 
             itemView.setOnClickListener {
-                itemClickListener.onItemClicked(userData)
+                clickListener(userData)
             }
             itemView.setOnLongClickListener {
 
-                val popUp = PopupMenu(context, userIcon,
+                val popUp = PopupMenu(itemView.context, userIcon,
                     0,
                     0,
                     R.style.CustomPopUpStyle)
@@ -80,12 +79,12 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
                     when (it.itemId) {
                         R.id.deleteChatForMe -> CoroutineScope(Dispatchers.IO).launch{
                             firebaseChanger
-                                .deleteChatForCurrentUser(userData.chatUID.orEmpty())
+                                .deleteChatForCurrentUser(userData.chatUID.orEmpty())// TODO
                         }
                         R.id.deleteChatForBoth ->
                             CoroutineScope(Dispatchers.IO).launch{
                                 firebaseOperator
-                                    .deleteChat(userData.chatUID.orEmpty())
+                                    .deleteChat(userData.chatUID.orEmpty()) // TODO
                             }
                     }
                     false
@@ -104,8 +103,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GeneralViewHolder, position: Int) {
-        val userMessageData = oldUsersArrayList[position]
-        holder.bind(userMessageData, clickListener)
+        holder.bind()
     }
 
     override fun getItemCount() = oldUsersArrayList.size
@@ -118,7 +116,7 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
-    interface OnItemClickListener {
+    interface OnItemClickListener { // java style
         fun onItemClicked(user: CommonModel)
     }
 }

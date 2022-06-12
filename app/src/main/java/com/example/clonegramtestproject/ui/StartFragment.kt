@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class StartFragment : Fragment(R.layout.fragment_start) {
 
-    private val firebaseDatabase = Firebase.database
+    private val firebaseDatabase = Firebase.database // need viewModel
     private val auth = FirebaseAuth.getInstance()
 
     private val rtGetter = RealtimeGetter()
@@ -39,7 +39,7 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private fun checkIsUserExist() {
         auth.currentUser?.let {
             lifecycleScope.launch {
-                with(Dispatchers.IO)
+                with(Dispatchers.IO) // withContext
                 {
                     user = rtGetter
                         .getUser(auth.uid.orEmpty())
@@ -71,12 +71,12 @@ class StartFragment : Fragment(R.layout.fragment_start) {
 
                 findNavController().navigate(
                     R.id.start_to_message, bundleOf(
-                        "user" to user
+                        "user" to user // use constant
                     )
                 )
             }
         } ?: run {
-            firebaseDatabase.reference
+            firebaseDatabase.reference // error handling
                 .child(USERS_NODE)
                 .child(
                     auth.currentUser

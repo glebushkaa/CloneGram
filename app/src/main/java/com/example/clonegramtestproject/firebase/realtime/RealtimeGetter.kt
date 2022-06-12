@@ -22,15 +22,15 @@ class RealtimeGetter {
     suspend fun getAllUsersList() = withContext(Dispatchers.IO) {
         suspendCoroutine<ArrayList<CommonModel>> { emitter ->
             databaseRefUsers.get().addOnSuccessListener {
-                val allUsersList = ArrayList<CommonModel>()
-                for (user in it.children) {
-                    user.getValue(CommonModel::class.java)?.let { info ->
-                        if (info.uid != firebaseAuth.currentUser?.uid) {
-                            allUsersList.add(info)
+                emitter.resume(arrayListOf<CommonModel>().apply {
+                    it.children.forEach { user ->
+                        user.getValue(CommonModel::class.java)?.let { info ->
+                            if (info.uid != firebaseAuth.currentUser?.uid) {
+                                this.add(info)
+                            }
                         }
                     }
-                }
-                emitter.resume(allUsersList)
+                })
             }.addOnFailureListener {
                 emitter.resumeWithException(it)
             }
@@ -62,7 +62,7 @@ class RealtimeGetter {
                 .get()
                 .addOnSuccessListener { snapshot ->
                     val user: CommonModel? = snapshot
-                        .getValue(CommonModel::class.java)
+                        .getValue(CommonModel::class.java) // try catch or runCatching
                     emitter.resume(user)
                 }.addOnFailureListener { exception ->
                     emitter.resumeWithException(exception)

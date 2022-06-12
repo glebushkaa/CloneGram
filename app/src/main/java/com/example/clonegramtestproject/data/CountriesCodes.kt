@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.data
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -7,6 +8,7 @@ import kotlinx.serialization.Serializable
 @Parcelize
 class CountriesCodes(
     val name: String,
-    val dial_code: String,
+    @SerializedName("dial_code")
+    val dialCode: String,
     val code: String,
 ) : Parcelable

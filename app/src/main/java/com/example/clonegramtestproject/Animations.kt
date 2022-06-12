@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -12,20 +13,20 @@ class Animations {
         searchView: androidx.appcompat.widget.SearchView,
         edgeElement: View
     ) {
-        ObjectAnimator.ofFloat(bSearch, View.X, edgeElement.x + 250f).apply {
-            ObjectAnimator.ofFloat(bSearch, View.ALPHA, 0f).apply {
-                start()
-            }
+        val animSet = AnimatorSet() // use animator set with more then 1 animation
+        val a = ObjectAnimator.ofFloat(bSearch, View.X, edgeElement.x + 250f).apply {
             duration = 300
-            start()
         }
-        ObjectAnimator.ofFloat(searchView, View.X, edgeElement.x + 250f).apply {
-            ObjectAnimator.ofFloat(searchView, View.ALPHA, 1f).apply {
-                start()
-            }
+        val b = ObjectAnimator.ofFloat(bSearch, View.ALPHA, 0f).apply {
+
+        }
+        val c = ObjectAnimator.ofFloat(searchView, View.X, edgeElement.x + 250f).apply {
             duration = 300
-            start()
         }
+        val d = ObjectAnimator.ofFloat(searchView, View.ALPHA, 1f).apply {
+
+        }
+        animSet.play(a).with(b).with(c).with(d)
     }
 
     fun closeSearchView(

@@ -1,5 +1,7 @@
 package com.example.clonegramtestproject.firebase.realtime
 
+import android.util.Log
+import androidx.collection.arrayMapOf
 import com.example.clonegramtestproject.data.LastMessageData
 import com.example.clonegramtestproject.data.MessageData
 import com.example.clonegramtestproject.utils.*
@@ -8,6 +10,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RealtimeMessage {
 
@@ -49,7 +53,7 @@ class RealtimeMessage {
     suspend fun setSeenParameter(
         messageData: ArrayList<MessageData>,
         chatUID: String
-    ) = withContext(Dispatchers.IO){
+    ) = withContext(Dispatchers.IO) {
         if (messageData.isNotEmpty()) {
             messageData.forEach {
                 if (it.uid != currentUID
@@ -135,18 +139,37 @@ class RealtimeMessage {
     }
 
     suspend fun deleteMessageForMe(chatUID: String, messageUID: String) {
+
+        val a: Int = "".run {
+            1
+        }
+
+        val b: String = "".apply {
+            this.forEach {
+                Log.d("11", it.toString())
+            }
+        }
+
+        val c: Unit = "".let {
+
+        }
+
+        val d: String = "".also {
+
+        }
+
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(chatUID)
                 .child(MESSAGES_NODE)
                 .child(messageUID)
                 .child(UID_PERMISSION_NODE)
-                .let {
+                .also {
                     it.get().addOnSuccessListener { snapshot ->
                         if (snapshot.exists()) {
                             val uidArray = ArrayList<String>()
                             for (uid in snapshot.children) {
-                                (uid.value as String).let { uidItem ->
+                                (uid.value as? String?)?.let { uidItem ->
                                     if (uidItem != currentUID) {
                                         uidArray.add(uidItem)
                                     }

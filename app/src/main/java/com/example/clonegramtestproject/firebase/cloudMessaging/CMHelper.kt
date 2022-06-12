@@ -15,7 +15,7 @@ class CMHelper {
             FirebaseMessaging
                 .getInstance()
                 .token
-                .addOnCompleteListener {
+                .addOnCompleteListener { // add error handling
                     if (!it.isSuccessful) {
                         emitter.resumeWithException(NullPointerException())
                         return@addOnCompleteListener

@@ -55,7 +55,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
 
-        val editText: EditText = binding!!.searchView
+        val editText: EditText = binding!!.searchView // wrap with method
             .findViewById(androidx.appcompat.R.id.search_src_text)
         editText.background = null
         editText.setTextColor(resources.getColor(R.color.white, null))
@@ -67,7 +67,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            initAdapter()
+            initAdapter() // in viewCreate
             user = rtGetter.getUser(currentUID)
             username = user?.username
             allUsersList = rtGetter.getAllUsersList()
@@ -86,7 +86,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
                 messagesList.clear()
                 messagesList.addAll(it)
-                uidList = getUidList()
+                uidList = getUidList()// in viewModel
                 visibleDataList = sortVisibleGeneralData()
 
                 visibleDataList.let { list ->
@@ -102,19 +102,14 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private fun initAdapter() {
         binding?.apply {
-            adapter = GeneralAdapter(requireContext(), object :
-                GeneralAdapter.OnItemClickListener {
-                override fun onItemClicked(user: CommonModel) {
-                    lifecycleScope.launch {
-                        findNavController().navigate(
-                            R.id.general_to_direct,
-                            bundleOf(
-                                "user" to user
-                            )
-                        )
-                    }
-                }
-            })
+            adapter = GeneralAdapter {
+                findNavController().navigate(
+                    R.id.general_to_direct,
+                    bundleOf(
+                        "user" to user
+                    )
+                )
+            }
             rvGeneral.adapter = adapter
             rvGeneral.itemAnimator = null
         }
@@ -128,10 +123,10 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                 Glide.with(requireContext())
                     .load(it)
                     .circleCrop()
-                    .into(userPicture)
+                    .into(userPicture) // binding
             }
         }
-        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = username
+        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = username // use binding
         headerView?.findViewById<TextView>(R.id.tvPhone)?.text = phoneNumber
     }
 
@@ -168,7 +163,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_settings,
                             bundleOf(
-                                "user" to user
+                                "user" to user // use constant
                             )
                         )
                     }
@@ -178,7 +173,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_find_user,
                             bundleOf(
-                                "allUsersList" to allUsersList,
+                                "allUsersList" to allUsersList, // TODO
                                 "uidList" to uidList
                             )
                         )
@@ -191,17 +186,9 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private suspend fun getUidList() = withContext(Dispatchers.IO) {
         suspendCoroutine<ArrayList<String?>> { emitter ->
-
-            val listOfUID = ArrayList<String?>()
-
-            messagesList.forEach {
-                it.uidArray?.forEach { uid ->
-                    if (uid != auth.currentUser?.uid) {
-                        listOfUID.add(uid)
-                    }
-                }
-            }
-            emitter.resume(listOfUID)
+            emitter.resume(messagesList.mapNotNull {
+                it.uidArray?.apply { remove(auth.currentUser?.uid) }
+            }.flatten().toCollection(ArrayList()))
         }
     }
 

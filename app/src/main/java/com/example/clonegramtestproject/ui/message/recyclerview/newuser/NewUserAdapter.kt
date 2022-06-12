@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CommonModel
-
-class NewUserAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView
-.Adapter<NewUserAdapter.UsersViewHolder>() {
+//TODO
+class NewUserAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<NewUserAdapter.UsersViewHolder>() {
 
     private val oldUsersList = ArrayList<CommonModel>()
 
@@ -20,13 +19,13 @@ class NewUserAdapter(private val itemClickListener: OnItemClickListener) : Recyc
 
         private val username: TextView = itemView.findViewById(R.id.tvUsername)
         private val phone: TextView = itemView.findViewById(R.id.tvPhone)
-        private val userIcon : ImageView = itemView.findViewById(R.id.userIcon)
+        private val userIcon: ImageView = itemView.findViewById(R.id.userIcon)
 
         fun bind(user: CommonModel, clickListener: OnItemClickListener) {
             username.text = user.username
             phone.text = user.phone
 
-            user.userPicture?.let{
+            user.userPicture?.let {
                 Glide.with(userIcon.context)
                     .load(it)
                     .circleCrop()

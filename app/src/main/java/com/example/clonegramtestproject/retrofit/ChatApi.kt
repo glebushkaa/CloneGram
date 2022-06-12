@@ -15,6 +15,6 @@ interface ChatApi {
     )
     @POST("fcm/send")
     fun sendChatNotification(@Body requestNotification: RequestNotification?):
-            Call<ResponseBody>
+            Call<ResponseBody> // coroutines
 
 }

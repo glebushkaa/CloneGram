@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApp : Application() {
 
-    private var retrofit: Retrofit? = null
+    private var retrofit: Retrofit? = null // use Koin di
     private val BASE_URL = "https://fcm.googleapis.com/"
 //    private var apiService : ChatApi? = null
 
@@ -24,11 +24,9 @@ class MyApp : Application() {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-
     }
 
-    fun sendNotification(
+    fun sendNotification( // bad location method
         token: String?,
         notificationData: NotificationData?,
     ) {
@@ -38,13 +36,13 @@ class MyApp : Application() {
         val apiService = retrofit?.create(ChatApi::class.java)
         val responseBodyCall: Call<ResponseBody>? =
             apiService?.sendChatNotification(requestNotification)
-        responseBodyCall?.enqueue(object : Callback<ResponseBody?> {
+        responseBodyCall?.enqueue(object : Callback<ResponseBody?> { // coroutines
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 Log.d("RESPONSE", response.message())
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                Log.d("FAILURE", t.message.orEmpty())
+                Log.d("FAILURE", t.message.orEmpty()) // handle error keys
             }
 
         })

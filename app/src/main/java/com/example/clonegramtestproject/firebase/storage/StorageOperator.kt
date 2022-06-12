@@ -28,7 +28,7 @@ class StorageOperator {
     private val realtimeOperator = RealtimeMessage()
     private val realtimeChanger = RealtimeUser()
 
-    suspend fun pushUserPicture(uri: Uri)  = suspendCoroutine<Unit> { emmiter->
+    suspend fun pushUserPicture(uri: Uri) = suspendCoroutine<Unit> { emmiter->
         usersIconsRef.child(currentUID.orEmpty())
             .child(uri.lastPathSegment.toString())
             .putFile(uri)

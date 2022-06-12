@@ -37,14 +37,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var user: CommonModel? = null
     private var username: String? = null
 
-    private val rtUser = RealtimeUser()
+    private val rtUser = RealtimeUser() // view model
     private val cmHelper = CMHelper()
 
-    private var sharedPreferences: SharedPreferences? = null
+    private var sharedPreferences: SharedPreferences? = null // wrap as manager
 
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private var storageOperator = StorageOperator()
+    private var storageOperator = StorageOperator() // TODO
     private var animator = Animations()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 binding?.apply {
                     lifecycleScope.launch {
                         animator.showItem(darkBackground, 0.6f)
-                        animator.showItem(progressBar, 1f)
+                        animator.showItem(progressBar, 1f) // use animator set
                         changeIsEnabledAllViews(true)
 
                         storageOperator.pushUserPicture(it)
@@ -63,7 +63,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         Glide.with(requireContext())
                             .load(it)
                             .circleCrop()
-                            .into(bChangePhoto)
+                            .into(bChangePhoto)// use binding adapter
 
                         animator.hideItem(darkBackground)
                         animator.hideItem(progressBar)
@@ -82,19 +82,19 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         setOnClickListeners()
         addTextChangeListeners()
         arguments?.let {
-            user = it.getParcelable("user")
+            user = it.getParcelable("user")// use constants
         }
         binding?.apply {
             user?.userPicture?.let {
                 Glide.with(requireContext())
                     .load(it)
                     .circleCrop()
-                    .into(bChangePhoto)
+                    .into(bChangePhoto)// TODO
             }
             username = user?.username
 
             etUsername.setText(username)
-            tvPhone.text = phoneNumber
+            tvPhone.text = phoneNumber // wrap with method
         }
     }
 
@@ -115,7 +115,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             bSignOut.setOnClickListener {
                 lifecycleScope.launch {
 
-                    cmHelper.getToken().let {
+                    cmHelper.getToken().let { // VM
                         rtUser.deleteToken(it)
                     }
 
@@ -133,7 +133,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
             bAskQuestion.setOnClickListener {
                 startActivity(
-                    Intent(
+                    Intent( // try catch
                         Intent.ACTION_VIEW,
                         Uri.parse("https://t.me/mykotlinapps")
                     )
@@ -176,7 +176,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 setLanguage("uk")
             }
             bRussian.setOnClickListener {
-                setLanguage("ru")
+                setLanguage("ru") // enum class
             }
         }
     }
@@ -237,7 +237,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
             bBlueTheme.setOnClickListener {
-                setThemeColor("blue")
+                setThemeColor("blue") // enum
             }
         }
     }

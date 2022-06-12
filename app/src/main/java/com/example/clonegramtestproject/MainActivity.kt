@@ -3,32 +3,24 @@ package com.example.clonegramtestproject
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.JsonReader
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
-import com.example.clonegramtestproject.databinding.CountryItemBinding
 import com.example.clonegramtestproject.utils.languagePreferencesName
 import com.example.clonegramtestproject.utils.settingsName
-import com.example.clonegramtestproject.utils.showToast
 import com.example.clonegramtestproject.utils.themePreferencesName
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
 
-    val countryCodeArrayList = arrayListOf<CountriesCodes>()
+    val countryCodeArrayList = arrayListOf<CountriesCodes>() // use view model
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getInfoFromSharedPrefs()
@@ -40,25 +32,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun setArrayOfFlags() {
         val inputStream: InputStream = assets.open(
-            "CountryCodes_${getString(R.string.lang)}.json")
+            "CountryCodes_${getString(R.string.lang)}.json"
+        )
         lifecycleScope.launch(Dispatchers.IO) {
 
             val json = inputStream.bufferedReader().use { it.readText() }
-            val jsonArr = JSONArray(json)
 
-            for (i in 0 until jsonArr.length()) {
-                val jsonObj = jsonArr.getJSONObject(i)
-                val country = jsonObj.getString("name")
-                val dialCode = jsonObj.getString("dial_code")
-                val code = jsonObj.getString("code")
+            countryCodeArrayList.addAll(Gson().fromJson(json, Array<CountriesCodes>::class.java))
 
-                countryCodeArrayList.add(CountriesCodes(country, dialCode, code))
-            }
+//            val jsonArr = JSONArray(json)
+//
+//            for (i in 0 until jsonArr.length()) {
+//                val jsonObj = jsonArr.getJSONObject(i)
+//                val country = jsonObj.getString("name")
+//                val dialCode = jsonObj.getString("dial_code")
+//                val code = jsonObj.getString("code")
+//
+//                countryCodeArrayList.add(CountriesCodes(country, dialCode, code))
+//            }
         }
     }
 
     private fun getInfoFromSharedPrefs() {
-        val sharedPreferences = getSharedPreferences(settingsName, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(settingsName, Context.MODE_PRIVATE) // create sharedPreferences manager class
 
         if (sharedPreferences.contains(themePreferencesName)) {
             when (sharedPreferences.getString(themePreferencesName, "")) {
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     private fun setLanguage(lang: String) {
         Locale.setDefault(Locale(lang))
         val config = Configuration()
-        config.locale = Locale(lang)
+        config.locale = Locale(lang) // not use deprecated method
         baseContext.resources.updateConfiguration(
             config,
             baseContext.resources.displayMetrics

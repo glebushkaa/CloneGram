@@ -17,6 +17,9 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class DirectMessageViewModel : ViewModel() {
 
@@ -32,14 +35,95 @@ class DirectMessageViewModel : ViewModel() {
 
     private val rtMessage = RealtimeMessage()
 
-    suspend fun setMessageListener(chatUID: String, user : CommonModel) =
-        withContext(Dispatchers.IO){
-        val messageData = ArrayList<MessageData>()
-        messageListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    messageData.clear()
-                    for (message in snapshot.children) {
+    suspend fun setMessageListener(chatUID: String, user: CommonModel) =
+        kotlin.runCatching { // use lastOrNull or runCatching (try catch)
+            withContext(Dispatchers.IO) {
+
+                kotlin.runCatching {
+                    listenSomethink("ddddsd")
+                }.onSuccess {
+
+                }.onFailure {
+
+                }
+
+
+                val messageData = ArrayList<MessageData>()
+                messageListener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) { // use suspend wrapper
+                        if (snapshot.exists()) {
+                            messageData.clear()
+                            for (message in snapshot.children) { // use kotlin method to iteration
+                                message.getValue(
+                                    MessageData::class.java
+                                )?.let {
+                                    if (it.uidPermission?.contains(currentUID.orEmpty()) == true) {
+                                        messageData.add(
+                                            it
+                                        )
+                                    }
+                                }
+                            }
+                            if (messageData.lastOrNull()?.picture == true) {
+                                launch {
+                                    rtMessage.changeLastMessage(
+                                        chatUID,
+                                        LastMessageData(
+                                            message = null,
+                                            timestamp = messageData.lastOrNull()?.timestamp,
+                                            picture = true
+                                        )
+                                    )
+                                }
+                            } else {
+                                launch {
+                                    rtMessage.changeLastMessage(
+                                        chatUID,
+                                        LastMessageData(
+                                            message = messageData.last().message,
+                                            timestamp = messageData.last().timestamp,
+                                            picture = false
+                                        )
+                                    )
+                                }
+                            }
+                            launch {
+                                rtMessage.setSeenParameter(messageData, chatUID)
+                            }
+                            messagesLiveData.value = messageData
+                        } else {
+                            messagesLiveData.value = arrayListOf()
+
+                            launch {
+                                rtMessage.changeLastMessage(
+                                    chatUID, LastMessageData()
+                                )
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                }.let {
+                    databaseRefMessages
+                        .child(chatUID)
+                        .child(MESSAGES_NODE)
+                        .addValueEventListener(it)
+                }
+            }
+        }
+
+
+    // suspend coroutine need for one time return
+    // for listening use channelFlow
+    suspend fun listenSomethink(chatUID: String) = suspendCoroutine<ArrayList<MessageData>> { emitter -> // on data source
+        databaseRefMessages
+            .child(chatUID)
+            .child(MESSAGES_NODE)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val messageData = arrayListOf<MessageData>()
+                    for (message in snapshot.children) { // use kotlin method to iteration
                         message.getValue(
                             MessageData::class.java
                         )?.let {
@@ -50,55 +134,17 @@ class DirectMessageViewModel : ViewModel() {
                             }
                         }
                     }
-                    if (messageData.last().picture) {
-                        launch {
-                            rtMessage.changeLastMessage(
-                                chatUID,
-                                LastMessageData(
-                                    message = null,
-                                    timestamp = messageData.last().timestamp,
-                                    picture = true
-                                )
-                            )
-                        }
-                    } else {
-                       launch {
-                           rtMessage.changeLastMessage(
-                               chatUID,
-                               LastMessageData(
-                                   message = messageData.last().message,
-                                   timestamp = messageData.last().timestamp,
-                                   picture = false
-                               )
-                           )
-                       }
+                    if (false) {
+                        emitter.resumeWithException(Throwable(NullPointerException()))
                     }
-                    launch {
-                        rtMessage.setSeenParameter(messageData, chatUID)
-                    }
-                    messagesLiveData.value = messageData
-                } else {
-                    messagesLiveData.value = arrayListOf()
-
-                    launch {
-                        rtMessage.changeLastMessage(
-                            chatUID, LastMessageData()
-                        )
-                    }
+                    emitter.resume(messageData)
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        }.let {
-            databaseRefMessages
-                .child(chatUID)
-                .child(MESSAGES_NODE)
-                .addValueEventListener(it)
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    emitter.resumeWithException(Throwable(error.message))
+                }
+            })
     }
-
-
 
     fun removeMessageListener(chatUID: String) {
         messageListener?.let {
