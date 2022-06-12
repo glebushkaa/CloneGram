@@ -13,6 +13,7 @@ import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.FragmentCountryBinding
 import com.example.clonegramtestproject.ui.login.recylerview.CountryAdapter
+import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
 import com.example.clonegramtestproject.utils.closeSoftKeyboard
 
 
@@ -74,7 +75,7 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
                     findNavController().navigate(
                         R.id.country_to_login,
                         bundleOf(
-                            "chosenCountry" to chosenCountry
+                            CHOSEN_COUNTRY to chosenCountry
                         )
                     )
                 }

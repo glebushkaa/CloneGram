@@ -14,6 +14,8 @@ import com.example.clonegramtestproject.databinding.FragmentRegisterBinding
 import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.utils.PHONE
+import com.example.clonegramtestproject.utils.USERNAME
 import com.example.clonegramtestproject.utils.showSnackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -36,7 +38,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding = FragmentRegisterBinding.bind(view)
 
         arguments?.let {
-            phoneNumber = it.getString("phone").orEmpty()
+            phoneNumber = it.getString(PHONE).orEmpty()
         }
 
         setListeners()
@@ -57,8 +59,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     findNavController().navigate(
                         R.id.register_to_general,
                         bundleOf(
-                            "username" to username,
-                            "phone" to phoneNumber
+                            USERNAME to username,
+                            PHONE to phoneNumber
                         )
                     )
                 } else {

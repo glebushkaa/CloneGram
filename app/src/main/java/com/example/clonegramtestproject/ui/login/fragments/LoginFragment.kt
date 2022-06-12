@@ -14,6 +14,9 @@ import com.example.clonegramtestproject.MainActivity
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.FragmentLoginBinding
+import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
+import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
+import com.example.clonegramtestproject.utils.PHONE
 import com.example.clonegramtestproject.utils.showSoftKeyboard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +45,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onResume() {
         super.onResume()
         chosenCountry = arguments?.getString(
-            "chosenCountry"
+            CHOSEN_COUNTRY
         ).orEmpty()
         binding?.apply {
             if (chosenCountry.isNotEmpty()) {
@@ -91,8 +94,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 chosenCountry = etCode.text.toString().trim()
                 findNavController().navigate(
                     R.id.login_to_country, bundleOf(
-                        "countryCodeArray" to countryCodeArrayList,
-                        "chosenCountry" to chosenCountry
+                        COUNTRY_CODE_ARR to countryCodeArrayList,
+                        CHOSEN_COUNTRY to chosenCountry
                     )
                 )
             }
@@ -102,7 +105,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         etPhone.text.toString().trim()
                 findNavController().navigate(
                     R.id.login_to_verify, bundleOf(
-                        "phone" to phoneNumber
+                        PHONE to phoneNumber
                     )
                 )
             }

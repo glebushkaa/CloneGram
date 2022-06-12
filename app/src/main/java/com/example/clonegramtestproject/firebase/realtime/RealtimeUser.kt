@@ -106,16 +106,19 @@ class RealtimeUser {
     }
 
     suspend fun deleteUser() {
-       withContext(Dispatchers.IO){
-           databaseRefUsers
-               .child(firebaseAuth.currentUser?.uid.orEmpty()).removeValue()
-           firebaseAuth.currentUser?.delete()
-           firebaseAuth.signOut()
-       }
+        withContext(Dispatchers.IO) {
+            databaseRefUsers
+                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .removeValue()
+                .addOnSuccessListener {
+                    firebaseAuth.currentUser?.delete()
+                    firebaseAuth.signOut()
+                }
+        }
     }
 
     suspend fun changeUsername(username: String?) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             databaseRefUsers
                 .child(firebaseAuth.currentUser?.uid.orEmpty())
                 .updateChildren(
@@ -125,7 +128,7 @@ class RealtimeUser {
     }
 
     suspend fun deleteToken(token: String) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             databaseRefUsers
                 .child(firebaseAuth.currentUser?.uid.orEmpty())
                 .child(TOKEN_NODE)
@@ -135,7 +138,7 @@ class RealtimeUser {
     }
 
     suspend fun clearOldTokens(user: CommonModel) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             user.tokens?.forEach {
                 it.value?.timestamp?.let { timestamp ->
                     if (System.currentTimeMillis() - tenDays > timestamp) {

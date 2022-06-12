@@ -16,7 +16,6 @@ class MyApp : Application() {
 
     private var retrofit: Retrofit? = null
     private val BASE_URL = "https://fcm.googleapis.com/"
-//    private var apiService : ChatApi? = null
 
     override fun onCreate() {
         super.onCreate()

@@ -21,6 +21,8 @@ class CMHelper {
                         return@addOnCompleteListener
                     }
                     emitter.resume(it.result)
+                }.addOnFailureListener{
+                    emitter.resumeWithException(it)
                 }
         }
     }

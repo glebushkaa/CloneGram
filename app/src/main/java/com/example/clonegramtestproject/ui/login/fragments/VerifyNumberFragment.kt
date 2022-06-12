@@ -18,9 +18,7 @@ import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
 import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.ui.login.viewmodels.VerifyViewModel
-import com.example.clonegramtestproject.utils.languagePreferencesName
-import com.example.clonegramtestproject.utils.settingsName
-import com.example.clonegramtestproject.utils.showSnackbar
+import com.example.clonegramtestproject.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -65,7 +63,7 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
         }
 
         phoneNumber = arguments?.getString(
-            "phone"
+            PHONE
         ).orEmpty()
 
         setOnClickListener()
@@ -193,7 +191,7 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                             findNavController().navigate(
                                 R.id.verify_to_general,
                                 bundleOf(
-                                    "username" to username
+                                    USERNAME to username
                                 )
                             )
 
@@ -208,7 +206,7 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                         findNavController().navigate(
                             R.id.verify_to_register,
                             bundleOf(
-                                "phone" to phoneNumber
+                                PHONE to phoneNumber
                             )
                         )
                     }
