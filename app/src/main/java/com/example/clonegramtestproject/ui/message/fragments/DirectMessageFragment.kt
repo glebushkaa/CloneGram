@@ -64,7 +64,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                             user, username.orEmpty(), chatUID.orEmpty()
                         )
                     }
-                    user?.tokens?.forEach { token ->
+                    user.tokens?.forEach { token ->
                         (requireActivity().application as MyApp)
                             .sendNotification(
                                 token.value?.token.toString(),
