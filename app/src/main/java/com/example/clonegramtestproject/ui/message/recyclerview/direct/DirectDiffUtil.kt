@@ -1,11 +1,11 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.direct
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.clonegramtestproject.data.MessageData
+import com.example.clonegramtestproject.data.models.MessageModel
 
 class DirectDiffUtil(
-    private val oldArrayList : List<MessageData>,
-    private val newArrayList : List<MessageData>
+    private val oldArrayList : List<MessageModel>,
+    private val newArrayList : List<MessageModel>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldArrayList.size

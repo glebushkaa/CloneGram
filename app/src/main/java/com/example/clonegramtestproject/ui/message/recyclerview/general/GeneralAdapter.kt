@@ -1,111 +1,61 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
-import android.content.Context
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
-import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.firebase.storage.StorageOperator
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.databinding.ItemGeneralMessageBinding
 import java.text.SimpleDateFormat
 
-class GeneralAdapter(
-    private val context: Context,
-    private val clickListener: OnItemClickListener
-) : RecyclerView.
-Adapter<GeneralAdapter.GeneralViewHolder>() {
+class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
 
-    private val firebaseChanger = RealtimeUser()
-    private val firebaseOperator = RealtimeMessage()
+    private var rvListener : OnItemClickListener? = null
 
-    private val currentUID = Firebase.auth.currentUser?.uid
+    private var oldUsersArrayList = ArrayList<CommonModel>()
 
-    private val oldUsersArrayList = ArrayList<CommonModel>()
+    private lateinit var binding: ItemGeneralMessageBinding
 
-    inner class GeneralViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val usernameField: TextView = itemView.findViewById(R.id.tvTitle)
-        private val lastMessageField: TextView = itemView.findViewById(R.id.tvSubtitle)
-        private val timestamp: TextView = itemView.findViewById(R.id.timestamp)
-        private val userIcon: AppCompatImageView = itemView.findViewById(R.id.userIcon)
+    inner class GeneralViewHolder(val binding: ItemGeneralMessageBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(
-            userData: CommonModel,
-            itemClickListener: OnItemClickListener
-        ) {
-            userData.userPicture?.let {
-                Glide.with(context)
-                    .load(it)
-                    .circleCrop()
-                    .into(userIcon)
-            }
-            usernameField.text = userData.username
-
-            if (userData.lastMessage?.get(currentUID)?.picture == true) {
-                lastMessageField.text = context.getString(R.string.picture)
-            } else {
-                lastMessageField.text = userData.lastMessage?.get(currentUID)?.message
-            }
-
-            userData.lastMessage?.get(currentUID)?.timestamp?.let {
-                timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
-                    .format(it)
-            }
-
-            itemView.setOnClickListener {
-                itemClickListener.onItemClicked(userData)
-            }
-            itemView.setOnLongClickListener {
-
-                val popUp = PopupMenu(context, userIcon,
-                    0,
-                    0,
-                    R.style.CustomPopUpStyle)
-
-                popUp.inflate(R.menu.general_item_menu)
-                popUp.setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.deleteChatForMe -> CoroutineScope(Dispatchers.IO).launch{
-                            firebaseChanger
-                                .deleteChatForCurrentUser(userData.chatUID.orEmpty())
-                        }
-                        R.id.deleteChatForBoth ->
-                            CoroutineScope(Dispatchers.IO).launch{
-                                firebaseOperator
-                                    .deleteChat(userData.chatUID.orEmpty())
-                            }
+        fun bind(user: CommonModel) {
+            binding.apply {
+                user.apply {
+                    userPicture?.let {
+                        Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
                     }
-                    false
+                    tvUsername.text = username
+                    if (lastMessage?.get(uid)?.picture == true) {
+                        tvMessage.text = userIcon.context.getString(R.string.picture)
+                    } else {
+                        tvMessage.text = lastMessage?.get(uid)?.message
+                    }
+
+                    lastMessage?.get(uid)?.timestamp?.let {
+                        timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
+                            .format(it)
+                    }
+                    setClickListeners(this,binding)
                 }
-                popUp.show()
-                true
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GeneralViewHolder {
-        val item = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_general_message, parent, false
+        binding = ItemGeneralMessageBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
-        return GeneralViewHolder(item)
+        return GeneralViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GeneralViewHolder, position: Int) {
         val userMessageData = oldUsersArrayList[position]
-        holder.bind(userMessageData, clickListener)
+        holder.bind(userMessageData)
     }
 
     override fun getItemCount() = oldUsersArrayList.size
@@ -118,7 +68,42 @@ Adapter<GeneralAdapter.GeneralViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
+    private fun setClickListeners(user : CommonModel, binding: ItemGeneralMessageBinding){
+        binding.apply {
+
+            binding.root.setOnClickListener {
+                rvListener?.onItemClicked(user)
+            }
+
+            binding.root.setOnLongClickListener {
+                val popUp = PopupMenu(
+                    userIcon.context, userIcon,
+                    0, 0,
+                    R.style.CustomPopUpStyle
+                )
+                popUp.inflate(R.menu.general_item_menu)
+                popUp.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.deleteChatForMe -> rvListener?.deleteMyChatListener(user.chatUID.orEmpty())
+                        R.id.deleteChatForBoth -> rvListener?.deleteChatListener(user.chatUID.orEmpty())
+                    }
+                    false
+                }
+                popUp.show()
+                true
+            }
+        }
+    }
+
+    fun setOnItemClickedListener(listener: OnItemClickListener){
+        rvListener = listener
+    }
+
     interface OnItemClickListener {
         fun onItemClicked(user: CommonModel)
+
+        fun deleteMyChatListener(chatUID : String)
+
+        fun deleteChatListener(chatUID : String)
     }
 }

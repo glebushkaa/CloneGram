@@ -9,9 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentFindNewUserBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.ui.message.recyclerview.newuser.NewUserAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

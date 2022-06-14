@@ -1,11 +1,11 @@
 package com.example.clonegramtestproject.ui.login.recylerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.clonegramtestproject.data.CountriesCodes
+import com.example.clonegramtestproject.data.models.CodesModel
 
 class CountryDiffUtil(
-    private val oldList : ArrayList<CountriesCodes>,
-    private val newList : ArrayList<CountriesCodes>
+    private val oldList : ArrayList<CodesModel>,
+    private val newList : ArrayList<CodesModel>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {

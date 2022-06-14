@@ -1,6 +1,6 @@
-package com.example.clonegramtestproject
+package com.example.clonegramtestproject.data
 
-object FlagsEmojies {
+object Flags {
 
     val countriesFlags = mapOf(
         "AF" to "\uD83C\uDDE6\uD83C\uDDEB","AX" to "\uD83C\uDDE6\uD83C\uDDFD", "AL" to "\uD83C\uDDE6\uD83C\uDDF1",

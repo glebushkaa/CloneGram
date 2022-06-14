@@ -69,5 +69,6 @@
     <string name="code_length">Code must contain 6 characters!</string>
     <string name="picture">*picture*</string>
     <string name="default_notification_channel_id">com.domain.appname.urgent</string>
+    <string name="required">required*</string>
 
 </resources>

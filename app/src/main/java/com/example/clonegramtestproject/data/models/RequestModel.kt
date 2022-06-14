@@ -1,10 +1,10 @@
-package com.example.clonegramtestproject.data
+package com.example.clonegramtestproject.data.models
 
 import com.google.gson.annotations.SerializedName
 
-class RequestNotification (
+class RequestModel (
     @SerializedName("to")
     var to: String? = null,
     @SerializedName("notification")
-    var notificationData: NotificationData? = null
+    var notificationModel: NotificationModel? = null
 )

@@ -9,14 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.MainActivity
+import com.example.clonegramtestproject.ui.activity.activity.MainActivity
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.databinding.FragmentLoginBinding
 import com.example.clonegramtestproject.ui.login.viewmodels.LoginViewModel
-import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
-import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
-import com.example.clonegramtestproject.utils.PHONE
-import com.example.clonegramtestproject.utils.showSoftKeyboard
+import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
 
 
@@ -31,9 +28,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         setOnClickListeners()
         addOnTextChangedListener()
         showSoftKeyboard(binding!!.etCode, requireActivity())
+
         viewModel.fillCountryCodesList(
-            (requireActivity() as MainActivity).countryCodeArrayList
+            (requireActivity() as MainActivity)
+                .getCountryCodeList()
         )
+
     }
 
     override fun onResume() {

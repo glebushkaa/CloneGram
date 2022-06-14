@@ -1,9 +1,9 @@
-package com.example.clonegramtestproject.firebase.realtime
+package com.example.clonegramtestproject.data.firebase.realtime
 
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.LastMessageData
-import com.example.clonegramtestproject.utils.PERMISSION_UID_ARRAY_NODE
-import com.example.clonegramtestproject.utils.USERS_MESSAGES_NODE
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.LastMessageModel
+import com.example.clonegramtestproject.utils.PERMISSION_LIST_NODE
+import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.example.clonegramtestproject.utils.USERS_NODE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
@@ -17,7 +17,7 @@ import kotlin.coroutines.suspendCoroutine
 class RealtimeNewUser {
 
     private val firebaseDatabase = Firebase.database
-    private val databaseRefMessages = firebaseDatabase.getReference(USERS_MESSAGES_NODE)
+    private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
     private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
 
 
@@ -42,7 +42,7 @@ class RealtimeNewUser {
                 key = it.chatUID.toString()
                 databaseRefMessages
                     .child(key.orEmpty())
-                    .child(PERMISSION_UID_ARRAY_NODE)
+                    .child(PERMISSION_LIST_NODE)
                     .child(currentUID.orEmpty())
                     .setValue(true)
             } ?: run {
@@ -72,10 +72,10 @@ class RealtimeNewUser {
                             ),
                             chatUID = key,
                             lastMessage = mapOf(
-                                currentUID.orEmpty() to LastMessageData(
+                                currentUID.orEmpty() to LastMessageModel(
                                     message = ""
                                 ),
-                                user.uid.orEmpty() to LastMessageData(
+                                user.uid.orEmpty() to LastMessageModel(
                                     message = ""
                                 )
                             )

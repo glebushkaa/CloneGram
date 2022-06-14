@@ -2,7 +2,6 @@ package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
@@ -15,17 +14,17 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.LastMessageData
-import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.data.NotificationData
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.LastMessageModel
+import com.example.clonegramtestproject.data.models.MessageModel
+import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.firebase.storage.StorageOperator
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
+import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
+import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
 import com.example.clonegramtestproject.utils.getSoftInputMode
-import com.example.clonegramtestproject.utils.showToast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -50,7 +49,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     private val sOperator = StorageOperator()
 
     private var isEditMessage = false
-    private var editedMessageInfo: MessageData? = null
+    private var editedMessageInfo: MessageModel? = null
+
+    private val retrofitHelper = RetrofitHelper()
 
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
@@ -66,13 +67,16 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                     }
                     user.tokens?.forEach { token ->
                         (requireActivity().application as MyApp)
-                            .sendNotification(
-                                token.value?.token.toString(),
-                                NotificationData(
-                                    username.orEmpty(),
-                                    getString(R.string.picture)
+                            .retrofit?.let { retrofit ->
+                                retrofitHelper.sendNotification(
+                                    retrofit,
+                                    token.value?.token.toString(),
+                                    NotificationModel(
+                                        username.orEmpty(),
+                                        getString(R.string.picture)
+                                    )
                                 )
-                            )
+                            }
                     }
                 }
             }
@@ -191,15 +195,17 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
                 user?.tokens?.forEach {
                     (requireActivity().application as MyApp)
-                        .sendNotification(
-                            it.value?.token.toString(),
-                            NotificationData(
-                                username.orEmpty(),
-                                text
+                        .retrofit?.let { retrofit ->
+                            retrofitHelper.sendNotification(
+                                retrofit,
+                                it.value?.token.toString(),
+                                NotificationModel(
+                                    username.orEmpty(),
+                                    text
+                                )
                             )
-                        )
+                        }
                 }
-
             }
 
             bBack.setOnClickListener {
@@ -213,7 +219,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         lifecycleScope.launch {
             rtMessage.sendMessage(
                 userUID = user?.uid.orEmpty(),
-                MessageData(
+                MessageModel(
                     uidPermission = arrayListOf(
                         currentUID.orEmpty(),
                         uid.orEmpty()
@@ -229,7 +235,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             rtMessage.setLastMessage(
                 arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
                 chatUID.orEmpty(),
-                LastMessageData(
+                LastMessageModel(
                     message = text,
                     timestamp = System.currentTimeMillis(),
                     picture = false

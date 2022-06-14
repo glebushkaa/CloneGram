@@ -17,15 +17,14 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
-import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
-import com.example.clonegramtestproject.firebase.storage.StorageOperator
+import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 

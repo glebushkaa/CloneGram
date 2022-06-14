@@ -4,19 +4,21 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.TokenData
+import com.example.clonegramtestproject.data.models.TokenModel
 import com.example.clonegramtestproject.databinding.FragmentVerifyNumberBinding
-import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
-import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeGetter
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.ui.login.viewmodels.VerifyViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -27,57 +29,23 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
-
-    private val auth = FirebaseAuth.getInstance()
-
     private val viewModel by viewModels<VerifyViewModel>()
     private var binding: FragmentVerifyNumberBinding? = null
-
-    private var phoneNumber: String? = null
-    private var username: String? = null
-
-    private var recentVerificationId: String? = null
-    private var recentToken: PhoneAuthProvider.ForceResendingToken? = null
-    private var callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
-    private var verificationCode: String? = null
-
-    private var sharedPrefs: SharedPreferences? = null
-    private var codeLang: String? = null
-
-    private val rtGetter = RealtimeGetter()
-    private val rtUser = RealtimeUser()
-    private val cmHelper = CMHelper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentVerifyNumberBinding.bind(view)
 
-        sharedPrefs = requireActivity().getSharedPreferences(
-            settingsName, Context.MODE_PRIVATE
-        )
-        sharedPrefs?.let {
-            codeLang = it.getString(languagePreferencesName, "")
-        }
-
-        phoneNumber = arguments?.getString(
-            PHONE
-        ).orEmpty()
-
+        viewModel.phoneNumber = arguments?.getString(PHONE)
         setOnClickListener()
         setCallback()
         sendVerifyCode()
-        setChronometerTextObserver()
         addTextChangedListener()
-
-
-        if (!viewModel.countDownTimerStarted) {
-            viewModel.setCountDownTimer()
-            viewModel.countDownTimerStarted = true
-        }
-        binding?.tvOnPhoneSend?.append("  $phoneNumber")
+        setChronometerTextObserver()
+        setCountdownTimer()
+        binding?.tvOnPhoneSend?.append("  ${viewModel.phoneNumber}")
     }
 
     private fun setChronometerTextObserver() {
@@ -94,23 +62,36 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
     }
 
     private fun sendVerifyCode() {
-        auth.setLanguageCode(codeLang.orEmpty())
+        viewModel.setAuthLang(getSharedPrefs())
         lifecycleScope.launch(Dispatchers.IO) {
-            callback?.let {
-                PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                    .setPhoneNumber(phoneNumber.orEmpty())
-                    .setTimeout(TIMEOUT_MESSAGE, TimeUnit.SECONDS)
-                    .setActivity(requireActivity())
-                    .setCallbacks(it)
-                    .build()
-            }?.let {
-                PhoneAuthProvider.verifyPhoneNumber(it)
+            viewModel.apply {
+                callback?.let {
+                    PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                        .setPhoneNumber(phoneNumber.orEmpty())
+                        .setTimeout(TIMEOUT_MESSAGE, TimeUnit.SECONDS)
+                        .setActivity(requireActivity())
+                        .setCallbacks(it)
+                        .build()
+                }?.let {
+                    PhoneAuthProvider.verifyPhoneNumber(it)
+                }
+            }
+        }
+    }
+
+
+    private fun addTextChangedListener() {
+        binding?.apply {
+            etVerifyPhone.addTextChangedListener {
+                if (etVerifyPhone.length() == 6) {
+                    verifyCode()
+                }
             }
         }
     }
 
     private fun setCallback() {
-        callback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        viewModel.callback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 checkVerificationCode(credential)
             }
@@ -118,13 +99,13 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
             override fun onVerificationFailed(exception: FirebaseException) {
                 try {
                     Snackbar.make(
-                        requireView(),
-                        getString(R.string.wrong_code),
+                        requireView(), getString(R.string.wrong_code),
                         Snackbar.LENGTH_LONG
                     ).setBackgroundTint(
                         resources.getColor(R.color.red, null)
                     ).show()
                 } catch (e: Exception) {
+                    Log.e("Snackbar Failed",e.message.orEmpty())
                 }
             }
 
@@ -133,80 +114,36 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
                 super.onCodeSent(verificationId, token)
-                recentVerificationId = verificationId
-                recentToken = token
-            }
-        }
-    }
-
-    private fun addTextChangedListener() {
-        binding?.apply {
-            etVerifyPhone.addTextChangedListener {
-                if (etVerifyPhone.length() == 6) {
-                    bNext.isEnabled = false
-                    verificationCode = etVerifyPhone.text.toString()
-                    try {
-                        val credential = PhoneAuthProvider
-                            .getCredential(
-                                recentVerificationId.orEmpty(),
-                                verificationCode.orEmpty()
-                            )
-                        checkVerificationCode(credential)
-                    } catch (e: Exception) {
-                        bNext.isEnabled = true
-
-                        Snackbar.make(
-                            requireView(),
-                            getString(R.string.wrong_code),
-                            Snackbar.LENGTH_LONG
-                        ).setBackgroundTint(
-                            resources.getColor(
-                                R.color.red,
-                                null
-                            )
-                        ).show()
-
-                    }
+                viewModel.apply {
+                    recentVerificationId = verificationId
+                    recentToken = token
                 }
             }
         }
     }
 
-
     private fun checkVerificationCode(credential: PhoneAuthCredential) {
         binding?.apply {
-            auth.signInWithCredential(credential).addOnCompleteListener {
-                if (it.isSuccessful) {
+            lifecycleScope.launch {
+                viewModel.signInWithCredential(credential).apply {
                     if (etVerifyPhone.text.toString() == "") {
                         etVerifyPhone.setText(credential.smsCode.toString())
                     }
-                    val user = it.result.additionalUserInfo
                     etVerifyPhone.setText("")
-                    if (!user?.isNewUser!!) {
-
-                        lifecycleScope.launch {
-                            username = rtGetter
-                                .getUsername(auth.currentUser?.uid.orEmpty())
-
-                            findNavController().navigate(
-                                R.id.verify_to_general,
-                                bundleOf(
-                                    USERNAME to username
-                                )
+                    if (!additionalUserInfo?.isNewUser!!) {
+                        viewModel.setUsername()
+                        viewModel.setToken()
+                        findNavController().navigate(
+                            R.id.verify_to_general,
+                            bundleOf(
+                                USERNAME to viewModel.username
                             )
-
-                            rtUser.setUserToken(
-                                TokenData(
-                                    cmHelper.getToken(),
-                                    System.currentTimeMillis()
-                                )
-                            )
-                        }
+                        )
                     } else {
                         findNavController().navigate(
                             R.id.verify_to_register,
                             bundleOf(
-                                PHONE to phoneNumber
+                                PHONE to viewModel.phoneNumber
                             )
                         )
                     }
@@ -225,31 +162,43 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
             bNext.setOnClickListener {
                 if (etVerifyPhone.length() == 6) {
-                    verificationCode = etVerifyPhone.text.toString()
-                    try {
-                        val credential = PhoneAuthProvider
-                            .getCredential(
-                                recentVerificationId.orEmpty(),
-                                verificationCode.orEmpty()
-                            )
-                        checkVerificationCode(credential)
-                    } catch (e: Exception) {
-                        showSnackbar(
-                            requireView(),
-                            getString(R.string.wrong_code),
-                            resources.getColor(R.color.red, null)
-                        )
-                    }
+                    verifyCode()
                 } else {
                     showSnackbar(
-                        requireView(),
-                        getString(R.string.code_length),
+                        requireView(), getString(R.string.code_length),
                         resources.getColor(R.color.red, null)
                     )
                 }
             }
         }
     }
+
+    private fun getSharedPrefs(): SharedPreferences =
+        requireActivity().getSharedPreferences(
+            settingsName, Context.MODE_PRIVATE
+        )
+
+    private fun verifyCode() {
+        viewModel.verificationCode = binding?.etVerifyPhone?.text.toString()
+        binding?.bNext?.isEnabled = false
+        try {
+            checkVerificationCode(viewModel.getCredential())
+        } catch (e: Exception) {
+            binding?.bNext?.isEnabled = true
+            showSnackbar(
+                requireView(), getString(R.string.wrong_code),
+                resources.getColor(R.color.red, null)
+            )
+        }
+    }
+
+    private fun setCountdownTimer(){
+        if (!viewModel.countDownTimerStarted) {
+            viewModel.setCountDownTimer()
+            viewModel.countDownTimerStarted = true
+        }
+    }
+
 
     companion object {
         private const val TIMEOUT_MESSAGE = 40L

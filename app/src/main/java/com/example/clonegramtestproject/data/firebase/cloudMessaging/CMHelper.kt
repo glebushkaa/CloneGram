@@ -1,6 +1,5 @@
-package com.example.clonegramtestproject.firebase.cloudMessaging
+package com.example.clonegramtestproject.data.firebase.cloudMessaging
 
-import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

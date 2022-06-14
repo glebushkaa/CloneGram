@@ -1,10 +1,10 @@
-package com.example.clonegramtestproject.firebase.storage
+package com.example.clonegramtestproject.data.firebase.storage
 
 import android.net.Uri
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.MessageModel
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.CHATS_PICTURES_NODE
 import com.example.clonegramtestproject.utils.USERS_PICTURES_NODE
 import com.google.firebase.auth.FirebaseAuth
@@ -13,7 +13,6 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -63,7 +62,7 @@ class StorageOperator {
 
                     it.metadata?.reference?.downloadUrl
                         ?.addOnSuccessListener { messagePicture ->
-                            val messageData = MessageData(
+                            val messageModel = MessageModel(
                                 uid = currentUID,
                                 username = username,
                                 message = messagePicture.toString(),
@@ -78,7 +77,7 @@ class StorageOperator {
                             CoroutineScope(Dispatchers.IO).launch {
                                 realtimeOperator.sendMessage(
                                     user.uid.orEmpty(),
-                                    messageData,
+                                    messageModel,
                                     chatUID = chatUID
                                 )
                             }

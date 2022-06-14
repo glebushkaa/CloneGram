@@ -1,20 +1,18 @@
 package com.example.clonegramtestproject.ui.login.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.clonegramtestproject.FlagsEmojies
-import com.example.clonegramtestproject.data.CountriesCodes
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import com.example.clonegramtestproject.data.Flags
+import com.example.clonegramtestproject.data.models.CodesModel
 
 class LoginViewModel : ViewModel() {
 
-    var countryCodeArrayList = arrayListOf<CountriesCodes>()
+    var countryCodeArrayList = arrayListOf<CodesModel>()
 
     var code: String? = null
     var chosenCountry: String? = null
     var phoneNumber: String? = null
 
-    fun fillCountryCodesList(list: ArrayList<CountriesCodes>) {
+    fun fillCountryCodesList(list: ArrayList<CodesModel>) {
         countryCodeArrayList = list
     }
 
@@ -22,7 +20,7 @@ class LoginViewModel : ViewModel() {
         countryCodeArrayList.forEach {
             if(code == it.dial_code){
                 chosenCountry = it.name
-                return  "${FlagsEmojies.countriesFlags[it.code]}  $chosenCountry"
+                return  "${Flags.countriesFlags[it.code]}  $chosenCountry"
             }
         }
         return null

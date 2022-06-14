@@ -1,6 +1,6 @@
-package com.example.clonegramtestproject.retrofit
+package com.example.clonegramtestproject.data.retrofit
 
-import com.example.clonegramtestproject.data.RequestNotification
+import com.example.clonegramtestproject.data.models.RequestModel
 import com.example.clonegramtestproject.utils.KEY
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -15,7 +15,7 @@ interface ChatApi {
         "Content-Type:application/json"
     )
     @POST("fcm/send")
-    fun sendChatNotification(@Body requestNotification: RequestNotification?):
+    fun sendChatNotification(@Body requestModel: RequestModel?):
             Call<ResponseBody>
 
 }

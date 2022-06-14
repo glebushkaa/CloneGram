@@ -1,10 +1,13 @@
-package com.example.clonegramtestproject.firebase.realtime
+package com.example.clonegramtestproject.data.firebase.realtime
 
-import com.example.clonegramtestproject.data.CommonModel
+import android.util.Log
+import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.utils.USERNAME_NODE
-import com.example.clonegramtestproject.utils.USERS_MESSAGES_NODE
 import com.example.clonegramtestproject.utils.USERS_NODE
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +72,4 @@ class RealtimeGetter {
                 }
         }
     }
-
-
 }

@@ -1,7 +1,7 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.newuser
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.models.CommonModel
 
 class NewUserDiffUtil(
     private val oldList : ArrayList<CommonModel>,

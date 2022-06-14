@@ -1,6 +1,7 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -14,68 +15,40 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentGeneralMessageBinding
-import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
+import com.example.clonegramtestproject.databinding.HeaderBinding
 import com.example.clonegramtestproject.ui.message.recyclerview.general.GeneralAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageViewModel
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
+import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private val viewModel by viewModels<GeneralMessageViewModel>()
-
     private var adapter: GeneralAdapter? = null
-
     private var binding: FragmentGeneralMessageBinding? = null
-
-    private var username: String? = null
-    private var user: CommonModel? = null
-
-    private var auth = FirebaseAuth.getInstance()
-    private var currentUID = auth.currentUser?.uid.orEmpty()
-    private var phoneNumber = auth.currentUser?.phoneNumber
-
-
-    private var uidList = ArrayList<String?>()
-
-    private var allUsersList = ArrayList<CommonModel>()
-    private val messagesList = ArrayList<CommonModel>()
-    private var visibleDataList = ArrayList<CommonModel>()
-    private var filteredUsersList = ArrayList<CommonModel>()
-
-    private val rtGetter = RealtimeGetter()
     private val animations = Animations()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
-
-        val editText: EditText = binding!!.searchView
-            .findViewById(androidx.appcompat.R.id.search_src_text)
-        editText.background = null
-        editText.setTextColor(resources.getColor(R.color.white, null))
-
         setOnClickListeners()
         setDrawerNavigation()
+        initAdapter()
+        setSearchViewTextColor()
     }
 
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            initAdapter()
-            user = rtGetter.getUser(currentUID)
-            username = user?.username
-            allUsersList = rtGetter.getAllUsersList()
-            viewModel.addAllMessagedUsersListener()
-
+            viewModel.apply {
+                getUserInfo()
+                getAllUsersList()
+                getMessagedUsersListener()
+                addMessagedUsersListener()
+            }
             addObserverListeners()
             addOnQueryTextListener()
-
             setTextForViews()
         }
     }
@@ -83,37 +56,33 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     private fun addObserverListeners() {
         viewModel.allMessagedUsersLiveData.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-
-                messagesList.clear()
-                messagesList.addAll(it)
-                uidList = getUidList()
-                visibleDataList = sortVisibleGeneralData()
-
-                visibleDataList.let { list ->
-                    list.sortBy {
-                        it.lastMessage?.get(currentUID)?.timestamp
-                    }
-                    list.reverse()
-                    adapter?.setData(list)
-                }
+                viewModel.sortData(it.toCollection(ArrayList()))
+                adapter?.setData(viewModel.visibleDataList)
             }
         }
     }
 
     private fun initAdapter() {
         binding?.apply {
-            adapter = GeneralAdapter(requireContext(), object :
-                GeneralAdapter.OnItemClickListener {
+            adapter = GeneralAdapter(viewModel.currentUID.orEmpty())
+            adapter?.setOnItemClickedListener(object : GeneralAdapter.OnItemClickListener {
                 override fun onItemClicked(user: CommonModel) {
-                    lifecycleScope.launch {
-                        findNavController().navigate(
-                            R.id.general_to_direct,
-                            bundleOf(
-                                "user" to user
-                            )
+                    findNavController().navigate(
+                        R.id.general_to_direct,
+                        bundleOf(
+                            "user" to user
                         )
-                    }
+                    )
                 }
+
+                override fun deleteMyChatListener(chatUID: String) {
+                    viewModel.deleteMyChat(chatUID)
+                }
+
+                override fun deleteChatListener(chatUID: String) {
+                    viewModel.deleteChat(chatUID)
+                }
+
             })
             rvGeneral.adapter = adapter
             rvGeneral.itemAnimator = null
@@ -123,16 +92,17 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     private fun setTextForViews() {
         val headerView = binding?.navMenu?.getHeaderView(0)
         val userPicture = headerView?.findViewById<ImageView>(R.id.userPicture)
-        user?.userPicture?.let {
+        viewModel.user?.userPicture?.let {
             if (userPicture != null) {
                 Glide.with(requireContext())
                     .load(it)
                     .circleCrop()
                     .into(userPicture)
             }
+
         }
-        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = username
-        headerView?.findViewById<TextView>(R.id.tvPhone)?.text = phoneNumber
+        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = viewModel.username
+        headerView?.findViewById<TextView>(R.id.tvPhone)?.text = viewModel.phoneNumber
     }
 
     private fun setOnClickListeners() {
@@ -168,7 +138,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_settings,
                             bundleOf(
-                                "user" to user
+                                "user" to viewModel.user
                             )
                         )
                     }
@@ -178,30 +148,14 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_find_user,
                             bundleOf(
-                                "allUsersList" to allUsersList,
-                                "uidList" to uidList
+                                "allUsersList" to viewModel.allUsersList,
+                                "uidList" to viewModel.uidList
                             )
                         )
                     }
                 }
                 true
             }
-        }
-    }
-
-    private suspend fun getUidList() = withContext(Dispatchers.IO) {
-        suspendCoroutine<ArrayList<String?>> { emitter ->
-
-            val listOfUID = ArrayList<String?>()
-
-            messagesList.forEach {
-                it.uidArray?.forEach { uid ->
-                    if (uid != auth.currentUser?.uid) {
-                        listOfUID.add(uid)
-                    }
-                }
-            }
-            emitter.resume(listOfUID)
         }
     }
 
@@ -214,17 +168,10 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        if (newText?.isNotEmpty() == true) {
-                            lifecycleScope.launch {
-
-                                filteredUsersList.clear()
-                                filteredUsersList
-                                    .addAll(filterUsersArray(newText.orEmpty()))
-
-                                adapter?.setData(filteredUsersList)
+                        lifecycleScope.launch {
+                            viewModel.filterText(newText).apply {
+                                adapter?.setData(this)
                             }
-                        } else if (newText.orEmpty().isEmpty()) {
-                            adapter?.setData(visibleDataList)
                         }
                         return false
                     }
@@ -234,56 +181,18 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
         }
     }
 
-    private suspend fun filterUsersArray(filterText: String) =
-        withContext(Dispatchers.IO) {
-            suspendCoroutine<ArrayList<CommonModel>> { emitter ->
-                val arrayList = ArrayList<CommonModel>()
 
-                visibleDataList.forEach {
-                    if (it.username?.contains(filterText) == true &&
-                        it.uid != currentUID
-                    ) {
-                        arrayList.add(it)
-                    }
-                }
-                emitter.resume(arrayList)
-            }
-        }
-
-
-    private suspend fun sortVisibleGeneralData() =
-        withContext(Dispatchers.IO) {
-            suspendCoroutine<ArrayList<CommonModel>> { emitter ->
-                val generalVisibleData = ArrayList<CommonModel>()
-
-                allUsersList.forEach {
-                    uidList.forEach { uid ->
-                        if (it.uid == uid) {
-                            val messageItem = messagesList[uidList.indexOf(uid)]
-                            generalVisibleData.add(
-                                CommonModel(
-                                    username = it.username,
-                                    phone = it.phone,
-                                    lastMessage = messageItem
-                                        .lastMessage,
-                                    chatUID = messageItem
-                                        .chatUID,
-                                    uid = it.uid,
-                                    userPicture = it.userPicture,
-                                    tokens = it.tokens
-                                )
-                            )
-                        }
-                    }
-                }
-                emitter.resume(generalVisibleData)
-            }
-        }
+    private fun setSearchViewTextColor() {
+        val editText: EditText = binding!!.searchView
+            .findViewById(androidx.appcompat.R.id.search_src_text)
+        editText.background = null
+        editText.setTextColor(resources.getColor(R.color.white, null))
+    }
 
 
     override fun onStop() {
         super.onStop()
-        viewModel.removeAllMessagedListener()
+        viewModel.removeMessagedUsersListener()
     }
 
 }

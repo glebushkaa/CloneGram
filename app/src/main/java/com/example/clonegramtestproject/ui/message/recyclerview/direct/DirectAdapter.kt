@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.LastMessageData
-import com.example.clonegramtestproject.data.MessageData
-import com.example.clonegramtestproject.firebase.realtime.RealtimeMessage
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.LastMessageModel
+import com.example.clonegramtestproject.data.models.MessageModel
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class DirectAdapter(
-    private val liveData: MutableLiveData<MessageData?>,
+    private val liveData: MutableLiveData<MessageModel?>,
     private val user: CommonModel?,
     private val context: Context,
     private val chatUID: String
@@ -31,7 +31,7 @@ class DirectAdapter(
 .Adapter<DirectAdapter.MessageViewHolder>() {
 
     private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
-    private val messageList = ArrayList<MessageData>()
+    private val messageList = ArrayList<MessageModel>()
 
     private val rtMessage = RealtimeMessage()
 
@@ -40,25 +40,25 @@ class DirectAdapter(
         private var timestamp: TextView? = null
         private var picture: ImageView? = null
 
-        fun bind(userMessageData: MessageData) {
+        fun bind(userMessageModel: MessageModel) {
 
 
             if (itemViewType == 0 || itemViewType == 2) {
                 message = itemView.findViewById(R.id.message)
                 timestamp = itemView.findViewById(R.id.timestamp)
 
-                message?.text = userMessageData.message
+                message?.text = userMessageModel.message
                 timestamp?.text = SimpleDateFormat("HH:mm")
-                    .format(userMessageData.timestamp)
+                    .format(userMessageModel.timestamp)
             } else {
                 picture = itemView.findViewById(R.id.picture)
 
                 Glide.with(picture!!.context)
-                    .load(userMessageData.message)
+                    .load(userMessageModel.message)
                     .into(picture!!)
             }
 
-            setSeenOption(itemViewType, userMessageData, itemView)
+            setSeenOption(itemViewType, userMessageModel, itemView)
 
             itemView.setOnLongClickListener {
                 val popUp: PopupMenu =
@@ -78,9 +78,9 @@ class DirectAdapter(
                         )
                     }
                 if (itemViewType == 0) {
-                    setOutgoingMessageMenu(popUp, userMessageData)
+                    setOutgoingMessageMenu(popUp, userMessageModel)
                 } else {
-                    setIncomingMessageMenu(popUp, userMessageData)
+                    setIncomingMessageMenu(popUp, userMessageModel)
                 }
                 popUp.show()
                 true
@@ -130,7 +130,7 @@ class DirectAdapter(
 
     override fun getItemCount(): Int = messageList.size
 
-    fun setData(newMessageList: List<MessageData>) {
+    fun setData(newMessageList: List<MessageModel>) {
         val diffUtil = DirectDiffUtil(messageList, newMessageList)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
         messageList.clear()
@@ -138,43 +138,43 @@ class DirectAdapter(
         diffResults.dispatchUpdatesTo(this)
     }
 
-    private fun setOutgoingMessageMenu(popUp: PopupMenu, userMessageData: MessageData) {
+    private fun setOutgoingMessageMenu(popUp: PopupMenu, userMessageModel: MessageModel) {
         popUp.inflate(R.menu.message_outgoing_menu)
         popUp.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.deleteOutgoingMessageForBoth -> {
-                    deleteMessageForBoth(userMessageData)
+                    deleteMessageForBoth(userMessageModel)
                 }
                 R.id.deleteOutgoingMessageForMe -> CoroutineScope(Dispatchers.IO).launch {
                     rtMessage
-                        .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                        .deleteMessageForMe(chatUID, userMessageModel.messageUid.orEmpty())
                 }
-                R.id.editMessage -> liveData.value = userMessageData
+                R.id.editMessage -> liveData.value = userMessageModel
             }
             false
         }
     }
 
-    private fun setIncomingMessageMenu(popUp: PopupMenu, userMessageData: MessageData) {
+    private fun setIncomingMessageMenu(popUp: PopupMenu, userMessageModel: MessageModel) {
         popUp.inflate(R.menu.message_incoming_menu)
         popUp.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.deleteIncomingMessageForBoth -> {
-                    deleteMessageForBoth(userMessageData)
+                    deleteMessageForBoth(userMessageModel)
                 }
                 R.id.deleteIncomingMessageForMe -> CoroutineScope(Dispatchers.IO).launch {
                     rtMessage
-                        .deleteMessageForMe(chatUID, userMessageData.messageUid.orEmpty())
+                        .deleteMessageForMe(chatUID, userMessageModel.messageUid.orEmpty())
                 }
             }
             false
         }
     }
 
-    private fun setSeenOption(itemViewType: Int, userMessageData: MessageData, itemView: View) {
+    private fun setSeenOption(itemViewType: Int, userMessageModel: MessageModel, itemView: View) {
         if (itemViewType == 0 || itemViewType == 1) {
-            if (userMessageData == messageList.last()
-                && userMessageData.seen != null
+            if (userMessageModel == messageList.last()
+                && userMessageModel.seen != null
             ) {
                 val seen: TextView = itemView.findViewById(R.id.tvSeen)
                 seen.visibility = View.VISIBLE
@@ -185,16 +185,16 @@ class DirectAdapter(
         }
     }
 
-    private fun deleteMessageForBoth(userMessageData: MessageData) {
+    private fun deleteMessageForBoth(userMessageModel: MessageModel) {
         CoroutineScope(Dispatchers.IO).launch {
             rtMessage
-                .deleteMessage(chatUID, userMessageData.messageUid.orEmpty())
-            if (messageList.last() == userMessageData) {
+                .deleteMessage(chatUID, userMessageModel.messageUid.orEmpty())
+            if (messageList.last() == userMessageModel) {
                 rtMessage.setLastMessage(
                     arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
                     chatUID,
-                    messageList[messageList.indexOf(userMessageData) - 1].let { messageInfo ->
-                        LastMessageData(
+                    messageList[messageList.indexOf(userMessageModel) - 1].let { messageInfo ->
+                        LastMessageModel(
                             message = messageInfo.message,
                             timestamp = messageInfo.timestamp,
                             picture = messageInfo.picture

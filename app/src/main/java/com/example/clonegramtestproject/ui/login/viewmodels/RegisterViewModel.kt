@@ -1,12 +1,11 @@
 package com.example.clonegramtestproject.ui.login.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.TokenData
-import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
-import com.example.clonegramtestproject.firebase.realtime.RealtimeNewUser
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.TokenModel
+import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeNewUser
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,7 +32,7 @@ class RegisterViewModel : ViewModel() {
                 )
             )
             rtUser.setUserToken(
-                TokenData(
+                TokenModel(
                     cmHelper.getToken(),
                     System.currentTimeMillis()
                 )

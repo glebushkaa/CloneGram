@@ -70,5 +70,6 @@
     <string name="code_length">Код должен содержать 6 символов!</string>
     <string name="picture">*изображение*</string>
     <string name="default_notification_channel_id">com.domain.appname.urgent</string>
+    <string name="required">обязательно*</string>
 
 </resources>

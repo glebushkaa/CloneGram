@@ -1,16 +1,12 @@
 package com.example.clonegramtestproject.ui.start.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import com.example.clonegramtestproject.data.CommonModel
-import com.example.clonegramtestproject.data.TokenData
-import com.example.clonegramtestproject.firebase.cloudMessaging.CMHelper
-import com.example.clonegramtestproject.firebase.realtime.RealtimeGetter
-import com.example.clonegramtestproject.firebase.realtime.RealtimeUser
+import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.TokenModel
+import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeGetter
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -30,7 +26,7 @@ class StartViewModel : ViewModel() {
     suspend fun setToken() {
         cmHelper.getToken().let {
             rtUser.setUserToken(
-                TokenData(
+                TokenModel(
                     it,
                     System.currentTimeMillis()
                 )

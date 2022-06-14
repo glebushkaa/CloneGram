@@ -1,7 +1,7 @@
-package com.example.clonegramtestproject.firebase.realtime
+package com.example.clonegramtestproject.data.firebase.realtime
 
-import com.example.clonegramtestproject.data.LastMessageData
-import com.example.clonegramtestproject.data.MessageData
+import com.example.clonegramtestproject.data.models.LastMessageModel
+import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 class RealtimeMessage {
 
     private val firebaseDatabase = Firebase.database
-    private val databaseRefMessages = firebaseDatabase.getReference(USERS_MESSAGES_NODE)
+    private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     private val currentUID = firebaseAuth.currentUser?.uid.orEmpty()
@@ -20,7 +20,7 @@ class RealtimeMessage {
     suspend fun setLastMessage(
         uidArray: ArrayList<String>,
         chatUID: String,
-        message: LastMessageData
+        message: LastMessageModel
     ) {
         withContext(Dispatchers.IO) {
             uidArray.forEach {
@@ -35,7 +35,7 @@ class RealtimeMessage {
 
     suspend fun changeLastMessage(
         chatUID: String,
-        message: LastMessageData
+        message: LastMessageModel
     ) {
         withContext(Dispatchers.IO) {
             databaseRefMessages
@@ -47,7 +47,7 @@ class RealtimeMessage {
     }
 
     suspend fun setSeenParameter(
-        messageData: ArrayList<MessageData>,
+        messageData: ArrayList<MessageModel>,
         chatUID: String
     ) = withContext(Dispatchers.IO){
         if (messageData.isNotEmpty()) {
@@ -57,7 +57,7 @@ class RealtimeMessage {
                 ) {
                     databaseRefMessages
                         .child(chatUID)
-                        .child(MESSAGES_NODE)
+                        .child(DIALOGUES_NODE)
                         .child(it.messageUid.orEmpty())
                         .child(SEEN_NODE)
                         .setValue(arrayListOf(currentUID))
@@ -68,24 +68,24 @@ class RealtimeMessage {
 
     suspend fun sendMessage(
         userUID: String,
-        messageData: MessageData,
+        messageModel: MessageModel,
         chatUID: String
     ) {
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(chatUID)
-                .child(MESSAGES_NODE)
+                .child(DIALOGUES_NODE)
                 .push()
                 .let {
                     it.setValue(
-                        MessageData(
-                            uid = messageData.uid,
-                            username = messageData.username,
-                            message = messageData.message,
-                            timestamp = messageData.timestamp,
-                            uidPermission = messageData.uidPermission,
+                        MessageModel(
+                            uid = messageModel.uid,
+                            username = messageModel.username,
+                            message = messageModel.message,
+                            timestamp = messageModel.timestamp,
+                            uidPermission = messageModel.uidPermission,
                             messageUid = it.key,
-                            picture = messageData.picture
+                            picture = messageModel.picture
                         )
                     )
                 }
@@ -97,7 +97,7 @@ class RealtimeMessage {
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(messageUID)
-                .child(PERMISSION_UID_ARRAY_NODE)
+                .child(PERMISSION_LIST_NODE)
                 .child(userUID)
                 .let {
                     it.get()
@@ -117,7 +117,7 @@ class RealtimeMessage {
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(chatUID)
-                .child(MESSAGES_NODE)
+                .child(DIALOGUES_NODE)
                 .child(messageUID)
                 .child(MESSAGE_NODE)
                 .setValue(text)
@@ -128,7 +128,7 @@ class RealtimeMessage {
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(chatUID)
-                .child(MESSAGES_NODE)
+                .child(DIALOGUES_NODE)
                 .child(messageUID)
                 .removeValue()
         }
@@ -138,9 +138,9 @@ class RealtimeMessage {
         withContext(Dispatchers.IO) {
             databaseRefMessages
                 .child(chatUID)
-                .child(MESSAGES_NODE)
+                .child(DIALOGUES_NODE)
                 .child(messageUID)
-                .child(UID_PERMISSION_NODE)
+                .child(PERMISSION_NODE)
                 .let {
                     it.get().addOnSuccessListener { snapshot ->
                         if (snapshot.exists()) {

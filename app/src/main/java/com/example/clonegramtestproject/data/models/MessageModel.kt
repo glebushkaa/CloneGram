@@ -1,7 +1,7 @@
-package com.example.clonegramtestproject.data
+package com.example.clonegramtestproject.data.models
 
 
-class MessageData(
+class MessageModel(
     val uid : String? = null,
     val username : String? = null,
     val message : String? = null,

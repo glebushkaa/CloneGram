@@ -37,15 +37,15 @@
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/registerEditTextAppearance"
         android:id="@+id/inputName"
+        style="@style/registerEditTextAppearance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="54dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="54dp"
         android:hint="@string/name"
-        app:helperText="required*"
+        app:helperText="@string/required"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +54,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
-            android:textCursorDrawable="@drawable/shape_cursor_login"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_sb" />
+            android:fontFamily="@font/montserrat_sb"
+            android:textCursorDrawable="@drawable/shape_cursor_login" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

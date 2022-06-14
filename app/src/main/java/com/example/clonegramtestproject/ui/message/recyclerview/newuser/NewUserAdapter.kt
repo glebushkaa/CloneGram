@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CommonModel
+import com.example.clonegramtestproject.data.models.CommonModel
 
 class NewUserAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView
 .Adapter<NewUserAdapter.UsersViewHolder>() {
