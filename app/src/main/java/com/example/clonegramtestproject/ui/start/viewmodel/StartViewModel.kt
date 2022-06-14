@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class StartViewModel : ViewModel() {
 
@@ -21,7 +23,7 @@ class StartViewModel : ViewModel() {
     private val rtUser = RealtimeUser()
     private val cmHelper = CMHelper()
 
-    suspend fun getUser(){
+    suspend fun getUser() {
         user = rtGetter.getUser(auth.uid.orEmpty())
     }
 
@@ -43,5 +45,13 @@ class StartViewModel : ViewModel() {
     }
 
     suspend fun deleteUser() = rtUser.deleteUser()
+
+    suspend fun checkLogin() = suspendCoroutine<Boolean> { emitter ->
+        auth.currentUser?.let {
+            emitter.resume(false)
+        } ?: run {
+            emitter.resume(true)
+        }
+    }
 
 }

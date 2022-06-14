@@ -1,56 +1,52 @@
 package com.example.clonegramtestproject.ui.login.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Selection
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.FlagsEmojies
 import com.example.clonegramtestproject.MainActivity
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.CountriesCodes
 import com.example.clonegramtestproject.databinding.FragmentLoginBinding
+import com.example.clonegramtestproject.ui.login.viewmodels.LoginViewModel
 import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
 import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
 import com.example.clonegramtestproject.utils.PHONE
 import com.example.clonegramtestproject.utils.showSoftKeyboard
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
+    private val viewModel by viewModels<LoginViewModel>()
+
     private var binding: FragmentLoginBinding? = null
-
-    private val countryCodeArrayList = arrayListOf<CountriesCodes>()
-
-    private var checkedText = ""
-    private var chosenCountry = ""
-
-    private var phoneNumber: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentLoginBinding.bind(view)
         setOnClickListeners()
         addOnTextChangedListener()
         showSoftKeyboard(binding!!.etCode, requireActivity())
-        countryCodeArrayList
-            .addAll((requireActivity() as MainActivity).countryCodeArrayList)
+        viewModel.fillCountryCodesList(
+            (requireActivity() as MainActivity).countryCodeArrayList
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        chosenCountry = arguments?.getString(
-            CHOSEN_COUNTRY
-        ).orEmpty()
         binding?.apply {
-            if (chosenCountry.isNotEmpty()) {
-                etCode.setText(chosenCountry.trim())
-                Selection.setSelection(etCode.text, etCode.length())
+            viewModel.apply {
+                chosenCountry = arguments?.getString(
+                    CHOSEN_COUNTRY
+                )
+                chosenCountry?.let { country ->
+                    etCode.setText(country.trim())
+                    Selection.setSelection(etCode.text, etCode.length())
+                }
             }
         }
     }
@@ -59,55 +55,51 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding?.apply {
             etCode.addTextChangedListener {
                 bCountries.text = ""
-                checkedText = "+" + etCode.text.toString().trim()
-                addFlagsEmoji()
+                viewModel.code = "+" + etCode.text.toString().trim()
+                setCountry()
             }
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun addFlagsEmoji() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            for (i in 0 until countryCodeArrayList.size - 1) {
-                if (checkedText == countryCodeArrayList[i].dial_code) {
-                    lifecycleScope.launch {
-                        binding?.apply {
-                            bCountries.text =
-                                FlagsEmojies.countriesFlags[countryCodeArrayList[i]
-                                    .code] + "  " + countryCodeArrayList[i].name
-                            if (etCode.length() > 2) {
-                                showSoftKeyboard(etPhone, requireActivity())
-                            }
-                        }
+    private fun setCountry() {
+        binding?.apply {
+            lifecycleScope.launch {
+                viewModel.setCountry()?.let {
+                    bCountries.text = it
+                    if (etCode.length() > 2) {
+                        showSoftKeyboard(etPhone, requireActivity())
                     }
-                    break
                 }
             }
         }
-
     }
+
 
     private fun setOnClickListeners() {
         binding?.apply {
-
-            bCountries.setOnClickListener {
-                chosenCountry = etCode.text.toString().trim()
-                findNavController().navigate(
-                    R.id.login_to_country, bundleOf(
-                        COUNTRY_CODE_ARR to countryCodeArrayList,
-                        CHOSEN_COUNTRY to chosenCountry
+            viewModel.let { vm ->
+                bCountries.setOnClickListener {
+                    vm.chosenCountry = etCode.text.toString().trim()
+                    findNavController().navigate(
+                        R.id.login_to_country, bundleOf(
+                            COUNTRY_CODE_ARR to vm.countryCodeArrayList,
+                            CHOSEN_COUNTRY to vm.chosenCountry
+                        )
                     )
-                )
-            }
+                }
 
-            bSignIn.setOnClickListener {
-                phoneNumber = "+" + etCode.text.toString().trim() +
-                        etPhone.text.toString().trim()
-                findNavController().navigate(
-                    R.id.login_to_verify, bundleOf(
-                        PHONE to phoneNumber
+                bSignIn.setOnClickListener {
+                    arguments?.putString(
+                        CHOSEN_COUNTRY, vm.code?.removePrefix("+")
                     )
-                )
+                    vm.phoneNumber = "+" + etCode.text.toString().trim() +
+                            etPhone.text.toString().trim()
+                    findNavController().navigate(
+                        R.id.login_to_verify, bundleOf(
+                            PHONE to vm.phoneNumber,
+                        )
+                    )
+                }
             }
         }
     }
