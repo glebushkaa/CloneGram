@@ -14,29 +14,18 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
-import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
-import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
 import com.example.clonegramtestproject.utils.getSoftInputMode
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
 class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
-    private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
-    private var username: String? = null
-    private var phone: String? = null
-    private var uid: String? = null
-    private var chatUID: String? = null
-    private var user: CommonModel? = null
 
     private val viewModel by viewModels<DirectMessageViewModel>()
     private lateinit var binding: FragmentDirectMessageBinding
@@ -45,40 +34,20 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     private var originalSoftInputMode: Int? = null
 
-    private val rtMessage = RealtimeMessage()
-    private val sOperator = StorageOperator()
-
     private var isEditMessage = false
     private var editedMessageInfo: MessageModel? = null
-
-    private val retrofitHelper = RetrofitHelper()
 
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
-                user?.let { user ->
-                    lifecycleScope.launch {
-                        sOperator.pushMessagePicture(
-                            it,
-                            user, username.orEmpty(), chatUID.orEmpty()
-                        )
+                    viewModel.pushMessagePicture(it)
+                (requireActivity().application as MyApp)
+                    .retrofit?.let { retrofit ->
+                        viewModel.sendNotification(retrofit, getString(R.string.picture))
                     }
-                    user.tokens?.forEach { token ->
-                        (requireActivity().application as MyApp)
-                            .retrofit?.let { retrofit ->
-                                retrofitHelper.sendNotification(
-                                    retrofit,
-                                    token.value?.token.toString(),
-                                    NotificationModel(
-                                        username.orEmpty(),
-                                        getString(R.string.picture)
-                                    )
-                                )
-                            }
-                    }
-                }
+
             }
         }
         super.onCreate(savedInstanceState)
@@ -88,7 +57,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         binding = FragmentDirectMessageBinding.bind(view)
 
         setBackgroundHeight()
-        setVariables()
+        getArgs()
         setTextForViews()
         initAdapter()
         setListeners()
@@ -109,10 +78,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onStart() {
         super.onStart()
-        user?.let {
-            lifecycleScope.launch {
-                viewModel.setMessageListener(chatUID.orEmpty(), it)
-            }
+        lifecycleScope.launch {
+            viewModel.setMessageListener()
+            viewModel.addMessageListener()
         }
     }
 
@@ -128,27 +96,22 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         }
     }
 
-    private fun setVariables() {
+    private fun getArgs(){
         arguments?.let {
-            user = it.getParcelable("user")
+            viewModel.setVariables(it.getParcelable("user"))
         }
-
-        username = user?.username
-        phone = user?.phone
-        uid = user?.uid
-        chatUID = user?.chatUID
     }
 
     private fun setTextForViews() {
         binding.apply {
-            tvDirectTitle.text = username
-            tvDirectSubtitle.text = phone
+            tvDirectTitle.text = viewModel.username
+            tvDirectSubtitle.text = viewModel.phone
         }
     }
 
     private fun initAdapter() {
         adapter =
-            DirectAdapter(viewModel.messageLiveData, user, requireContext(), chatUID.orEmpty())
+            DirectAdapter(viewModel.messageLiveData,viewModel.user,viewModel.chatUID.orEmpty())
         binding.rvMessages.adapter = adapter
         binding.rvMessages.itemAnimator = null
     }
