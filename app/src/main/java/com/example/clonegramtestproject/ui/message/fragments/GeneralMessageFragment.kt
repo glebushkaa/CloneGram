@@ -1,7 +1,6 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,36 +16,35 @@ import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentGeneralMessageBinding
-import com.example.clonegramtestproject.databinding.HeaderBinding
 import com.example.clonegramtestproject.ui.message.recyclerview.general.GeneralAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageViewModel
-import com.example.clonegramtestproject.utils.showToast
+import com.example.clonegramtestproject.utils.ALL_USER_LIST
+import com.example.clonegramtestproject.utils.UID_LIST
+import com.example.clonegramtestproject.utils.USER
 import kotlinx.coroutines.launch
 
 class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private val viewModel by viewModels<GeneralMessageViewModel>()
+
     private var adapter: GeneralAdapter? = null
     private var binding: FragmentGeneralMessageBinding? = null
     private val animations = Animations()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
+        changeSearchViewColor()
         setOnClickListeners()
         setDrawerNavigation()
         initAdapter()
-        setSearchViewTextColor()
     }
 
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            viewModel.apply {
-                getUserInfo()
-                getAllUsersList()
-                getMessagedUsersListener()
-                addMessagedUsersListener()
-            }
+            viewModel.getUserInfo()
+            viewModel.getAllUsersList()
+            viewModel.getMessagedUsersListener()
             addObserverListeners()
             addOnQueryTextListener()
             setTextForViews()
@@ -56,23 +54,26 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     private fun addObserverListeners() {
         viewModel.allMessagedUsersLiveData.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-                viewModel.sortData(it.toCollection(ArrayList()))
-                adapter?.setData(viewModel.visibleDataList)
+                viewModel.sortData(it as ArrayList<CommonModel>).let { list ->
+                    adapter?.setData(list)
+                }
             }
         }
     }
 
     private fun initAdapter() {
         binding?.apply {
-            adapter = GeneralAdapter(viewModel.currentUID.orEmpty())
+            adapter = GeneralAdapter()
             adapter?.setOnItemClickedListener(object : GeneralAdapter.OnItemClickListener {
                 override fun onItemClicked(user: CommonModel) {
-                    findNavController().navigate(
-                        R.id.general_to_direct,
-                        bundleOf(
-                            "user" to user
+                    lifecycleScope.launch {
+                        findNavController().navigate(
+                            R.id.general_to_direct,
+                            bundleOf(
+                                USER to user
+                            )
                         )
-                    )
+                    }
                 }
 
                 override fun deleteMyChatListener(chatUID: String) {
@@ -82,11 +83,17 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                 override fun deleteChatListener(chatUID: String) {
                     viewModel.deleteChat(chatUID)
                 }
-
             })
             rvGeneral.adapter = adapter
             rvGeneral.itemAnimator = null
         }
+    }
+
+    private fun changeSearchViewColor() {
+        val editText: EditText = binding!!.searchView
+            .findViewById(androidx.appcompat.R.id.search_src_text)
+        editText.background = null
+        editText.setTextColor(resources.getColor(R.color.white, null))
     }
 
     private fun setTextForViews() {
@@ -94,12 +101,8 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
         val userPicture = headerView?.findViewById<ImageView>(R.id.userPicture)
         viewModel.user?.userPicture?.let {
             if (userPicture != null) {
-                Glide.with(requireContext())
-                    .load(it)
-                    .circleCrop()
-                    .into(userPicture)
+                Glide.with(requireContext()).load(it).circleCrop().into(userPicture)
             }
-
         }
         headerView?.findViewById<TextView>(R.id.tvUsername)?.text = viewModel.username
         headerView?.findViewById<TextView>(R.id.tvPhone)?.text = viewModel.phoneNumber
@@ -138,7 +141,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_settings,
                             bundleOf(
-                                "user" to viewModel.user
+                                USER to viewModel.user
                             )
                         )
                     }
@@ -148,8 +151,8 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_find_user,
                             bundleOf(
-                                "allUsersList" to viewModel.allUsersList,
-                                "uidList" to viewModel.uidList
+                                ALL_USER_LIST to viewModel.allUsersList,
+                                UID_LIST to viewModel.uidList
                             )
                         )
                     }
@@ -166,11 +169,10 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return false
                     }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
+                    override fun onQueryTextChange(text: String?): Boolean {
                         lifecycleScope.launch {
-                            viewModel.filterText(newText).apply {
-                                adapter?.setData(this)
+                            viewModel.filterText(text?.lowercase()).let {
+                                adapter?.setData(it)
                             }
                         }
                         return false
@@ -180,15 +182,6 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
             )
         }
     }
-
-
-    private fun setSearchViewTextColor() {
-        val editText: EditText = binding!!.searchView
-            .findViewById(androidx.appcompat.R.id.search_src_text)
-        editText.background = null
-        editText.setTextColor(resources.getColor(R.color.white, null))
-    }
-
 
     override fun onStop() {
         super.onStop()

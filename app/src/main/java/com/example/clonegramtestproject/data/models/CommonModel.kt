@@ -11,7 +11,7 @@ class CommonModel(
     val lastMessage : Map<String, LastMessageModel>? = null,
     val chatUID : String? = null,
     val uidArray : ArrayList<String?>? = null,
-    val permissionUidArray : Map<String,Boolean>? = null,
+    val permissionList : Map<String,Boolean>? = null,
     val uid : String? = null,
     val singleChat : Boolean? = null,
     val userPicture : String? = null,

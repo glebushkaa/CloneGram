@@ -14,35 +14,33 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
+import com.example.clonegramtestproject.utils.USER
 import com.example.clonegramtestproject.utils.getSoftInputMode
+import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
 
 
 class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
-
     private val viewModel by viewModels<DirectMessageViewModel>()
     private lateinit var binding: FragmentDirectMessageBinding
-
     private lateinit var adapter: DirectAdapter
 
     private var originalSoftInputMode: Int? = null
-
-    private var isEditMessage = false
-    private var editedMessageInfo: MessageModel? = null
-
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
-                    viewModel.pushMessagePicture(it)
+                viewModel.pushMessagePicture(it)
+                viewModel.changeLastMessage(null,true)
                 (requireActivity().application as MyApp)
                     .retrofit?.let { retrofit ->
                         viewModel.sendNotification(retrofit, getString(R.string.picture))
@@ -62,18 +60,8 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         initAdapter()
         setListeners()
         setLiveDataObservers()
-
-        user?.userPicture?.let {
-            Glide.with(requireContext())
-                .load(it)
-                .circleCrop()
-                .into(binding.profileIcon)
-        }
-
-        originalSoftInputMode = requireActivity().window?.getSoftInputMode()
-        requireActivity().window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-        )
+        setUserPicture()
+        setSoftInputMode()
     }
 
     override fun onStart() {
@@ -82,6 +70,19 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             viewModel.setMessageListener()
             viewModel.addMessageListener()
         }
+    }
+
+    private fun setUserPicture() {
+        viewModel.getUserPicture()?.let {
+            Glide.with(requireContext()).load(it).circleCrop().into(binding.profileIcon)
+        }
+    }
+
+    private fun setSoftInputMode() {
+        originalSoftInputMode = requireActivity().window?.getSoftInputMode()
+        requireActivity().window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
     }
 
     private fun setBackgroundHeight() {
@@ -96,9 +97,11 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         }
     }
 
-    private fun getArgs(){
+    private fun getArgs() {
         arguments?.let {
-            viewModel.setVariables(it.getParcelable("user"))
+            it.getParcelable<CommonModel>(USER)?.let { user ->
+                viewModel.setVariables(user)
+            }
         }
     }
 
@@ -111,7 +114,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     private fun initAdapter() {
         adapter =
-            DirectAdapter(viewModel.messageLiveData,viewModel.user,viewModel.chatUID.orEmpty())
+            DirectAdapter(viewModel.messageLiveData, viewModel.user, viewModel.chatUID.orEmpty())
         binding.rvMessages.adapter = adapter
         binding.rvMessages.itemAnimator = null
     }
@@ -128,8 +131,8 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             viewLifecycleOwner
         ) {
             binding.etMessageField.setText(it?.message)
-            isEditMessage = true
-            editedMessageInfo = it
+            viewModel.isEditMessage = true
+            viewModel.editedMessageInfo = it
         }
     }
 
@@ -147,28 +150,13 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
             bSendMessage.setOnClickListener {
                 val text = etMessageField.text.toString().trim()
-                if (isEditMessage) {
-                    editMessage(text)
-                    isEditMessage = false
-                    editedMessageInfo = null
-                } else {
-                    sendMessage(text)
-                }
+                viewModel.doSendAction(text)
                 etMessageField.setText("")
 
-                user?.tokens?.forEach {
-                    (requireActivity().application as MyApp)
-                        .retrofit?.let { retrofit ->
-                            retrofitHelper.sendNotification(
-                                retrofit,
-                                it.value?.token.toString(),
-                                NotificationModel(
-                                    username.orEmpty(),
-                                    text
-                                )
-                            )
-                        }
-                }
+                (requireActivity().application as MyApp)
+                    .retrofit?.let { retrofit ->
+                        viewModel.sendNotification(retrofit, text)
+                    }
             }
 
             bBack.setOnClickListener {
@@ -177,49 +165,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         }
 
     }
-
-    private fun sendMessage(text: String) {
-        lifecycleScope.launch {
-            rtMessage.sendMessage(
-                userUID = user?.uid.orEmpty(),
-                MessageModel(
-                    uidPermission = arrayListOf(
-                        currentUID.orEmpty(),
-                        uid.orEmpty()
-                    ),
-                    uid = currentUID,
-                    message = text,
-                    timestamp = System.currentTimeMillis(),
-                    picture = false
-                ),
-                chatUID.orEmpty()
-            )
-
-            rtMessage.setLastMessage(
-                arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
-                chatUID.orEmpty(),
-                LastMessageModel(
-                    message = text,
-                    timestamp = System.currentTimeMillis(),
-                    picture = false
-                )
-            )
-        }
-    }
-
-    private fun editMessage(message: String) {
-        lifecycleScope.launch {
-            rtMessage.editMessage(
-                message,
-                chatUID.orEmpty(),
-                editedMessageInfo?.messageUid.orEmpty()
-            )
-        }
-    }
-
     override fun onPause() {
         super.onPause()
-        viewModel.removeMessageListener(chatUID.orEmpty())
+        viewModel.removeMessageListener()
     }
 
     override fun onDestroy() {

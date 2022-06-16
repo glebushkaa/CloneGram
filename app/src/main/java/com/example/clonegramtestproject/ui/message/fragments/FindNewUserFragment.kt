@@ -5,91 +5,78 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentFindNewUserBinding
-import com.example.clonegramtestproject.data.firebase.realtime.RealtimeNewUser
 import com.example.clonegramtestproject.ui.message.recyclerview.newuser.NewUserAdapter
-import kotlinx.coroutines.Dispatchers
+import com.example.clonegramtestproject.ui.message.viewmodels.FindNewUserViewModel
+import com.example.clonegramtestproject.utils.ALL_USER_LIST
+import com.example.clonegramtestproject.utils.UID_LIST
+import com.example.clonegramtestproject.utils.USER
+import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
 
+    private val viewModel by viewModels<FindNewUserViewModel>()
     private var binding: FragmentFindNewUserBinding? = null
-
-    private var adapter : NewUserAdapter? = null
-
-    private var allUsersList = ArrayList<CommonModel>()
-    private var filteredUsersList = ArrayList<CommonModel>()
-    private var changedFilteredList = ArrayList<CommonModel>()
-    private var messagesList = ArrayList<String>()
-
-    private var rtNewUser = RealtimeNewUser()
+    private var adapter: NewUserAdapter? = null
 
     private val animations = Animations()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentFindNewUserBinding.bind(view)
 
-        val editText : EditText = binding!!.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-        editText.background = null
-        editText.setTextColor(resources.getColor(R.color.white,null))
-
-        arguments?.let {
-            it.getStringArrayList("uidList")?.let { list ->
-                messagesList = list
-            }
-
-            it.getParcelableArrayList<CommonModel>("allUsersList")
-                ?.let { list ->
-                    allUsersList = list
-                }
-        }
-
-        lifecycleScope.launch {
-            filteredUsersList = getNewUsers()
-            initAdapter()
-        }
+        changeSearchViewColor()
+        getArgs()
+        viewModel.getNewUsers()
+        initAdapter()
         setOnClickListeners()
         addOnQueryTextListener()
     }
 
-    private suspend fun getNewUsers() =
-        suspendCoroutine<ArrayList<CommonModel>> {
-            var filterArrayUsers = ArrayList<CommonModel>()
-            if (messagesList.isEmpty()) {
-                filterArrayUsers = allUsersList
-            } else {
-                allUsersList.forEach { user ->
-                    if(!messagesList.contains(user.uid)){
-                        filterArrayUsers.add(user)
-                    }
+
+    private fun changeSearchViewColor() {
+        val editText: EditText? =
+            binding?.searchView?.findViewById(androidx.appcompat.R.id.search_src_text)
+        editText?.background = null
+        editText?.setTextColor(resources.getColor(R.color.white, null))
+
+    }
+
+    private fun getArgs() {
+        viewModel.let { vm ->
+            arguments?.let {
+                it.getStringArrayList(UID_LIST)?.let { list ->
+                    vm.uidList.clear()
+                    vm.uidList.addAll(list)
                 }
+
+                it.getParcelableArrayList<CommonModel>(ALL_USER_LIST)
+                    ?.let { list ->
+                        vm.allUsersList.clear()
+                        vm.allUsersList.addAll(list)
+                    }
             }
-            it.resume(filterArrayUsers)
         }
+    }
 
     private fun initAdapter() {
-        adapter = NewUserAdapter(object : NewUserAdapter.OnItemClickListener {
-            override fun onItemClicked(user: CommonModel) {
-                var messageUID : String?
-                lifecycleScope.launch {
-                    messageUID = rtNewUser.addUserToMessages(user)
-
+        adapter = NewUserAdapter { user ->
+            lifecycleScope.launch {
+                viewModel.addUserToChat(user)?.let { chatUID ->
                     findNavController().navigate(
                         R.id.find_user_to_direct,
                         bundleOf(
-                            "user" to CommonModel(
+                            USER to CommonModel(
                                 username = user.username,
                                 phone = user.phone,
-                                chatUID = messageUID,
+                                chatUID = chatUID,
                                 uid = user.uid,
                                 userPicture = user.userPicture
                             ),
@@ -97,10 +84,9 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
                     )
                 }
             }
-
-        })
+        }
         binding?.recyclerView?.adapter = adapter
-        adapter?.setData(filteredUsersList)
+        adapter?.setData(viewModel.filteredUsersList)
     }
 
     private fun setOnClickListeners() {
@@ -130,19 +116,11 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return false
                     }
-
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        if (newText?.isNotEmpty() == true) {
-                            lifecycleScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    changedFilteredList.clear()
-                                    changedFilteredList
-                                        .addAll(filterUsersArray(newText.orEmpty()))
-                                }
-                                adapter?.setData(changedFilteredList)
+                        lifecycleScope.launch {
+                            viewModel.filterUsersArray(newText.orEmpty()).let { list ->
+                                adapter?.setData(list)
                             }
-                        } else if (newText.orEmpty().isEmpty()) {
-                            adapter?.setData(filteredUsersList)
                         }
                         return false
                     }
@@ -151,20 +129,4 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
             )
         }
     }
-
-    private suspend fun filterUsersArray(filterText: String) =
-        suspendCoroutine<ArrayList<CommonModel>> { emitter ->
-            val arrayList = ArrayList<CommonModel>()
-
-            filteredUsersList.forEach {
-                if (it.phone?.startsWith("+$filterText") == true ||
-                    it.phone?.startsWith(filterText) == true
-                ) {
-                    arrayList.add(it)
-                }
-            }
-            emitter.resume(arrayList)
-        }
-
-
 }

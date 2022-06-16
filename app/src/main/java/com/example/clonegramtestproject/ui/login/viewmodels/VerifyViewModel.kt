@@ -71,11 +71,11 @@ class VerifyViewModel : ViewModel() {
     }
 
     suspend fun signInWithCredential(credential: PhoneAuthCredential) =
-        suspendCoroutine<AuthResult> { emitter ->
+        suspendCoroutine<AuthResult?> { emitter ->
             auth.signInWithCredential(credential).addOnSuccessListener {
                 emitter.resume(it)
             }.addOnFailureListener {
-                emitter.resumeWithException(it)
+                emitter.resume(null)
             }
         }
 

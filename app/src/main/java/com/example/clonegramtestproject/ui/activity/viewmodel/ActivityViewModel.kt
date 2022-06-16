@@ -32,8 +32,8 @@ class ActivityViewModel : ViewModel() {
         sharedPrefsHelper.getThemeSettings(theme, sharedPreferences)
     }
 
-    fun getLangSettings(sharedPreferences: SharedPreferences) =
-        sharedPrefsHelper.getLanguageSettings(sharedPreferences)
+    fun getLangSettings(sharedPreferences: SharedPreferences, lang : String) =
+        sharedPrefsHelper.getLanguageSettings(sharedPreferences,lang)
 
 
 }

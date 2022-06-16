@@ -3,9 +3,7 @@ package com.example.clonegramtestproject.ui.message.viewmodels
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import com.example.clonegramtestproject.MyApp
-import com.example.clonegramtestproject.R
+import androidx.lifecycle.viewModelScope
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
@@ -34,6 +32,9 @@ class DirectMessageViewModel : ViewModel() {
     var chatUID: String? = null
     var user: CommonModel? = null
 
+    var isEditMessage = false
+    var editedMessageInfo: MessageModel? = null
+
 
     private val firebaseDatabase = Firebase.database
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
@@ -49,11 +50,14 @@ class DirectMessageViewModel : ViewModel() {
     private val rtMessage = RealtimeMessage()
     private val sOperator = StorageOperator()
 
-    fun setVariables(user: CommonModel?) {
-        username = user?.username
-        phone = user?.phone
-        uid = user?.uid
-        chatUID = user?.chatUID
+    fun getUserPicture() : String? = user?.userPicture
+
+    fun setVariables(currentUser : CommonModel?) {
+        user = currentUser
+        username = currentUser?.username
+        phone = currentUser?.phone
+        uid = currentUser?.uid
+        chatUID = currentUser?.chatUID
     }
 
     fun pushMessagePicture(uri: Uri) {
@@ -94,7 +98,11 @@ class DirectMessageViewModel : ViewModel() {
                             }
                         }
                         launch {
-                            setLastMessage(messageData.last())
+                            if (messageData.last().picture) {
+                                changeLastMessage(null,true)
+                            } else {
+                                changeLastMessage(messageData.last().message,false)
+                            }
                             rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
                         }
                         messagesLiveData.value = messageData
@@ -112,30 +120,59 @@ class DirectMessageViewModel : ViewModel() {
             }
         }
 
-    private suspend fun setLastMessage(messageData: MessageModel) {
-        withContext(Dispatchers.IO) {
-            if (messageData.picture) {
-                rtMessage.changeLastMessage(
-                    chatUID.orEmpty(),
-                    LastMessageModel(
-                        message = null,
-                        timestamp = messageData.timestamp,
-                        picture = true
-                    )
-                )
-            } else {
-                rtMessage.changeLastMessage(
-                    chatUID.orEmpty(),
-                    LastMessageModel(
-                        message = messageData.message,
-                        timestamp = messageData.timestamp,
-                        picture = false
-                    )
-                )
-            }
+    private fun editMessage(message: String) {
+        viewModelScope.launch(Dispatchers.IO){
+            rtMessage.editMessage(
+                message,
+                chatUID.orEmpty(),
+                editedMessageInfo?.messageUid.orEmpty()
+            )
         }
     }
 
+    private fun sendMessage(text: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            rtMessage.sendMessage(
+                userUID = uid.orEmpty(),
+                MessageModel(
+                    uidPermission = arrayListOf(
+                        currentUID.orEmpty(),
+                        uid.orEmpty()
+                    ),
+                    uid = currentUID,
+                    message = text,
+                    timestamp = System.currentTimeMillis(),
+                    picture = false
+                ),
+                chatUID.orEmpty()
+            )
+        }
+    }
+
+    fun changeLastMessage(text : String?, picture : Boolean){
+        viewModelScope.launch(Dispatchers.IO){
+            rtMessage.setLastMessage(
+                arrayListOf(currentUID.orEmpty(), uid.orEmpty()),
+                chatUID.orEmpty(),
+                LastMessageModel(
+                    message = text,
+                    timestamp = System.currentTimeMillis(),
+                    picture = picture
+                )
+            )
+        }
+    }
+
+    fun doSendAction(text : String){
+        if (isEditMessage) {
+            editMessage(text)
+            isEditMessage = false
+            editedMessageInfo = null
+        } else {
+            sendMessage(text)
+            changeLastMessage(text,false)
+        }
+    }
     fun addMessageListener() {
         messageListener?.let {
             databaseRefMessages

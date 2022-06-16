@@ -124,31 +124,32 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
 
     private fun checkVerificationCode(credential: PhoneAuthCredential) {
         binding?.apply {
-            lifecycleScope.launch {
-                viewModel.signInWithCredential(credential).apply {
-                    if (etVerifyPhone.text.toString() == "") {
-                        etVerifyPhone.setText(credential.smsCode.toString())
-                    }
-                    etVerifyPhone.setText("")
-                    if (!additionalUserInfo?.isNewUser!!) {
-                        viewModel.setUsername()
-                        viewModel.setToken()
-                        findNavController().navigate(
-                            R.id.verify_to_general,
-                            bundleOf(
-                                USERNAME to viewModel.username
+                lifecycleScope.launch {
+                    viewModel.signInWithCredential(credential)?.let {
+                        if (etVerifyPhone.text.toString() == "") {
+                            etVerifyPhone.setText(credential.smsCode.toString())
+                        }
+                        etVerifyPhone.setText("")
+                        if (!it.additionalUserInfo?.isNewUser!!) {
+                            viewModel.setUsername()
+                            viewModel.setToken()
+                            findNavController().navigate(
+                                R.id.verify_to_general,
+                                bundleOf(
+                                    USERNAME to viewModel.username
+                                )
                             )
-                        )
-                    } else {
-                        findNavController().navigate(
-                            R.id.verify_to_register,
-                            bundleOf(
-                                PHONE to viewModel.phoneNumber
+                        } else {
+                            findNavController().navigate(
+                                R.id.verify_to_register,
+                                bundleOf(
+                                    PHONE to viewModel.phoneNumber
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
+
         }
     }
 

@@ -33,9 +33,8 @@ class RealtimeNewUser {
         }
     }
 
-    suspend fun addUserToMessages(user: CommonModel): String? =
+    suspend fun addUserToChat(user: CommonModel): String? =
         withContext(Dispatchers.IO) {
-
             var key: String? = null
 
             checkExistsChatsWithUser(user)?.let {
@@ -66,7 +65,7 @@ class RealtimeNewUser {
                                 currentUID,
                                 user.uid.orEmpty()
                             ),
-                            permissionUidArray = mapOf(
+                            permissionList = mapOf(
                                 currentUID.orEmpty() to true,
                                 user.uid.orEmpty() to true
                             ),

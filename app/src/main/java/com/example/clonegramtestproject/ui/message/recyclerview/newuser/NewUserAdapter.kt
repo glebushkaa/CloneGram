@@ -10,31 +10,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.databinding.HeaderBinding
+import com.example.clonegramtestproject.databinding.NewUserItemBinding
 
-class NewUserAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView
-.Adapter<NewUserAdapter.UsersViewHolder>() {
+class NewUserAdapter(private val clickListener: (user: CommonModel) -> Unit) :
+    RecyclerView.Adapter<NewUserAdapter.UsersViewHolder>() {
 
     private val oldUsersList = ArrayList<CommonModel>()
 
-    inner class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class UsersViewHolder(val binding: NewUserItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        private val username: TextView = itemView.findViewById(R.id.tvUsername)
-        private val phone: TextView = itemView.findViewById(R.id.tvPhone)
-        private val userIcon : ImageView = itemView.findViewById(R.id.userIcon)
+        fun bind() {
+            binding.apply {
+                tvUsername.text = oldUsersList[adapterPosition].username
+                tvPhone.text = oldUsersList[adapterPosition].phone
 
-        fun bind(user: CommonModel, clickListener: OnItemClickListener) {
-            username.text = user.username
-            phone.text = user.phone
+                oldUsersList[adapterPosition].userPicture?.let {
+                    Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
+                }
 
-            user.userPicture?.let{
-                Glide.with(userIcon.context)
-                    .load(it)
-                    .circleCrop()
-                    .into(userIcon)
-            }
-
-            itemView.setOnClickListener {
-                clickListener.onItemClicked(user)
+                itemView.setOnClickListener {
+                    clickListener(oldUsersList[adapterPosition])
+                }
             }
         }
     }
@@ -43,16 +41,15 @@ class NewUserAdapter(private val itemClickListener: OnItemClickListener) : Recyc
         parent: ViewGroup,
         viewType: Int
     ): UsersViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.new_user_item, parent, false
+        val binding = NewUserItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false
         )
-
-        return UsersViewHolder(itemView)
+        return UsersViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        val user = oldUsersList[position]
-        holder.bind(user, itemClickListener)
+        holder.bind()
     }
 
     override fun getItemCount() = oldUsersList.size
@@ -64,11 +61,5 @@ class NewUserAdapter(private val itemClickListener: OnItemClickListener) : Recyc
         oldUsersList.addAll(newUsersList)
         diffResult.dispatchUpdatesTo(this)
     }
-
-    interface OnItemClickListener {
-        fun onItemClicked(user: CommonModel)
-    }
-
-
 }
 

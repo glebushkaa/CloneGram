@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
+import android.util.Log
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
@@ -23,11 +24,11 @@ class RealtimeMessage {
         message: LastMessageModel
     ) {
         withContext(Dispatchers.IO) {
-            uidArray.forEach {
+            uidArray.forEach { uid ->
                 databaseRefMessages
                     .child(chatUID)
                     .child(LAST_MESSAGE_NODE)
-                    .child(it)
+                    .child(uid)
                     .setValue(message)
             }
         }

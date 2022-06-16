@@ -25,7 +25,7 @@ class SharedPrefsHelper {
         }
     }
 
-    fun getLanguageSettings(sharedPreferences: SharedPreferences): String? {
+    fun getLanguageSettings(sharedPreferences: SharedPreferences,lang : String): String? {
         return if (sharedPreferences.contains(languagePreferencesName)) {
             sharedPreferences.getString(
                 languagePreferencesName,
@@ -33,7 +33,7 @@ class SharedPrefsHelper {
             ).orEmpty()
         } else {
             sharedPreferences.edit()?.putString(
-                languagePreferencesName, Resources.getSystem().getString(R.string.lang)
+                languagePreferencesName, lang
             )?.apply()
             null
         }

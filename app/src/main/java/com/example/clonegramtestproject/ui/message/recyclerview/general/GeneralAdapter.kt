@@ -11,19 +11,20 @@ import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.ItemGeneralMessageBinding
 import java.text.SimpleDateFormat
 
-class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
+class GeneralAdapter : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
 
-    private var rvListener : OnItemClickListener? = null
+    private var rvListener: OnItemClickListener? = null
 
     private var oldUsersArrayList = ArrayList<CommonModel>()
 
     private lateinit var binding: ItemGeneralMessageBinding
 
-    inner class GeneralViewHolder(val binding: ItemGeneralMessageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class GeneralViewHolder(val binding: ItemGeneralMessageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: CommonModel) {
+        fun bind() {
             binding.apply {
-                user.apply {
+                oldUsersArrayList[adapterPosition].apply {
                     userPicture?.let {
                         Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
                     }
@@ -38,7 +39,7 @@ class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAda
                         timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                             .format(it)
                     }
-                    setClickListeners(this,binding)
+                    setClickListeners(this, binding)
                 }
             }
         }
@@ -54,8 +55,7 @@ class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAda
     }
 
     override fun onBindViewHolder(holder: GeneralViewHolder, position: Int) {
-        val userMessageData = oldUsersArrayList[position]
-        holder.bind(userMessageData)
+        holder.bind()
     }
 
     override fun getItemCount() = oldUsersArrayList.size
@@ -68,7 +68,7 @@ class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAda
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun setClickListeners(user : CommonModel, binding: ItemGeneralMessageBinding){
+    private fun setClickListeners(user: CommonModel, binding: ItemGeneralMessageBinding) {
         binding.apply {
 
             binding.root.setOnClickListener {
@@ -95,15 +95,15 @@ class GeneralAdapter(private val uid : String) : RecyclerView.Adapter<GeneralAda
         }
     }
 
-    fun setOnItemClickedListener(listener: OnItemClickListener){
+    fun setOnItemClickedListener(listener: OnItemClickListener) {
         rvListener = listener
     }
 
     interface OnItemClickListener {
         fun onItemClicked(user: CommonModel)
 
-        fun deleteMyChatListener(chatUID : String)
+        fun deleteMyChatListener(chatUID: String)
 
-        fun deleteChatListener(chatUID : String)
+        fun deleteChatListener(chatUID: String)
     }
 }

@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.apply {
             getThemeSettings(theme, getSharedPrefs())
-            getLangSettings(getSharedPrefs())?.let {
+            getLangSettings(getSharedPrefs(),getString(R.string.lang))?.let {
                 langHelper.setLanguage(it, baseContext)
             }
             getCountryCodeList(getInputStream())

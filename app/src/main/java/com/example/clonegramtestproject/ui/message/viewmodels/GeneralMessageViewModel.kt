@@ -34,11 +34,11 @@ class GeneralMessageViewModel : ViewModel() {
     private var allMessagedUsersListener: ValueEventListener? = null
     val allMessagedUsersLiveData = MutableLiveData<List<CommonModel>>()
 
-    var allUsersList = ArrayList<CommonModel>()
-    private var chatsList = ArrayList<CommonModel>()
-    var visibleDataList = ArrayList<CommonModel>()
-    private var filteredUsersList = ArrayList<CommonModel>()
-    var uidList = ArrayList<String?>()
+    val allUsersList = ArrayList<CommonModel>()
+    val uidList = ArrayList<String?>()
+    private val visibleDataList = ArrayList<CommonModel>()
+    private val chatsList = ArrayList<CommonModel>()
+    private val filteredUsersList = ArrayList<CommonModel>()
 
     private val rtMessage = RealtimeMessage()
     private val rtUser = RealtimeUser()
@@ -49,7 +49,7 @@ class GeneralMessageViewModel : ViewModel() {
         text?.let {
             filteredUsersList.clear()
             visibleDataList.forEach {
-                if (it.username?.contains(text) == true &&
+                if (it.username?.lowercase()?.contains(text) == true &&
                     it.uid != currentUID
                 ) {
                     filteredUsersList.add(it)
@@ -62,31 +62,37 @@ class GeneralMessageViewModel : ViewModel() {
     }
 
 
-    suspend fun sortData(list: ArrayList<CommonModel>) {
+    suspend fun sortData(list: ArrayList<CommonModel>): ArrayList<CommonModel> {
         fillChatsList(list)
-        uidList = getUidList()
+        fillUidList()
         sortVisibleData()
-        sortVisibleDataByTime()
+        return sortVisibleDataByTime()
     }
 
-    private suspend fun getUidList() = withContext(Dispatchers.IO) {
-        suspendCoroutine<ArrayList<String?>> { emitter ->
-            emitter.resume(chatsList.mapNotNull {
-                it.uidArray?.apply { remove(auth.currentUser?.uid) }
-            }.flatten().toCollection(ArrayList()))
+    private suspend fun fillUidList() = withContext(Dispatchers.IO) {
+        suspendCoroutine<Unit> { emitter ->
+            uidList.clear()
+            uidList.addAll(
+                chatsList.mapNotNull {
+                    it.uidArray?.apply { remove(auth.currentUser?.uid) }
+                }.flatten() as ArrayList<String?>
+            )
+            emitter.resume(Unit)
         }
     }
 
     private fun fillChatsList(list: ArrayList<CommonModel>) {
-        chatsList = list
+        chatsList.clear()
+        chatsList.addAll(list)
     }
 
-    private fun sortVisibleDataByTime() {
+    private fun sortVisibleDataByTime(): ArrayList<CommonModel> {
         visibleDataList.let { list ->
             list.sortBy {
                 it.lastMessage?.get(currentUID)?.timestamp
             }
             list.reverse()
+            return list
         }
     }
 
@@ -113,13 +119,16 @@ class GeneralMessageViewModel : ViewModel() {
                         }
                     }
                 }
+                visibleDataList.clear()
+                visibleDataList.addAll(visibleData)
                 emitter.resume(visibleData)
             }
         }
 
     suspend fun getAllUsersList() {
         withContext(Dispatchers.IO) {
-            allUsersList = rtGetter.getAllUsersList()
+            allUsersList.clear()
+            allUsersList.addAll(rtGetter.getAllUsersList())
         }
     }
 
@@ -127,37 +136,32 @@ class GeneralMessageViewModel : ViewModel() {
         withContext(Dispatchers.IO) {
             user = rtGetter.getUser(currentUID.orEmpty())
             username = user?.username
-
         }
     }
 
-
     fun getMessagedUsersListener() {
-        var allMessagedUsersList = ArrayList<CommonModel>()
+        val allMessagedUsersList = ArrayList<CommonModel>()
         allMessagedUsersListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     allMessagedUsersList.clear()
                     snapshot.children.forEach {
                         it.getValue(CommonModel::class.java)?.let { value ->
-                            if (value.permissionUidArray?.get(currentUID) == true) {
+                            if (value.permissionList?.get(currentUID) == true) {
                                 allMessagedUsersList.add(value)
                             }
                         }
                     }
+                    allMessagedUsersLiveData.value = allMessagedUsersList
                 } else {
-                    allMessagedUsersList = arrayListOf()
+                    allMessagedUsersLiveData.value = arrayListOf()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("ERROR", error.message)
             }
-        }
-    }
-
-    fun addMessagedUsersListener() {
-        allMessagedUsersListener?.let {
+        }.let {
             databaseRefMessages.addValueEventListener(it)
         }
     }

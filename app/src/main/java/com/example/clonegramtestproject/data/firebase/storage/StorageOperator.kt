@@ -54,7 +54,6 @@ class StorageOperator {
         uri: Uri, user: CommonModel,
         username: String, chatUID: String
     ) {
-
             chatsPicturesRef
                 .child(chatUID)
                 .child(uri.lastPathSegment.toString())
