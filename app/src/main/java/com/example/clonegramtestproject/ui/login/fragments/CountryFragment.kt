@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.Animations
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.Flags
 import com.example.clonegramtestproject.databinding.FragmentCountryBinding

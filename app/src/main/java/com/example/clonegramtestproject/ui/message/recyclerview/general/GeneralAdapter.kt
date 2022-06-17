@@ -11,7 +11,7 @@ import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.ItemGeneralMessageBinding
 import java.text.SimpleDateFormat
 
-class GeneralAdapter : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
+class GeneralAdapter(private val currentUID : String) : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
 
     private var rvListener: OnItemClickListener? = null
 
@@ -29,13 +29,13 @@ class GeneralAdapter : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() 
                         Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
                     }
                     tvUsername.text = username
-                    if (lastMessage?.get(uid)?.picture == true) {
+                    if (lastMessage?.get(currentUID)?.picture == true) {
                         tvMessage.text = userIcon.context.getString(R.string.picture)
                     } else {
-                        tvMessage.text = lastMessage?.get(uid)?.message
+                        tvMessage.text = lastMessage?.get(currentUID)?.message
                     }
 
-                    lastMessage?.get(uid)?.timestamp?.let {
+                    lastMessage?.get(currentUID)?.timestamp?.let {
                         timestamp.text = SimpleDateFormat("HH:mm\nd/MM")
                             .format(it)
                     }

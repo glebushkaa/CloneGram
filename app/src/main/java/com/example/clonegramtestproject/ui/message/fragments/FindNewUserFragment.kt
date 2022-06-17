@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.Animations
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentFindNewUserBinding
@@ -17,7 +17,6 @@ import com.example.clonegramtestproject.ui.message.viewmodels.FindNewUserViewMod
 import com.example.clonegramtestproject.utils.ALL_USER_LIST
 import com.example.clonegramtestproject.utils.UID_LIST
 import com.example.clonegramtestproject.utils.USER
-import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
 
 

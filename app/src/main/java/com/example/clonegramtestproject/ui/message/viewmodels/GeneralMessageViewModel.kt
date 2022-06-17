@@ -8,6 +8,7 @@ import com.example.clonegramtestproject.data.firebase.realtime.RealtimeGetter
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.data.models.CommonModel
+import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -174,6 +175,7 @@ class GeneralMessageViewModel : ViewModel() {
 
     fun deleteMyChat(chatUID: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            rtMessage.changeLastMessage(chatUID,LastMessageModel("",null,false))
             rtUser.deleteChatForCurrentUser(chatUID)
         }
     }

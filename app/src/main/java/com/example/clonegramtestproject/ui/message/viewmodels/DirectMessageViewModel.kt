@@ -41,18 +41,17 @@ class DirectMessageViewModel : ViewModel() {
 
     private var messageListener: ValueEventListener? = null
 
-    private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
+    val currentUID = FirebaseAuth.getInstance().currentUser?.uid
 
     val messagesLiveData = MutableLiveData<List<MessageModel>>()
-    val messageLiveData = MutableLiveData<MessageModel?>()
 
     private val retrofitHelper = RetrofitHelper()
     private val rtMessage = RealtimeMessage()
     private val sOperator = StorageOperator()
 
-    fun getUserPicture() : String? = user?.userPicture
+    fun getUserPicture(): String? = user?.userPicture
 
-    fun setVariables(currentUser : CommonModel?) {
+    fun setVariables(currentUser: CommonModel?) {
         user = currentUser
         username = currentUser?.username
         phone = currentUser?.phone
@@ -68,7 +67,7 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
-    fun sendNotification(retrofit: Retrofit, body: String) {
+    suspend fun sendNotification(retrofit: Retrofit, body: String) {
         user?.let { user ->
             user.tokens?.forEach { token ->
                 retrofitHelper.sendNotification(
@@ -83,6 +82,31 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
+    suspend fun deleteMessage(
+        userMessageModel: MessageModel,
+        messageList: ArrayList<MessageModel>
+    ) {
+        withContext(Dispatchers.IO) {
+            rtMessage
+                .deleteMessage(chatUID.orEmpty(), userMessageModel.messageUid.orEmpty())
+            if (messageList.last() == userMessageModel) {
+                if(messageList.size > 1){
+                    messageList[messageList.indexOf(userMessageModel) - 1].let { messageInfo ->
+                        changeLastMessage(messageInfo.message, messageInfo.picture)
+                    }
+                }else{
+                    changeLastMessage(null, false)
+                }
+            }
+        }
+    }
+
+    suspend fun deleteMessageForMe(messageUID: String) {
+        withContext(Dispatchers.IO) {
+            rtMessage.deleteMessageForMe(chatUID.orEmpty(), messageUID)
+        }
+    }
+
     suspend fun setMessageListener() =
         withContext(Dispatchers.IO) {
             val messageData = ArrayList<MessageModel>()
@@ -92,16 +116,16 @@ class DirectMessageViewModel : ViewModel() {
                         messageData.clear()
                         snapshot.children.forEach { value ->
                             value.getValue(MessageModel::class.java)?.let {
-                                if (it.uidPermission?.contains(uid.orEmpty()) == true) {
+                                if (it.permission?.contains(currentUID.orEmpty()) == true) {
                                     messageData.add(it)
                                 }
                             }
                         }
                         launch {
                             if (messageData.last().picture) {
-                                changeLastMessage(null,true)
+                                changeLastMessage(null, true)
                             } else {
-                                changeLastMessage(messageData.last().message,false)
+                                changeLastMessage(messageData.last().message, false)
                             }
                             rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
                         }
@@ -120,12 +144,12 @@ class DirectMessageViewModel : ViewModel() {
             }
         }
 
-    private fun editMessage(message: String) {
-        viewModelScope.launch(Dispatchers.IO){
+    private fun editMessage(message: String, messageUID: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             rtMessage.editMessage(
                 message,
                 chatUID.orEmpty(),
-                editedMessageInfo?.messageUid.orEmpty()
+                messageUID
             )
         }
     }
@@ -135,7 +159,7 @@ class DirectMessageViewModel : ViewModel() {
             rtMessage.sendMessage(
                 userUID = uid.orEmpty(),
                 MessageModel(
-                    uidPermission = arrayListOf(
+                    permission = arrayListOf(
                         currentUID.orEmpty(),
                         uid.orEmpty()
                     ),
@@ -149,8 +173,8 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
-    fun changeLastMessage(text : String?, picture : Boolean){
-        viewModelScope.launch(Dispatchers.IO){
+    fun changeLastMessage(text: String?, picture: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
             rtMessage.setLastMessage(
                 arrayListOf(currentUID.orEmpty(), uid.orEmpty()),
                 chatUID.orEmpty(),
@@ -163,16 +187,18 @@ class DirectMessageViewModel : ViewModel() {
         }
     }
 
-    fun doSendAction(text : String){
+    fun doSendAction(text: String) {
         if (isEditMessage) {
-            editMessage(text)
+            editMessage(text, editedMessageInfo?.messageUid.orEmpty())
             isEditMessage = false
             editedMessageInfo = null
+            changeLastMessage(text, false)
         } else {
             sendMessage(text)
-            changeLastMessage(text,false)
+            changeLastMessage(text, false)
         }
     }
+
     fun addMessageListener() {
         messageListener?.let {
             databaseRefMessages

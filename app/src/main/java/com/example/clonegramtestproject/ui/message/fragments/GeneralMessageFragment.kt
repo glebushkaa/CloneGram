@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.Animations
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentGeneralMessageBinding
@@ -63,7 +63,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private fun initAdapter() {
         binding?.apply {
-            adapter = GeneralAdapter()
+            adapter = GeneralAdapter(viewModel.currentUID.orEmpty())
             adapter?.setOnItemClickedListener(object : GeneralAdapter.OnItemClickListener {
                 override fun onItemClicked(user: CommonModel) {
                     lifecycleScope.launch {

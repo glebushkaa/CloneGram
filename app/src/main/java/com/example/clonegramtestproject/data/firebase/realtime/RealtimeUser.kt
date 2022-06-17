@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
+import android.util.Log
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.models.TokenModel
@@ -20,6 +21,7 @@ class RealtimeUser {
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
     private val firebaseAuth = FirebaseAuth.getInstance()
+    private val currentUID = firebaseAuth.currentUser?.uid
 
     companion object {
         const val tenDays = 864000000
@@ -39,56 +41,37 @@ class RealtimeUser {
 
     suspend fun deleteChatForCurrentUser(chatUID: String) {
         withContext(Dispatchers.IO) {
-            databaseRefMessages
-                .child(chatUID)
-                .child(DIALOGUES_NODE)
-                .setValue(setNewMessagesPermissions(chatUID))
-                .addOnSuccessListener {
-                    launch {
-                        setNewPermissionUidArray(chatUID)
-                    }
-                }
-        }
-    }
-
-    private suspend fun setNewPermissionUidArray(chatUID: String) {
-        withContext(Dispatchers.IO) {
+            setNewMessagesPermissions(chatUID)
             databaseRefMessages
                 .child(chatUID)
                 .child(PERMISSION_LIST_NODE)
-                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(currentUID.orEmpty())
                 .setValue(false)
         }
     }
 
     private suspend fun setNewMessagesPermissions(chatUID: String) =
         withContext(Dispatchers.IO) {
-            suspendCoroutine<ArrayList<MessageModel>> { emitter ->
-                databaseRefMessages
-                    .child(chatUID)
-                    .child(DIALOGUES_NODE)
-                    .let {
-                        it.get()
-                            .addOnSuccessListener { messageSnapshot ->
-                                val messageArray = ArrayList<MessageModel>()
+            databaseRefMessages
+                .child(chatUID)
+                .child(DIALOGUES_NODE)
+                .let { ref ->
+                    ref.get()
+                        .addOnSuccessListener { messageSnapshot ->
+                            val messageArray = ArrayList<MessageModel>()
+                            if (messageSnapshot.exists()) {
+                                messageSnapshot.children.forEach { message ->
+                                    val newMessage = message.getValue(MessageModel::class.java)
+                                    newMessage?.permission?.remove(
+                                        currentUID
+                                    )
+                                    newMessage?.let { message -> messageArray.add(message) }
 
-                                if (messageSnapshot.exists()) {
-                                    for (message in messageSnapshot.children) {
-                                        val newMessage = message.getValue(MessageModel::class.java)
-                                        newMessage?.uidPermission?.remove(
-                                            firebaseAuth.currentUser?.uid.orEmpty()
-                                        )
-                                        newMessage?.let { messageItem ->
-                                            messageArray.add(messageItem)
-                                        }
-                                    }
                                 }
-                                emitter.resume(messageArray)
-                            }.addOnFailureListener { exception ->
-                                emitter.resumeWithException(exception)
                             }
-                    }
-            }
+                            ref.setValue(messageArray)
+                        }
+                }
         }
 
     suspend fun setUserToken(token: TokenModel) {

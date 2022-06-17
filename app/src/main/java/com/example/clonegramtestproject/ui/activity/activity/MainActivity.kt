@@ -1,19 +1,16 @@
 package com.example.clonegramtestproject.ui.activity.activity
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.clonegramtestproject.LanguageHelper
+import com.example.clonegramtestproject.data.language.LanguageHelper
 import com.example.clonegramtestproject.ui.activity.viewmodel.ActivityViewModel
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
 import com.example.clonegramtestproject.data.models.CodesModel
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
 import com.example.clonegramtestproject.utils.settingsName
 import java.io.InputStream
-import java.util.*
 import kotlin.collections.ArrayList
 
 

@@ -1,4 +1,4 @@
-package com.example.clonegramtestproject
+package com.example.clonegramtestproject.data.language
 
 import android.content.Context
 import android.content.res.Configuration

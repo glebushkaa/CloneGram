@@ -1,4 +1,4 @@
-package com.example.clonegramtestproject
+package com.example.clonegramtestproject.ui
 
 import android.animation.ObjectAnimator
 import android.view.View

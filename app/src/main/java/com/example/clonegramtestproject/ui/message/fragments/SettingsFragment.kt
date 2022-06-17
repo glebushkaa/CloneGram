@@ -12,62 +12,37 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.Animations
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
-import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
-import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
-import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
+import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
+import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.*
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
+    private val viewModel by viewModels<SettingsViewModel>()
     private var binding: FragmentSettingsBinding? = null
-
-    private var phoneNumber = FirebaseAuth.getInstance().currentUser?.phoneNumber
-    private var user: CommonModel? = null
-    private var username: String? = null
-
-    private val rtUser = RealtimeUser()
-    private val cmHelper = CMHelper()
-
     private var sharedPreferences: SharedPreferences? = null
-
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private var storageOperator = StorageOperator()
+    private var sharedPrefsHelper = SharedPrefsHelper()
     private var animator = Animations()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) {
-            if (it != null) {
-                binding?.apply {
-                    lifecycleScope.launch {
-                        animator.showItem(darkBackground, 0.6f)
-                        animator.showItem(progressBar, 1f)
-                        changeIsEnabledAllViews(true)
-
-                        storageOperator.pushUserPicture(it)
-
-                        Glide.with(requireContext())
-                            .load(it)
-                            .circleCrop()
-                            .into(bChangePhoto)
-
-                        animator.hideItem(darkBackground)
-                        animator.hideItem(progressBar)
-                        changeIsEnabledAllViews(false)
-                    }
+            it?.let {
+                lifecycleScope.launch {
+                    changeUserPicture(it)
                 }
             }
         }
@@ -80,20 +55,45 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         setInfoFromSharedPrefs()
         setOnClickListeners()
         addTextChangeListeners()
-        arguments?.let {
-            user = it.getParcelable("user")
-        }
+        getArgs()
+        setViews()
+    }
+
+    private fun setViews() {
         binding?.apply {
-            user?.userPicture?.let {
+            viewModel.user?.userPicture?.let {
                 Glide.with(requireContext())
                     .load(it)
                     .circleCrop()
                     .into(bChangePhoto)
             }
-            username = user?.username
+            viewModel.username = viewModel.user?.username
+            etUsername.setText(viewModel.username)
+            tvPhone.text = viewModel.phoneNumber
+        }
+    }
 
-            etUsername.setText(username)
-            tvPhone.text = phoneNumber
+    private fun getArgs() {
+        arguments?.let {
+            viewModel.user = it.getParcelable(USER)
+        }
+    }
+
+    private suspend fun changeUserPicture(uri: Uri) {
+        binding?.apply {
+            animator.showItem(darkBackground, 0.6f)
+            animator.showItem(progressBar, 1f)
+            changeIsEnabledAllViews(true)
+
+            viewModel.pushUserPicture(uri)
+
+            Glide.with(requireContext()).load(uri)
+                .circleCrop()
+                .into(bChangePhoto)
+
+            animator.hideItem(darkBackground)
+            animator.hideItem(progressBar)
+            changeIsEnabledAllViews(false)
         }
     }
 
@@ -112,22 +112,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
             bSignOut.setOnClickListener {
-                lifecycleScope.launch {
-
-                    cmHelper.getToken().let {
-                        rtUser.deleteToken(it)
-                    }
-
-                    rtUser.signOut()
-                    findNavController().navigate(R.id.settings_to_login)
-                }
+                viewModel.signOut()
+                findNavController().navigate(R.id.settings_to_login)
             }
 
             bDelete.setOnClickListener {
-               lifecycleScope.launch {
-                   rtUser.deleteUser()
-                   findNavController().navigate(R.id.settings_to_login)
-               }
+                viewModel.deleteUser()
+                findNavController().navigate(R.id.settings_to_login)
             }
 
             bAskQuestion.setOnClickListener {
@@ -141,41 +132,41 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
             bChangeUsername.setOnClickListener {
-                if (etUsername.text.toString() == username) {
-                    showSoftKeyboard(etUsername, requireActivity())
-                } else {
-                    username = etUsername.text.toString().trim()
-                    lifecycleScope.launch{
-                        rtUser.changeUsername(username)
+                etUsername.text.toString().trim().apply {
+                    if (this == viewModel.username) {
+                        showSoftKeyboard(etUsername, requireActivity())
+                    } else {
+                        viewModel.username = this
+                        viewModel.changeUsername()
                     }
                 }
+
             }
         }
     }
 
     private fun setInfoFromSharedPrefs() {
         sharedPreferences =
-            requireActivity().getSharedPreferences(
-                settingsName, Context.MODE_PRIVATE
-            )
+            requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
+        sharedPreferences?.let {
+            val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
+            setLangSelectedColor(lang.orEmpty())
 
-        val themeColor = sharedPreferences?.getString(themePreferencesName, "").orEmpty()
-        setThemeSelectedIcon(themeColor)
-
-        val language = sharedPreferences?.getString(languagePreferencesName, "").orEmpty()
-        setLangSelectedColor(language)
+            val theme = sharedPrefsHelper.getThemeSettings(it)
+            setThemeSelectedIcon(theme.orEmpty())
+        }
     }
 
     private fun setOnClickListenersForLangButtons() {
         binding?.apply {
             bEnglish.setOnClickListener {
-                setLanguage("en")
+                setLanguage(EN)
             }
             bUkrainian.setOnClickListener {
-                setLanguage("uk")
+                setLanguage(UKR)
             }
             bRussian.setOnClickListener {
-                setLanguage("ru")
+                setLanguage(RU)
             }
         }
     }
@@ -210,9 +201,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     ) {
         binding?.apply {
             when (lang) {
-                "en" -> setLangButtonColor(arrayListOf(bRussian, bUkrainian), bEnglish)
-                "uk" -> setLangButtonColor(arrayListOf(bRussian, bEnglish), bUkrainian)
-                "ru" -> setLangButtonColor(arrayListOf(bEnglish, bUkrainian), bRussian)
+                EN -> setLangButtonColor(arrayListOf(bRussian, bUkrainian), bEnglish)
+                UKR -> setLangButtonColor(arrayListOf(bRussian, bEnglish), bUkrainian)
+                RU -> setLangButtonColor(arrayListOf(bEnglish, bUkrainian), bRussian)
             }
         }
     }
@@ -220,23 +211,23 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun setOnClickListenersForThemeButtons() {
         binding?.apply {
             bYellowTheme.setOnClickListener {
-                setThemeColor("yellow")
+                setThemeColor(YELLOW_THEME)
             }
 
             bRedTheme.setOnClickListener {
-                setThemeColor("red")
+                setThemeColor(RED_THEME)
             }
 
             bGreenTheme.setOnClickListener {
-                setThemeColor("green")
+                setThemeColor(GREEN_THEME)
             }
 
             bPurpleTheme.setOnClickListener {
-                setThemeColor("purple")
+                setThemeColor(PURPLE_THEME)
             }
 
             bBlueTheme.setOnClickListener {
-                setThemeColor("blue")
+                setThemeColor(BLUE_THEME)
             }
         }
     }
@@ -245,7 +236,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding?.apply {
             etUsername.addTextChangedListener {
                 val text = etUsername.text.toString().trim()
-                bChangeUsername.isActivated = text != username
+                bChangeUsername.isActivated = text != viewModel.user?.username
             }
         }
     }
@@ -269,11 +260,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 bYellowTheme, bRedTheme, bBlueTheme, bGreenTheme, bPurpleTheme
             )
             when (color) {
-                "yellow" -> setButtonIcon(buttonArray, bYellowTheme)
-                "green" -> setButtonIcon(buttonArray, bGreenTheme)
-                "blue" -> setButtonIcon(buttonArray, bBlueTheme)
-                "purple" -> setButtonIcon(buttonArray, bPurpleTheme)
-                "red" -> setButtonIcon(buttonArray, bRedTheme)
+                YELLOW_THEME -> setButtonIcon(buttonArray, bYellowTheme)
+                GREEN_THEME -> setButtonIcon(buttonArray, bGreenTheme)
+                BLUE_THEME -> setButtonIcon(buttonArray, bBlueTheme)
+                PURPLE_THEME -> setButtonIcon(buttonArray, bPurpleTheme)
+                RED_THEME -> setButtonIcon(buttonArray, bRedTheme)
             }
         }
     }

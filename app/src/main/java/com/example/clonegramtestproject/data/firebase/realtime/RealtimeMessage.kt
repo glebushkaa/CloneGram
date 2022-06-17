@@ -1,6 +1,5 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
-import android.util.Log
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
@@ -50,7 +49,7 @@ class RealtimeMessage {
     suspend fun setSeenParameter(
         messageData: ArrayList<MessageModel>,
         chatUID: String
-    ) = withContext(Dispatchers.IO){
+    ) = withContext(Dispatchers.IO) {
         if (messageData.isNotEmpty()) {
             messageData.forEach {
                 if (it.uid != currentUID
@@ -84,7 +83,7 @@ class RealtimeMessage {
                             username = messageModel.username,
                             message = messageModel.message,
                             timestamp = messageModel.timestamp,
-                            uidPermission = messageModel.uidPermission,
+                            permission = messageModel.permission,
                             messageUid = it.key,
                             picture = messageModel.picture
                         )
@@ -142,19 +141,16 @@ class RealtimeMessage {
                 .child(DIALOGUES_NODE)
                 .child(messageUID)
                 .child(PERMISSION_NODE)
-                .let {
-                    it.get().addOnSuccessListener { snapshot ->
-                        if (snapshot.exists()) {
-                            val uidArray = ArrayList<String>()
-                            for (uid in snapshot.children) {
-                                (uid.value as String).let { uidItem ->
-                                    if (uidItem != currentUID) {
-                                        uidArray.add(uidItem)
-                                    }
-                                }
+                .apply {
+                    get().addOnSuccessListener { snapshot ->
+                        val uidList = ArrayList<String>()
+                        snapshot.children.forEach {
+                            val value = it.value as String?
+                            if (value != currentUID) {
+                                uidList.add(value.orEmpty())
                             }
-                            it.setValue(uidArray)
                         }
+                        setValue(uidList)
                     }
                 }
         }

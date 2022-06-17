@@ -15,9 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
-import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
-import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
@@ -39,13 +37,15 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
-                viewModel.pushMessagePicture(it)
-                viewModel.changeLastMessage(null,true)
-                (requireActivity().application as MyApp)
-                    .retrofit?.let { retrofit ->
-                        viewModel.sendNotification(retrofit, getString(R.string.picture))
-                    }
+                lifecycleScope.launch {
+                    viewModel.pushMessagePicture(it)
+                    viewModel.changeLastMessage(null, true)
+                    (requireActivity().application as MyApp)
+                        .retrofit?.let { retrofit ->
+                            viewModel.sendNotification(retrofit, getString(R.string.picture))
+                        }
 
+                }
             }
         }
         super.onCreate(savedInstanceState)
@@ -113,8 +113,33 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     }
 
     private fun initAdapter() {
-        adapter =
-            DirectAdapter(viewModel.messageLiveData, viewModel.user, viewModel.chatUID.orEmpty())
+        adapter = DirectAdapter(viewModel.currentUID.orEmpty())
+        adapter.setOnItemClickedListener(object : DirectAdapter.OnItemClickListener {
+            override fun deleteMessageListener(
+                userMessageModel: MessageModel,
+                messageList: ArrayList<MessageModel>
+            ) {
+                lifecycleScope.launch {
+                    viewModel.deleteMessage(userMessageModel, messageList)
+                }
+            }
+
+            override fun deleteMessageForMeListener(messageUID: String) {
+                lifecycleScope.launch {
+                    viewModel.deleteMessageForMe(messageUID)
+                }
+            }
+
+            override fun editMessage(message: MessageModel) {
+                lifecycleScope.launch {
+                    binding.etMessageField.setText(message.message)
+                    message.message?.length?.let { binding.etMessageField.setSelection(it) }
+                    viewModel.isEditMessage = true
+                    viewModel.editedMessageInfo = message
+                }
+            }
+
+        })
         binding.rvMessages.adapter = adapter
         binding.rvMessages.itemAnimator = null
     }
@@ -125,14 +150,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         ) {
             adapter.setData(it)
             binding.rvMessages.scrollToPosition(it.size - 1)
-        }
-
-        viewModel.messageLiveData.observe(
-            viewLifecycleOwner
-        ) {
-            binding.etMessageField.setText(it?.message)
-            viewModel.isEditMessage = true
-            viewModel.editedMessageInfo = it
         }
     }
 
@@ -153,10 +170,12 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 viewModel.doSendAction(text)
                 etMessageField.setText("")
 
-                (requireActivity().application as MyApp)
-                    .retrofit?.let { retrofit ->
-                        viewModel.sendNotification(retrofit, text)
-                    }
+                lifecycleScope.launch {
+                    (requireActivity().application as MyApp)
+                        .retrofit?.let { retrofit ->
+                            viewModel.sendNotification(retrofit, text)
+                        }
+                }
             }
 
             bBack.setOnClickListener {
@@ -165,6 +184,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         }
 
     }
+
     override fun onPause() {
         super.onPause()
         viewModel.removeMessageListener()

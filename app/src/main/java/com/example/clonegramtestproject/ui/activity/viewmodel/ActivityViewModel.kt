@@ -29,7 +29,7 @@ class ActivityViewModel : ViewModel() {
     }
 
     fun getThemeSettings(theme: Resources.Theme, sharedPreferences: SharedPreferences) {
-        sharedPrefsHelper.getThemeSettings(theme, sharedPreferences)
+        sharedPrefsHelper.setThemeSettings(theme, sharedPreferences)
     }
 
     fun getLangSettings(sharedPreferences: SharedPreferences, lang : String) =

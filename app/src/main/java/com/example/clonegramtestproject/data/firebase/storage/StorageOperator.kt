@@ -66,7 +66,7 @@ class StorageOperator {
                                 username = username,
                                 message = messagePicture.toString(),
                                 timestamp = System.currentTimeMillis(),
-                                uidPermission = arrayListOf(
+                                permission = arrayListOf(
                                     currentUID.orEmpty(),
                                     user.uid.orEmpty()
                                 ),
