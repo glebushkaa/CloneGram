@@ -62,12 +62,12 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
     }
 
     private fun sendVerifyCode() {
-        viewModel.setAuthLang(getSharedPrefs())
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.apply {
-                callback?.let {
+        viewModel.setAuthLang(getString(R.string.lang))
+        lifecycleScope.launch {
+            with(Dispatchers.IO) {
+                viewModel.callback?.let {
                     PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                        .setPhoneNumber(phoneNumber.orEmpty())
+                        .setPhoneNumber(viewModel.phoneNumber.orEmpty())
                         .setTimeout(TIMEOUT_MESSAGE, TimeUnit.SECONDS)
                         .setActivity(requireActivity())
                         .setCallbacks(it)
@@ -78,7 +78,6 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
             }
         }
     }
-
 
     private fun addTextChangedListener() {
         binding?.apply {

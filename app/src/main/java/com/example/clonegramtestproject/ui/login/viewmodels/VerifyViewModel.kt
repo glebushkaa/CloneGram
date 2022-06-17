@@ -66,8 +66,8 @@ class VerifyViewModel : ViewModel() {
         timer.start()
     }
 
-    fun setAuthLang(sharedPreferences: SharedPreferences) {
-        auth.setLanguageCode(sharedPrefsHelper.getLanguage(sharedPreferences))
+    fun setAuthLang(lang : String) {
+        auth.setLanguageCode(lang)
     }
 
     suspend fun signInWithCredential(credential: PhoneAuthCredential) =
