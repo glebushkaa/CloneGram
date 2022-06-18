@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
+import android.util.Log
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
@@ -8,6 +9,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class RealtimeMessage {
 
@@ -46,10 +49,10 @@ class RealtimeMessage {
         }
     }
 
-    suspend fun setSeenParameter(
+    fun setSeenParameter(
         messageData: ArrayList<MessageModel>,
         chatUID: String
-    ) = withContext(Dispatchers.IO) {
+    ) {
         if (messageData.isNotEmpty()) {
             messageData.forEach {
                 if (it.uid != currentUID
@@ -64,6 +67,7 @@ class RealtimeMessage {
                 }
             }
         }
+
     }
 
     suspend fun sendMessage(

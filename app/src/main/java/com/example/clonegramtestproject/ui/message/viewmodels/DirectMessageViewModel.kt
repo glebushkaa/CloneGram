@@ -121,14 +121,12 @@ class DirectMessageViewModel : ViewModel() {
                                 }
                             }
                         }
-                        launch {
+                            rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
                             if (messageData.last().picture) {
                                 changeLastMessage(null, true)
                             } else {
                                 changeLastMessage(messageData.last().message, false)
                             }
-                            rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
-                        }
                         messagesLiveData.value = messageData
                     } else {
                         messagesLiveData.value = arrayListOf()

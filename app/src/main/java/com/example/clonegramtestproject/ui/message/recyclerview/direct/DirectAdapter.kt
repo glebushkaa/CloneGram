@@ -127,7 +127,6 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
     }
 
     private fun setSeenOption(userMessageModel: MessageModel, itemView: View) {
-
         if (userMessageModel == messageList.last()
             && userMessageModel.seen != null
         ) {
@@ -137,7 +136,6 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
             val seen: TextView = itemView.findViewById(R.id.tvSeen)
             seen.visibility = View.GONE
         }
-
     }
 
     inner class OutgoingMessageViewHolder(val binding: OutgoingMessageItemBinding) :
@@ -146,7 +144,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
             binding.message.text = messageList[adapterPosition].message
             binding.timestamp.text = SimpleDateFormat("HH:mm")
                 .format(messageList[adapterPosition].timestamp)
-            setSeenOption(messageList[adapterPosition], itemView)
+            setSeenOption(messageList[adapterPosition], binding.root)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
                     binding.message.context, binding.message,
@@ -166,7 +164,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
         fun bind() {
             Glide.with(binding.picture.context).load(messageList[adapterPosition].message)
                 .into(binding.picture)
-            setSeenOption(messageList[adapterPosition], itemView)
+            setSeenOption(messageList[adapterPosition], binding.root)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
                     binding.picture.context, binding.picture,
