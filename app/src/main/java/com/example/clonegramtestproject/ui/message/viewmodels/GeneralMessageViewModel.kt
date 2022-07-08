@@ -89,10 +89,14 @@ class GeneralMessageViewModel : ViewModel() {
 
     private fun sortVisibleDataByTime(): ArrayList<CommonModel> {
         visibleDataList.let { list ->
-            list.sortBy {
-                it.lastMessage?.get(currentUID)?.timestamp
-            }
-            list.reverse()
+           try {
+               list.sortBy {
+                   it.lastMessage?.get(currentUID)?.timestamp
+               }
+               list.reverse()
+           }catch (e : Exception){
+               Log.e("SortException",e.message.orEmpty())
+           }
             return list
         }
     }

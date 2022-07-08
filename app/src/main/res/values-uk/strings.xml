@@ -71,5 +71,7 @@
     <string name="picture">*зображення*</string>
     <string name="default_notification_channel_id">com.domain.appname.urgent</string>
     <string name="required">обов\'язково*</string>
+    <string name="delete_chat_me">Видалити чат для мене</string>
+    <string name="delete_chat_both">Видалити чат для обох</string>
 
 </resources>

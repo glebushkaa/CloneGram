@@ -5,7 +5,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApp : Application() {
-
     var retrofit: Retrofit? = null
     private val BASE_URL = "https://fcm.googleapis.com/"
 

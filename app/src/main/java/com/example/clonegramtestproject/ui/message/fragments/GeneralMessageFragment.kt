@@ -91,7 +91,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private fun changeSearchViewColor() {
         val editText: EditText = binding!!.searchView
-            .findViewById(androidx.appcompat.R.id.search_src_text)
+            .findViewById(R.id.search_src_text)
         editText.background = null
         editText.setTextColor(resources.getColor(R.color.white, null))
     }

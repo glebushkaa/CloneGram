@@ -70,5 +70,7 @@
     <string name="picture">*picture*</string>
     <string name="default_notification_channel_id">com.domain.appname.urgent</string>
     <string name="required">required*</string>
+    <string name="delete_chat_me">Delete chat for me</string>
+    <string name="delete_chat_both">Delete chat for both</string>
 
 </resources>
