@@ -73,7 +73,6 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_name_line.xml" value="0.297" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_of_country_button.xml" value="0.222" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_phone_number.xml" value="0.3055" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_picture_message.xml" value="0.1905" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_rounded_button.xml" value="0.2785" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_selected_theme_color_button.xml" value="0.251" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_sign_in.xml" value="0.22291666666666668" />
@@ -111,7 +110,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/general_item_message.xml" value="0.3017094017094017" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/header.xml" value="0.25" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/incoming_message_item.xml" value="0.25" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/incoming_picture_message_item.xml" value="0.33" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/incoming_picture_message_item.xml" value="0.284737067122702" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.27247191011235955" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.67" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/outging_message_item.xml" value="0.2520833333333333" />
@@ -141,10 +140,16 @@
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.22239583333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_picture_message.xml" value="0.244" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_find_new_user.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml" value="0.1398148148148148" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/header.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/incoming_message_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/incoming_picture_message_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/outgoing_message_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/outgoing_picture_message_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.244" />
       </map>
     </option>
