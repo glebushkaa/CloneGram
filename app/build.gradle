@@ -53,7 +53,7 @@ dependencies {
 
     def glide = "4.12.0"
     def gson = "2.8.9"
-    def koin = "3.2.0"
+    def koin_version = "3.2.0"
     def lifecycle = "2.4.1"
     def material = "1.6.1"
     def navigation = "2.4.2"
@@ -62,8 +62,8 @@ dependencies {
     def room = "2.4.2"
     
     //Koin
-    implementation "io.insert-koin:koin-android:$koin"
-    implementation "io.insert-koin:koin-android-compat:$koin"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
 
     //GSON
     implementation "com.google.code.gson:gson:$gson"

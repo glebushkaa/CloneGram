@@ -23,11 +23,13 @@ import com.example.clonegramtestproject.utils.USER
 import com.example.clonegramtestproject.utils.getSoftInputMode
 import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
+import org.koin.android.compat.ScopeCompat.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
-    private val viewModel by viewModels<DirectMessageViewModel>()
+    private val viewModel by viewModel<DirectMessageViewModel>()
     private lateinit var binding: FragmentDirectMessageBinding
     private lateinit var adapter: DirectAdapter
 

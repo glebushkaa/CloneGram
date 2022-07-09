@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background_color_instead_white"
-    android:layout_width="match_parent"
-    android:layout_marginTop="2dp"
-    android:elevation="20dp"
-    android:layout_height="50dp">
-
 
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="50dp"
+    android:layout_marginTop="2dp"
+    android:background="@color/background_color_instead_white"
+    android:elevation="20dp">
+
     <TextView
         android:id="@+id/tvCountryName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="0.5"
         android:fontFamily="@font/montserrat_sb"
         android:gravity="start|center"
-        android:layout_weight="0.5"
-        android:singleLine="true"
         android:paddingStart="20dp"
+        android:singleLine="true"
         android:textColor="@color/text_black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,6 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="+380"></TextView>
+        tools:text="+380">
+    </TextView>
 </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>

@@ -140,14 +140,24 @@
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.22239583333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_header.xml" value="0.225" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_picture_message.xml" value="0.244" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/activity_main.xml" value="0.195382642154767" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/country_item.xml" value="0.195382642154767" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_country.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_find_new_user.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_general_message.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml" value="0.1398148148148148" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_register.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_verify_number.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/header.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/incoming_message_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/incoming_picture_message_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/outgoing_message_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/outgoing_picture_message_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.244" />

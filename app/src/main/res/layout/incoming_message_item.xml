@@ -1,53 +1,46 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="8dp"
+    android:elevation="0dp"
+    app:cardBackgroundColor="@color/grey_95"
+    app:cardElevation="0dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:shapeAppearanceOverlay="@style/IncomingCardView">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:elevation="0dp"
-            app:cardBackgroundColor="@color/grey_95"
-            app:cardElevation="0dp"
-            android:layout_marginEnd="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/IncomingCardView">
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/montserrat_sb"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="Текст который должен тут быть">
+    </TextView>
 
-                <TextView
-                    android:id="@+id/message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start"
-                    android:fontFamily="@font/montserrat_sb"
-                    android:layout_marginTop="15dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    tools:text="Текст который должен тут быть">
-                </TextView>
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_marginStart="5dp"
+        android:alpha="0.6"
+        android:fontFamily="@font/montserrat_sb"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        tools:text="9:23">
+    </TextView>
 
-                <TextView
-                    android:id="@+id/timestamp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_gravity="start|bottom"
-                    android:fontFamily="@font/montserrat_sb"
-                    android:textSize="10sp"
-                    android:layout_marginStart="5dp"
-                    android:alpha="0.6"
-                    tools:text="9:23">
-                </TextView>
-
-        </com.google.android.material.card.MaterialCardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

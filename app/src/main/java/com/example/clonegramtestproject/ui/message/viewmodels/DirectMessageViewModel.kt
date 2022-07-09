@@ -24,7 +24,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 
-class DirectMessageViewModel : ViewModel() {
+class DirectMessageViewModel(
+    private val rtMessage: RealtimeMessage,
+    private val sOperator: StorageOperator
+) : ViewModel() {
 
     var username: String? = null
     var phone: String? = null
@@ -46,8 +49,6 @@ class DirectMessageViewModel : ViewModel() {
     val messagesLiveData = MutableLiveData<List<MessageModel>>()
 
     private val retrofitHelper = RetrofitHelper()
-    private val rtMessage = RealtimeMessage()
-    private val sOperator = StorageOperator()
 
     fun getUserPicture(): String? = user?.userPicture
 
@@ -90,11 +91,11 @@ class DirectMessageViewModel : ViewModel() {
             rtMessage
                 .deleteMessage(chatUID.orEmpty(), userMessageModel.messageUid.orEmpty())
             if (messageList.last() == userMessageModel) {
-                if(messageList.size > 1){
+                if (messageList.size > 1) {
                     messageList[messageList.indexOf(userMessageModel) - 1].let { messageInfo ->
                         changeLastMessage(messageInfo.message, messageInfo.picture)
                     }
-                }else{
+                } else {
                     changeLastMessage(null, false)
                 }
             }
@@ -121,12 +122,12 @@ class DirectMessageViewModel : ViewModel() {
                                 }
                             }
                         }
-                            rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
-                            if (messageData.last().picture) {
-                                changeLastMessage(null, true)
-                            } else {
-                                changeLastMessage(messageData.last().message, false)
-                            }
+                        rtMessage.setSeenParameter(messageData, chatUID.orEmpty())
+                        if (messageData.last().picture) {
+                            changeLastMessage(null, true)
+                        } else {
+                            changeLastMessage(messageData.last().message, false)
+                        }
                         messagesLiveData.value = messageData
                     } else {
                         messagesLiveData.value = arrayListOf()
