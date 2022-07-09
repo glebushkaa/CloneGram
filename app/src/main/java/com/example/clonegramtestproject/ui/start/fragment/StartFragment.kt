@@ -12,11 +12,12 @@ import com.example.clonegramtestproject.ui.start.viewmodel.StartViewModel
 import com.example.clonegramtestproject.utils.USER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class StartFragment : Fragment(R.layout.fragment_start) {
-    private val viewModel by viewModels<StartViewModel>()
 
+    private val viewModel by viewModel<StartViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         checkUserExists()

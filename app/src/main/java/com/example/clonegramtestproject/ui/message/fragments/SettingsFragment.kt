@@ -12,29 +12,30 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
 import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
+import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
-    private val viewModel by viewModels<SettingsViewModel>()
+    private val viewModel by viewModel<SettingsViewModel>()
     private var binding: FragmentSettingsBinding? = null
     private var sharedPreferences: SharedPreferences? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private var sharedPrefsHelper = SharedPrefsHelper()
-    private var animator = Animations()
+    private val sharedPrefsHelper : SharedPrefsHelper by inject()
+    private val animator : Animations by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(
@@ -67,8 +68,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                     .circleCrop()
                     .into(bChangePhoto)
             }
-            viewModel.username = viewModel.user?.username
-            etUsername.setText(viewModel.username)
+            etUsername.setText(viewModel.user?.username)
             tvPhone.text = viewModel.phoneNumber
         }
     }
@@ -81,18 +81,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private suspend fun changeUserPicture(uri: Uri) {
         binding?.apply {
-            animator.showItem(darkBackground, 0.6f)
-            animator.showItem(progressBar, 1f)
+            animator.showItem(progressContainer,1f)
+
             changeIsEnabledAllViews(true)
-
             viewModel.pushUserPicture(uri)
-
             Glide.with(requireContext()).load(uri)
                 .circleCrop()
                 .into(bChangePhoto)
 
-            animator.hideItem(darkBackground)
-            animator.hideItem(progressBar)
+            animator.hideItem(progressContainer)
             changeIsEnabledAllViews(false)
         }
     }
@@ -146,8 +143,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setInfoFromSharedPrefs() {
-        sharedPreferences =
-            requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
+        sharedPreferences = requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
         sharedPreferences?.let {
             val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
             setLangSelectedColor(lang.orEmpty())
@@ -234,7 +230,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun addTextChangeListeners() {
         binding?.apply {
-            etUsername.addTextChangedListener {
+            etUsername.addTextChangedListener{
                 val text = etUsername.text.toString().trim()
                 bChangeUsername.isActivated = text != viewModel.user?.username
             }

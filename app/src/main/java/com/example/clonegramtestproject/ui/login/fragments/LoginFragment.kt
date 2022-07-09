@@ -15,11 +15,12 @@ import com.example.clonegramtestproject.databinding.FragmentLoginBinding
 import com.example.clonegramtestproject.ui.login.viewmodels.LoginViewModel
 import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private val viewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModel<LoginViewModel>()
 
     private var binding: FragmentLoginBinding? = null
 

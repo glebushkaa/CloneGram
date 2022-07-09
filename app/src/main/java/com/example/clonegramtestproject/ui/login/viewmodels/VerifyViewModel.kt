@@ -29,9 +29,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class VerifyViewModel : ViewModel() {
-
-    val auth = FirebaseAuth.getInstance()
+class VerifyViewModel(
+    private val rtGetter: RealtimeGetter,
+    private val rtUser : RealtimeUser,
+    private val cmHelper: CMHelper,
+    private val auth : FirebaseAuth
+) : ViewModel() {
 
     var phoneNumber: String? = null
     var username: String? = null
@@ -41,15 +44,9 @@ class VerifyViewModel : ViewModel() {
     var recentToken: PhoneAuthProvider.ForceResendingToken? = null
     var verificationCode: String? = null
 
-    private val rtGetter = RealtimeGetter()
-    private val rtUser = RealtimeUser()
-    private val cmHelper = CMHelper()
-
     var chronometerLiveData = MutableLiveData<Long>()
     var countDownTime = 60L
     var countDownTimerStarted = false
-
-    private val sharedPrefsHelper = SharedPrefsHelper()
 
     fun setCountDownTimer() {
         val timer = object : CountDownTimer(

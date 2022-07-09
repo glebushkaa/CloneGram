@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -22,14 +21,16 @@ import com.example.clonegramtestproject.utils.ALL_USER_LIST
 import com.example.clonegramtestproject.utils.UID_LIST
 import com.example.clonegramtestproject.utils.USER
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
-    private val viewModel by viewModels<GeneralMessageViewModel>()
+    private val viewModel by viewModel<GeneralMessageViewModel>()
 
     private var adapter: GeneralAdapter? = null
     private var binding: FragmentGeneralMessageBinding? = null
-    private val animations = Animations()
+    private val animations : Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
@@ -42,7 +43,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            viewModel.getUserInfo()
+            viewModel.setUser()
             viewModel.getAllUsersList()
             viewModel.getMessagedUsersListener()
             addObserverListeners()
@@ -104,7 +105,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                 Glide.with(requireContext()).load(it).circleCrop().into(userPicture)
             }
         }
-        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = viewModel.username
+        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = viewModel.user?.username
         headerView?.findViewById<TextView>(R.id.tvPhone)?.text = viewModel.phoneNumber
     }
 

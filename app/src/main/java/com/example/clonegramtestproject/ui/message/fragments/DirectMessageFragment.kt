@@ -8,11 +8,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.MyApp
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
@@ -21,9 +19,7 @@ import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAda
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
 import com.example.clonegramtestproject.utils.USER
 import com.example.clonegramtestproject.utils.getSoftInputMode
-import com.example.clonegramtestproject.utils.showToast
 import kotlinx.coroutines.launch
-import org.koin.android.compat.ScopeCompat.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -42,10 +38,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 lifecycleScope.launch {
                     viewModel.pushMessagePicture(it)
                     viewModel.changeLastMessage(null, true)
-                    (requireActivity().application as MyApp)
-                        .retrofit?.let { retrofit ->
-                            viewModel.sendNotification(retrofit, getString(R.string.picture))
-                        }
+                    viewModel.sendNotification(getString(R.string.picture))
 
                 }
             }
@@ -75,7 +68,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     }
 
     private fun setUserPicture() {
-        viewModel.getUserPicture()?.let {
+        viewModel.user?.userPicture?.let {
             Glide.with(requireContext()).load(it).circleCrop().into(binding.profileIcon)
         }
     }
@@ -102,15 +95,17 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     private fun getArgs() {
         arguments?.let {
             it.getParcelable<CommonModel>(USER)?.let { user ->
-                viewModel.setVariables(user)
+                viewModel.user = user
             }
         }
     }
 
     private fun setTextForViews() {
         binding.apply {
-            tvDirectTitle.text = viewModel.username
-            tvDirectSubtitle.text = viewModel.phone
+            viewModel.user?.apply {
+                tvDirectTitle.text = username
+                tvDirectSubtitle.text = phone
+            }
         }
     }
 
@@ -173,10 +168,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 etMessageField.setText("")
 
                 lifecycleScope.launch {
-                    (requireActivity().application as MyApp)
-                        .retrofit?.let { retrofit ->
-                            viewModel.sendNotification(retrofit, text)
-                        }
+                    viewModel.sendNotification(text)
                 }
             }
 

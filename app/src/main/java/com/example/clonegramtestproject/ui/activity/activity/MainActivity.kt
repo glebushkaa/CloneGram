@@ -10,6 +10,7 @@ import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CodesModel
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
 import com.example.clonegramtestproject.utils.settingsName
+import org.koin.android.ext.android.inject
 import java.io.InputStream
 import kotlin.collections.ArrayList
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<ActivityViewModel>()
     private var binding: ActivityMainBinding? = null
 
-    private val langHelper = LanguageHelper()
+    private val langHelper : LanguageHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.apply {

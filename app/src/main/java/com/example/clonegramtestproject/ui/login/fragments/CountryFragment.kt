@@ -20,15 +20,17 @@ import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
 import com.example.clonegramtestproject.utils.closeSoftKeyboard
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CountryFragment : Fragment(R.layout.fragment_country) {
 
-    private val viewModel by viewModels<CountryViewModel>()
+    private val viewModel by viewModel<CountryViewModel>()
     private var binding: FragmentCountryBinding? = null
     private var adapter: CountryAdapter? = null
 
-    private val animations = Animations()
+    private val animations : Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentCountryBinding.bind(view)

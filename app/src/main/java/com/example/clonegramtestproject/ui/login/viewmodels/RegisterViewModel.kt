@@ -10,17 +10,16 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RegisterViewModel : ViewModel() {
-
-    val auth = FirebaseAuth.getInstance()
+class RegisterViewModel(
+    private val rtNewUser: RealtimeNewUser,
+    private val rtUser: RealtimeUser,
+    private val cmHelper: CMHelper,
+    private val auth: FirebaseAuth
+) : ViewModel() {
 
     var phoneNumber: String? = null
     var username: String? = null
     var isRegisterCompleted = false
-
-    private val rtNewUser = RealtimeNewUser()
-    private val rtUser = RealtimeUser()
-    private val cmHelper = CMHelper()
 
     suspend fun addNewUser() {
         withContext(Dispatchers.IO) {

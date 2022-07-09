@@ -29,10 +29,11 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
-    private val viewModel by viewModels<VerifyViewModel>()
+    private val viewModel by viewModel<VerifyViewModel>()
     private var binding: FragmentVerifyNumberBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -15,13 +15,12 @@ import com.example.clonegramtestproject.utils.PHONE
 import com.example.clonegramtestproject.utils.USERNAME
 import com.example.clonegramtestproject.utils.showSnackbar
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    private val viewModel by viewModels<RegisterViewModel>()
-
+    private val viewModel by viewModel<RegisterViewModel>()
     private var binding: FragmentRegisterBinding? = null
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentRegisterBinding.bind(view)

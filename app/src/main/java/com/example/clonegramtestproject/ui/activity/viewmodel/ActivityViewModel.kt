@@ -11,9 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.InputStream
 
-class ActivityViewModel : ViewModel() {
-
-    private val sharedPrefsHelper = SharedPrefsHelper()
+class ActivityViewModel(
+    private val sharedPrefsHelper: SharedPrefsHelper
+) : ViewModel() {
 
     val countryCodeList: ArrayList<CodesModel> = ArrayList()
 
@@ -32,8 +32,8 @@ class ActivityViewModel : ViewModel() {
         sharedPrefsHelper.setThemeSettings(theme, sharedPreferences)
     }
 
-    fun getLangSettings(sharedPreferences: SharedPreferences, lang : String) =
-        sharedPrefsHelper.getLanguageSettings(sharedPreferences,lang)
+    fun getLangSettings(sharedPreferences: SharedPreferences, lang: String) =
+        sharedPrefsHelper.getLanguageSettings(sharedPreferences, lang)
 
 
 }

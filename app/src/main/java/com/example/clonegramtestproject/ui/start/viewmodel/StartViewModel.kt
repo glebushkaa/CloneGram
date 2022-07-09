@@ -10,14 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class StartViewModel : ViewModel() {
+class StartViewModel(
+    private val auth : FirebaseAuth,
+    private val rtGetter: RealtimeGetter,
+    private val rtUser : RealtimeUser,
+    private val cmHelper : CMHelper
+) : ViewModel() {
 
     var user: CommonModel? = null
-    private val auth = FirebaseAuth.getInstance()
-
-    private val rtGetter = RealtimeGetter()
-    private val rtUser = RealtimeUser()
-    private val cmHelper = CMHelper()
 
     suspend fun getUser() {
         user = rtGetter.getUser(auth.uid.orEmpty())

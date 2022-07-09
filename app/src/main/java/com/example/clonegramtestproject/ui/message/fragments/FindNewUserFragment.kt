@@ -18,15 +18,17 @@ import com.example.clonegramtestproject.utils.ALL_USER_LIST
 import com.example.clonegramtestproject.utils.UID_LIST
 import com.example.clonegramtestproject.utils.USER
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
 
-    private val viewModel by viewModels<FindNewUserViewModel>()
+    private val viewModel by viewModel<FindNewUserViewModel>()
     private var binding: FragmentFindNewUserBinding? = null
     private var adapter: NewUserAdapter? = null
 
-    private val animations = Animations()
+    private val animations : Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentFindNewUserBinding.bind(view)

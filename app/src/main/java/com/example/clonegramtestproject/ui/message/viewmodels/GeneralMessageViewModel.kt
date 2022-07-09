@@ -10,26 +10,29 @@ import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GeneralMessageViewModel : ViewModel() {
-    private val firebaseDatabase = Firebase.database
-    private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
-    private var auth = FirebaseAuth.getInstance()
+class GeneralMessageViewModel(
+    private val rtMessage: RealtimeMessage,
+    private val rtUser: RealtimeUser,
+    private val rtGetter: RealtimeGetter,
+    private val currentUser : FirebaseUser?,
+    firebaseDatabase : FirebaseDatabase
+) : ViewModel() {
 
-    val currentUID = FirebaseAuth.getInstance().currentUser?.uid
-    var phoneNumber = auth.currentUser?.phoneNumber
-    var username: String? = null
+    private val refMessages = firebaseDatabase.getReference(MESSAGES_NODE)
+
+    val currentUID = currentUser?.uid
+    var phoneNumber = currentUser?.phoneNumber
     var user: CommonModel? = null
 
     private var allMessagedUsersListener: ValueEventListener? = null
@@ -40,11 +43,6 @@ class GeneralMessageViewModel : ViewModel() {
     private val visibleDataList = ArrayList<CommonModel>()
     private val chatsList = ArrayList<CommonModel>()
     private val filteredUsersList = ArrayList<CommonModel>()
-
-    private val rtMessage = RealtimeMessage()
-    private val rtUser = RealtimeUser()
-    private val rtGetter = RealtimeGetter()
-
 
     suspend fun filterText(text: String?) = suspendCoroutine<ArrayList<CommonModel>> { emitter ->
         text?.let {
@@ -75,7 +73,7 @@ class GeneralMessageViewModel : ViewModel() {
             uidList.clear()
             uidList.addAll(
                 chatsList.mapNotNull {
-                    it.uidArray?.apply { remove(auth.currentUser?.uid) }
+                    it.uidArray?.apply { remove(currentUser?.uid) }
                 }.flatten() as ArrayList<String?>
             )
             emitter.resume(Unit)
@@ -89,14 +87,14 @@ class GeneralMessageViewModel : ViewModel() {
 
     private fun sortVisibleDataByTime(): ArrayList<CommonModel> {
         visibleDataList.let { list ->
-           try {
-               list.sortBy {
-                   it.lastMessage?.get(currentUID)?.timestamp
-               }
-               list.reverse()
-           }catch (e : Exception){
-               Log.e("SortException",e.message.orEmpty())
-           }
+            try {
+                list.sortBy {
+                    it.lastMessage?.get(currentUID)?.timestamp
+                }
+                list.reverse()
+            } catch (e: Exception) {
+                Log.e("SortException", e.message.orEmpty())
+            }
             return list
         }
     }
@@ -137,10 +135,9 @@ class GeneralMessageViewModel : ViewModel() {
         }
     }
 
-    suspend fun getUserInfo() {
+    suspend fun setUser() {
         withContext(Dispatchers.IO) {
             user = rtGetter.getUser(currentUID.orEmpty())
-            username = user?.username
         }
     }
 
@@ -167,19 +164,19 @@ class GeneralMessageViewModel : ViewModel() {
                 Log.e("ERROR", error.message)
             }
         }.let {
-            databaseRefMessages.addValueEventListener(it)
+            refMessages.addValueEventListener(it)
         }
     }
 
     fun removeMessagedUsersListener() {
         allMessagedUsersListener?.let {
-            databaseRefMessages.removeEventListener(it)
+            refMessages.removeEventListener(it)
         }
     }
 
     fun deleteMyChat(chatUID: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            rtMessage.changeLastMessage(chatUID,LastMessageModel("",null,false))
+            rtMessage.changeLastMessage(chatUID, LastMessageModel("", null, false))
             rtUser.deleteChatForCurrentUser(chatUID)
         }
     }

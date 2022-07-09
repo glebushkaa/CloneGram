@@ -6,13 +6,13 @@ import com.example.clonegramtestproject.data.models.CommonModel
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FindNewUserViewModel : ViewModel() {
+class FindNewUserViewModel(
+    private val rtNewUser: RealtimeNewUser
+) : ViewModel() {
 
     val allUsersList = ArrayList<CommonModel>()
     val filteredUsersList = ArrayList<CommonModel>()
     val uidList = ArrayList<String>()
-
-    private val rtNewUser = RealtimeNewUser()
 
     fun getNewUsers() {
         var filterArrayUsers = ArrayList<CommonModel>()

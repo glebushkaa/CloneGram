@@ -11,7 +11,7 @@ class CountryViewModel : ViewModel() {
     var countryList = arrayListOf<CodesModel>()
     var filteredList = arrayListOf<CodesModel>()
 
-   suspend fun filterList(text: String?) : ArrayList<CodesModel>{
+   fun filterList(text: String?) : ArrayList<CodesModel>{
        filteredList.clear()
        countryList.forEach {
            if (it.name.lowercase().contains(text.orEmpty().lowercase())) {
