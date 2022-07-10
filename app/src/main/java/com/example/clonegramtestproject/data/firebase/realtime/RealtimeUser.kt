@@ -1,27 +1,24 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
-import android.util.Log
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.models.TokenModel
 import com.example.clonegramtestproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
-class RealtimeUser {
+class RealtimeUser(
+    firebaseDatabase: FirebaseDatabase,
+    private val currentUser: FirebaseUser?,
+    private val auth: FirebaseAuth
+) {
 
-    private val firebaseDatabase = Firebase.database
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val currentUID = firebaseAuth.currentUser?.uid
+    private val currentUID = currentUser?.uid
 
     companion object {
         const val tenDays = 864000000
@@ -31,8 +28,7 @@ class RealtimeUser {
         withContext(Dispatchers.IO) {
             databaseRefUsers
                 .child(
-                    firebaseAuth.currentUser
-                        ?.uid.orEmpty()
+                    currentUser?.uid.orEmpty()
                 )
                 .child(PICTURE_NODE)
                 .setValue(userPictureLink)
@@ -65,7 +61,7 @@ class RealtimeUser {
                                     newMessage?.permission?.remove(
                                         currentUID
                                     )
-                                    newMessage?.let { message -> messageArray.add(message) }
+                                    newMessage?.let { messageModel -> messageArray.add(messageModel) }
 
                                 }
                             }
@@ -77,7 +73,7 @@ class RealtimeUser {
     suspend fun setUserToken(token: TokenModel) {
         withContext(Dispatchers.IO) {
             databaseRefUsers
-                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(currentUser?.uid.orEmpty())
                 .child(TOKEN_NODE)
                 .child(token.token.orEmpty())
                 .setValue(token)
@@ -85,17 +81,17 @@ class RealtimeUser {
     }
 
     fun signOut() {
-        firebaseAuth.signOut()
+        auth.signOut()
     }
 
     suspend fun deleteUser() {
         withContext(Dispatchers.IO) {
             databaseRefUsers
-                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(currentUser?.uid.orEmpty())
                 .removeValue()
                 .addOnSuccessListener {
-                    firebaseAuth.currentUser?.delete()
-                    firebaseAuth.signOut()
+                    currentUser?.delete()
+                    auth.signOut()
                 }
         }
     }
@@ -103,7 +99,7 @@ class RealtimeUser {
     suspend fun changeUsername(username: String?) {
         withContext(Dispatchers.IO) {
             databaseRefUsers
-                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(currentUser?.uid.orEmpty())
                 .updateChildren(
                     mapOf(USERNAME_NODE to username)
                 )
@@ -113,7 +109,7 @@ class RealtimeUser {
     suspend fun deleteToken(token: String) {
         withContext(Dispatchers.IO) {
             databaseRefUsers
-                .child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(currentUser?.uid.orEmpty())
                 .child(TOKEN_NODE)
                 .child(token)
                 .removeValue()

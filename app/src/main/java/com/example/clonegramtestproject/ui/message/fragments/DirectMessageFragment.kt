@@ -17,6 +17,7 @@ import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
+import com.example.clonegramtestproject.utils.MY_USERNAME
 import com.example.clonegramtestproject.utils.USER
 import com.example.clonegramtestproject.utils.getSoftInputMode
 import kotlinx.coroutines.launch
@@ -34,12 +35,15 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            if (it != null) {
+            it?.let { uri ->
                 lifecycleScope.launch {
-                    viewModel.pushMessagePicture(it)
-                    viewModel.changeLastMessage(null, true)
-                    viewModel.sendNotification(getString(R.string.picture))
-
+                    binding.apply {
+                        editHolder.visibility = View.VISIBLE
+                        Glide.with(requireContext())
+                            .load(uri)
+                            .into(imageHolder)
+                    }
+                    viewModel.lastUri = uri
                 }
             }
         }
@@ -97,6 +101,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             it.getParcelable<CommonModel>(USER)?.let { user ->
                 viewModel.user = user
             }
+            it.getString(MY_USERNAME)?.let{ myUsername ->
+                viewModel.myUsername = myUsername
+            }
         }
     }
 
@@ -114,22 +121,30 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         adapter.setOnItemClickedListener(object : DirectAdapter.OnItemClickListener {
             override fun deleteMessageListener(
                 userMessageModel: MessageModel,
-                messageList: ArrayList<MessageModel>
+                prelastMessage: MessageModel?
             ) {
                 lifecycleScope.launch {
-                    viewModel.deleteMessage(userMessageModel, messageList)
+                    viewModel.deleteMessage(userMessageModel, prelastMessage)
                 }
             }
 
-            override fun deleteMessageForMeListener(messageUID: String) {
+            override fun deleteMessageForMeListener(
+                messageUID: String,
+                prelastMessage: MessageModel?
+            ) {
                 lifecycleScope.launch {
-                    viewModel.deleteMessageForMe(messageUID)
+                    viewModel.deleteMessageForMe(messageUID, prelastMessage)
                 }
             }
 
             override fun editMessage(message: MessageModel) {
                 lifecycleScope.launch {
-                    binding.etMessageField.setText(message.message)
+                    binding.apply {
+                        editHolder.visibility = View.VISIBLE
+                        etMessageField.setText(message.message)
+                        nameHolder.text = viewModel.myUsername
+                        messageHolder.text = message.message
+                    }
                     message.message?.length?.let { binding.etMessageField.setSelection(it) }
                     viewModel.isEditMessage = true
                     viewModel.editedMessageInfo = message
@@ -167,6 +182,8 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 viewModel.doSendAction(text)
                 etMessageField.setText("")
 
+                editHolder.visibility = View.GONE
+
                 lifecycleScope.launch {
                     viewModel.sendNotification(text)
                 }
@@ -174,6 +191,14 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
             bBack.setOnClickListener {
                 findNavController().popBackStack()
+            }
+
+            cancelBtn.setOnClickListener {
+                Glide.with(requireContext()).clear(imageHolder)
+                nameHolder.text = null
+                messageHolder.text = null
+                etMessageField.setText("")
+                editHolder.visibility = View.GONE
             }
         }
 

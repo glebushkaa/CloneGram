@@ -1,24 +1,20 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
-import android.util.Log
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
-class RealtimeMessage {
+class RealtimeMessage(
+    firebaseDatabase: FirebaseDatabase,
+    currentUser: FirebaseUser?
+) {
 
-    private val firebaseDatabase = Firebase.database
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
-    private val firebaseAuth = FirebaseAuth.getInstance()
-
-    private val currentUID = firebaseAuth.currentUser?.uid.orEmpty()
+    private val currentUID = currentUser?.uid.orEmpty()
 
     suspend fun setLastMessage(
         uidArray: ArrayList<String>,

@@ -2,10 +2,11 @@ package com.example.clonegramtestproject.data.firebase.realtime
 
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
-import com.example.clonegramtestproject.utils.PERMISSION_LIST_NODE
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
+import com.example.clonegramtestproject.utils.PERMISSION_LIST_NODE
 import com.example.clonegramtestproject.utils.USERS_NODE
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -14,11 +15,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class RealtimeNewUser {
+class RealtimeNewUser(
+    firebaseDatabase: FirebaseDatabase,
+    currentUser: FirebaseUser?
+) {
 
-    private val firebaseDatabase = Firebase.database
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
-    private val currentUID = FirebaseAuth.getInstance().currentUser?.uid
+    private val currentUID = currentUser?.uid
 
 
     suspend fun addNewUser(

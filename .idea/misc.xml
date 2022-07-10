@@ -140,12 +140,14 @@
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/item_general_message.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/mokra/AndroidStudioProjects/CloneGram/app/src/main/res/layout/new_user_item.xml" value="0.22239583333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_direct_input.xml" value="0.1" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_edit_holder.xml" value="0.208" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_header.xml" value="0.225" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/drawable/shape_picture_message.xml" value="0.244" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/activity_main.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/country_item.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_country.xml" value="0.195382642154767" />
-        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_direct_message.xml" value="0.264" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_find_new_user.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_general_message.xml" value="0.195382642154767" />
         <entry key="..\:/Users/mokra/StudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml" value="0.1398148148148148" />

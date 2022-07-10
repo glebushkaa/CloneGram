@@ -24,8 +24,8 @@ import com.example.clonegramtestproject.ui.start.viewmodel.StartViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -123,18 +123,22 @@ val firebaseModule = module {
 
     fun provideDatabase() = Firebase.database
 
+    fun provideStorageRef() = Firebase.storage.reference
+
+    factory { provideStorageRef() }
+
     factory { provideAuth() }
 
     factory { provideDatabase() }
 
     factory { provideCurrentUser() }
 
-    factory { RealtimeGetter() }
-    factory { RealtimeMessage() }
-    factory { RealtimeNewUser() }
-    factory { RealtimeUser() }
+    factory { RealtimeGetter(get(),get()) }
+    factory { RealtimeMessage(get(),get()) }
+    factory { RealtimeNewUser(get(),get()) }
+    factory { RealtimeUser(get(),get(),get()) }
 
-    factory { StorageOperator() }
+    factory { StorageOperator(get(),get(),get(),get()) }
 
     factory { CMHelper() }
 

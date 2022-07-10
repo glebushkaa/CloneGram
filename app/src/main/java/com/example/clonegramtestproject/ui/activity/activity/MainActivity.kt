@@ -2,22 +2,21 @@ package com.example.clonegramtestproject.ui.activity.activity
 
 import android.content.Context
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.clonegramtestproject.data.language.LanguageHelper
-import com.example.clonegramtestproject.ui.activity.viewmodel.ActivityViewModel
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.language.LanguageHelper
 import com.example.clonegramtestproject.data.models.CodesModel
 import com.example.clonegramtestproject.databinding.ActivityMainBinding
+import com.example.clonegramtestproject.ui.activity.viewmodel.ActivityViewModel
 import com.example.clonegramtestproject.utils.settingsName
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.InputStream
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<ActivityViewModel>()
+    private val viewModel by viewModel<ActivityViewModel>()
     private var binding: ActivityMainBinding? = null
 
     private val langHelper : LanguageHelper by inject()

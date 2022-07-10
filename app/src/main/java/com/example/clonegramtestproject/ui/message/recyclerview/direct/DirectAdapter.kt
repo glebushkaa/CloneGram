@@ -16,7 +16,8 @@ import com.example.clonegramtestproject.databinding.OutgoingMessageItemBinding
 import com.example.clonegramtestproject.databinding.OutgoingPictureMessageItemBinding
 import java.text.SimpleDateFormat
 
-class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DirectAdapter(private val currentUID: String) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val messageList = ArrayList<MessageModel>()
 
     private var rvListener: OnItemClickListener? = null
@@ -95,10 +96,11 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
             when (it.itemId) {
                 R.id.deleteOutgoingMessageForBoth -> rvListener?.deleteMessageListener(
                     userMessageModel,
-                    messageList
+                    getPreLastMessage(userMessageModel)
                 )
                 R.id.deleteOutgoingMessageForMe -> rvListener?.deleteMessageForMeListener(
-                    userMessageModel.messageUid.orEmpty()
+                    userMessageModel.messageUid.orEmpty(),
+                    getPreLastMessage(userMessageModel)
                 )
                 R.id.editMessage -> rvListener?.editMessage(userMessageModel)
             }
@@ -112,10 +114,11 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
             when (it.itemId) {
                 R.id.deleteIncomingMessageForBoth -> rvListener?.deleteMessageListener(
                     userMessageModel,
-                    messageList
+                    getPreLastMessage(userMessageModel)
                 )
                 R.id.deleteIncomingMessageForMe -> rvListener?.deleteMessageForMeListener(
-                    userMessageModel.messageUid.orEmpty()
+                    userMessageModel.messageUid.orEmpty(),
+                    getPreLastMessage(userMessageModel)
                 )
             }
             false
@@ -138,13 +141,20 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
         }
     }
 
+    private fun getPreLastMessage(message: MessageModel) =
+        if (message == messageList.last()) {
+            messageList[messageList.lastIndex - 1]
+        } else {
+            null
+        }
+
     inner class OutgoingMessageViewHolder(val binding: OutgoingMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.message.text = messageList[adapterPosition].message
+            binding.message.text = messageList[bindingAdapterPosition].message
             binding.timestamp.text = SimpleDateFormat("HH:mm")
-                .format(messageList[adapterPosition].timestamp)
-            setSeenOption(messageList[adapterPosition], binding.root)
+                .format(messageList[bindingAdapterPosition].timestamp)
+            setSeenOption(messageList[bindingAdapterPosition], binding.root)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
                     binding.message.context, binding.message,
@@ -152,7 +162,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
                     0,
                     R.style.CustomPopUpStyle
                 )
-                setOutgoingMessageMenu(popUp, messageList[adapterPosition])
+                setOutgoingMessageMenu(popUp, messageList[bindingAdapterPosition])
                 popUp.show()
                 true
             }
@@ -162,9 +172,9 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
     inner class OutgoingPictureViewHolder(val binding: OutgoingPictureMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            Glide.with(binding.picture.context).load(messageList[adapterPosition].message)
+            Glide.with(binding.picture.context).load(messageList[bindingAdapterPosition].message)
                 .into(binding.picture)
-            setSeenOption(messageList[adapterPosition], binding.root)
+            setSeenOption(messageList[bindingAdapterPosition], binding.root)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
                     binding.picture.context, binding.picture,
@@ -172,7 +182,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
                     0,
                     R.style.CustomPopUpStyle
                 )
-                setIncomingMessageMenu(popUp, messageList[adapterPosition])
+                setIncomingMessageMenu(popUp, messageList[bindingAdapterPosition])
                 popUp.show()
                 true
             }
@@ -182,9 +192,9 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
     inner class IncomingMessageViewHolder(val binding: IncomingMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.message.text = messageList[adapterPosition].message
+            binding.message.text = messageList[bindingAdapterPosition].message
             binding.timestamp.text = SimpleDateFormat("HH:mm")
-                .format(messageList[adapterPosition].timestamp)
+                .format(messageList[bindingAdapterPosition].timestamp)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
                     binding.message.context, binding.message,
@@ -192,7 +202,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
                     0,
                     R.style.CustomPopUpStyle
                 )
-                setIncomingMessageMenu(popUp, messageList[adapterPosition])
+                setIncomingMessageMenu(popUp, messageList[bindingAdapterPosition])
                 popUp.show()
                 true
             }
@@ -202,7 +212,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
     inner class IncomingPictureViewHolder(val binding: IncomingPictureMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            Glide.with(binding.picture.context).load(messageList[adapterPosition].message)
+            Glide.with(binding.picture.context).load(messageList[bindingAdapterPosition].message)
                 .into(binding.picture)
             itemView.setOnLongClickListener {
                 val popUp = PopupMenu(
@@ -211,7 +221,7 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
                     0,
                     R.style.CustomPopUpStyle
                 )
-                setIncomingMessageMenu(popUp, messageList[adapterPosition])
+                setIncomingMessageMenu(popUp, messageList[bindingAdapterPosition])
                 popUp.show()
                 true
             }
@@ -221,13 +231,12 @@ class DirectAdapter(private val currentUID: String) : RecyclerView.Adapter<Recyc
     interface OnItemClickListener {
 
         fun deleteMessageListener(
-            userMessageModel: MessageModel,
-            messageList: ArrayList<MessageModel>
+            userMessageModel: MessageModel, prelastMessage: MessageModel?
         )
 
-        fun deleteMessageForMeListener(messageUID: String)
+        fun deleteMessageForMeListener(messageUID: String, prelastMessage: MessageModel?)
 
-        fun editMessage(message : MessageModel)
+        fun editMessage(message: MessageModel)
 
     }
 

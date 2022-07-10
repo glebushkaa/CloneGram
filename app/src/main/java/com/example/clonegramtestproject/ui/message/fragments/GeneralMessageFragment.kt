@@ -18,6 +18,7 @@ import com.example.clonegramtestproject.databinding.FragmentGeneralMessageBindin
 import com.example.clonegramtestproject.ui.message.recyclerview.general.GeneralAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageViewModel
 import com.example.clonegramtestproject.utils.ALL_USER_LIST
+import com.example.clonegramtestproject.utils.MY_USERNAME
 import com.example.clonegramtestproject.utils.UID_LIST
 import com.example.clonegramtestproject.utils.USER
 import kotlinx.coroutines.launch
@@ -71,7 +72,8 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                         findNavController().navigate(
                             R.id.general_to_direct,
                             bundleOf(
-                                USER to user
+                                USER to user,
+                                MY_USERNAME to viewModel.user?.username
                             )
                         )
                     }

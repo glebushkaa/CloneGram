@@ -1,26 +1,22 @@
 package com.example.clonegramtestproject.data.firebase.realtime
 
-import android.util.Log
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.utils.USERNAME_NODE
 import com.example.clonegramtestproject.utils.USERS_NODE
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class RealtimeGetter {
+class RealtimeGetter(
+    firebaseDatabase : FirebaseDatabase,
+    private val auth : FirebaseAuth
+){
 
-    private val firebaseDatabase = Firebase.database
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
-    private val firebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun getAllUsersList() = withContext(Dispatchers.IO) {
         suspendCoroutine<ArrayList<CommonModel>> { emitter ->
@@ -28,7 +24,7 @@ class RealtimeGetter {
                 val allUsersList = ArrayList<CommonModel>()
                 for (user in it.children) {
                     user.getValue(CommonModel::class.java)?.let { info ->
-                        if (info.uid != firebaseAuth.currentUser?.uid) {
+                        if (info.uid != this@RealtimeGetter.auth.currentUser?.uid) {
                             allUsersList.add(info)
                         }
                     }

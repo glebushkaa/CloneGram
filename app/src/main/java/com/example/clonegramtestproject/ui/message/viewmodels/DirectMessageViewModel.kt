@@ -13,28 +13,26 @@ import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
 import com.example.clonegramtestproject.utils.DIALOGUES_NODE
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
 
 class DirectMessageViewModel(
     private val rtMessage: RealtimeMessage,
     private val sOperator: StorageOperator,
     private val retrofitHelper: RetrofitHelper,
-    currentUser : FirebaseUser?,
+    currentUser: FirebaseUser?,
     firebaseDatabase: FirebaseDatabase
 ) : ViewModel() {
 
     var user: CommonModel? = null
+    var myUsername : String? = null
 
     var isEditMessage = false
     var editedMessageInfo: MessageModel? = null
+    var lastUri : Uri? = null
 
     private var messageListener: ValueEventListener? = null
 
@@ -65,28 +63,24 @@ class DirectMessageViewModel(
         }
     }
 
-    suspend fun deleteMessage(
-        userMessageModel: MessageModel,
-        messageList: ArrayList<MessageModel>
+    fun deleteMessage(
+        userMessageModel: MessageModel, prelastMessage: MessageModel?
     ) {
-        withContext(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             rtMessage
                 .deleteMessage(user?.chatUID.orEmpty(), userMessageModel.messageUid.orEmpty())
-            if (messageList.last() == userMessageModel) {
-                if (messageList.size > 1) {
-                    messageList[messageList.indexOf(userMessageModel) - 1].let { messageInfo ->
-                        changeLastMessage(messageInfo.message, messageInfo.picture)
-                    }
-                } else {
-                    changeLastMessage(null, false)
-                }
+            prelastMessage?.apply {
+                changeLastMessage(prelastMessage)
             }
         }
     }
 
-    suspend fun deleteMessageForMe(messageUID: String) {
-        withContext(Dispatchers.IO) {
+    fun deleteMessageForMe(messageUID: String, prelastMessage: MessageModel?) {
+        viewModelScope.launch {
             rtMessage.deleteMessageForMe(user?.chatUID.orEmpty(), messageUID)
+            prelastMessage?.apply {
+                changeLastMessage(prelastMessage)
+            }
         }
     }
 
@@ -105,11 +99,6 @@ class DirectMessageViewModel(
                             }
                         }
                         rtMessage.setSeenParameter(messageData, user?.chatUID.orEmpty())
-                        if (messageData.last().picture) {
-                            changeLastMessage(null, true)
-                        } else {
-                            changeLastMessage(messageData.last().message, false)
-                        }
                         messagesLiveData.value = messageData
                     } else {
                         messagesLiveData.value = arrayListOf()
@@ -154,7 +143,19 @@ class DirectMessageViewModel(
         }
     }
 
-    fun changeLastMessage(text: String?, picture: Boolean) {
+    private fun changeLastMessage(messageModel: MessageModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            rtMessage.changeLastMessage(
+                user?.chatUID.orEmpty(), LastMessageModel(
+                    message = messageModel.message,
+                    timestamp = messageModel.timestamp,
+                    picture = messageModel.picture
+                )
+            )
+        }
+    }
+
+    fun setLastMessage(text: String?, picture: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             rtMessage.setLastMessage(
                 arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
@@ -173,10 +174,13 @@ class DirectMessageViewModel(
             editMessage(text, editedMessageInfo?.messageUid.orEmpty())
             isEditMessage = false
             editedMessageInfo = null
-            changeLastMessage(text, false)
+            setLastMessage(text, false)
         } else {
+            /* pushMessagePicture(uri)*/
+            /* setLastMessage(null, true)
+             sendNotification(getString(R.string.picture))*/
             sendMessage(text)
-            changeLastMessage(text, false)
+            setLastMessage(text, false)
         }
     }
 
