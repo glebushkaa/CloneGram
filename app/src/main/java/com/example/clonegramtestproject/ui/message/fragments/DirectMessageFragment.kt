@@ -2,6 +2,9 @@ package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
+import android.transition.Transition
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
@@ -15,12 +18,14 @@ import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
 import com.example.clonegramtestproject.utils.MY_USERNAME
 import com.example.clonegramtestproject.utils.USER
 import com.example.clonegramtestproject.utils.getSoftInputMode
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -32,6 +37,8 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     private var originalSoftInputMode: Int? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
+
+    private val animations : Animations by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
@@ -141,6 +148,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 lifecycleScope.launch {
                     binding.apply {
                         editHolder.visibility = View.VISIBLE
+                        animations.showEditHolder(editHolder,inputHolder)
                         etMessageField.setText(message.message)
                         nameHolder.text = viewModel.myUsername
                         messageHolder.text = message.message
@@ -181,7 +189,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 val text = etMessageField.text.toString().trim()
                 viewModel.doSendAction(text)
                 etMessageField.setText("")
-
                 editHolder.visibility = View.GONE
 
                 lifecycleScope.launch {

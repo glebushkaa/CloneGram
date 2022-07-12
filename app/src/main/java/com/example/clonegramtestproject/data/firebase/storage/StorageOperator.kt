@@ -1,17 +1,12 @@
 package com.example.clonegramtestproject.data.firebase.storage
 
 import android.net.Uri
-import com.example.clonegramtestproject.data.models.CommonModel
-import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.utils.CHATS_PICTURES_NODE
 import com.example.clonegramtestproject.utils.USERS_PICTURES_NODE
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,36 +48,20 @@ class StorageOperator(
     }
 
     fun pushMessagePicture(
-        uri: Uri, user: CommonModel,
-        username: String, chatUID: String
-    ) {
+        uri: Uri, chatUID: String
+    ) : String?{
+        var imageUri : String? = null
+
         chatsPicturesRef
             .child(chatUID)
             .child(uri.lastPathSegment.toString())
             .putFile(uri).addOnSuccessListener {
-
                 it.metadata?.reference?.downloadUrl
-                    ?.addOnSuccessListener { messagePicture ->
-                        val messageModel = MessageModel(
-                            uid = currentUID,
-                            username = username,
-                            message = messagePicture.toString(),
-                            timestamp = System.currentTimeMillis(),
-                            permission = arrayListOf(
-                                currentUID.orEmpty(),
-                                user.uid.orEmpty()
-                            ),
-                            picture = true
-                        )
-
-                        CoroutineScope(Dispatchers.IO).launch {
-                            rtMessage.sendMessage(
-                                user.uid.orEmpty(),
-                                messageModel,
-                                chatUID = chatUID
-                            )
-                        }
+                    ?.addOnSuccessListener { uri ->
+                        imageUri = uri.toString()
                     }
             }
+
+        return imageUri
     }
 }

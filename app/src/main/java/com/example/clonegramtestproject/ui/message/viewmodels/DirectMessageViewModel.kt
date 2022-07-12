@@ -4,17 +4,20 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
+import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
-import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
-import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
 import com.example.clonegramtestproject.utils.DIALOGUES_NODE
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,13 +44,8 @@ class DirectMessageViewModel(
 
     val messagesLiveData = MutableLiveData<List<MessageModel>>()
 
-    fun pushMessagePicture(uri: Uri) {
-        user?.apply {
-            sOperator.pushMessagePicture(
-                uri, this, username.orEmpty(), chatUID.orEmpty()
-            )
-        }
-    }
+    fun pushMessagePicture(uri: Uri) =
+        sOperator.pushMessagePicture(uri,user?.chatUID.orEmpty())
 
     suspend fun sendNotification(body: String) {
         user?.apply {
@@ -176,11 +174,13 @@ class DirectMessageViewModel(
             editedMessageInfo = null
             setLastMessage(text, false)
         } else {
-            /* pushMessagePicture(uri)*/
-            /* setLastMessage(null, true)
-             sendNotification(getString(R.string.picture))*/
-            sendMessage(text)
-            setLastMessage(text, false)
+            lastUri?.let { uri ->
+                pushMessagePicture(uri)
+            }
+           /* pushMessagePicture(uri)
+            setLastMessage(null, true)
+            sendNotification(getString(R.string.picture))*//*
+            setLastMessage(text, false)*/
         }
     }
 
