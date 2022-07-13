@@ -10,6 +10,7 @@ import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,11 +26,11 @@ class GeneralMessageViewModel(
     private val rtMessage: RealtimeMessage,
     private val rtUser: RealtimeUser,
     private val rtGetter: RealtimeGetter,
-    private val currentUser : FirebaseUser?,
     firebaseDatabase : FirebaseDatabase
 ) : ViewModel() {
 
     private val refMessages = firebaseDatabase.getReference(MESSAGES_NODE)
+    private val currentUser = FirebaseAuth.getInstance().currentUser
 
     val currentUID = currentUser?.uid
     var phoneNumber = currentUser?.phoneNumber
@@ -116,7 +117,8 @@ class GeneralMessageViewModel(
                                     chatUID = messageItem.chatUID,
                                     uid = it.uid,
                                     userPicture = it.userPicture,
-                                    tokens = it.tokens
+                                    tokens = it.tokens,
+                                    userBio = it.userBio
                                 )
                             )
                         }

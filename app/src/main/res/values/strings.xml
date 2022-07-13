@@ -72,5 +72,6 @@
     <string name="required">required*</string>
     <string name="delete_chat_me">Delete chat for me</string>
     <string name="delete_chat_both">Delete chat for both</string>
+    <string name="close">Close</string>
 
 </resources>

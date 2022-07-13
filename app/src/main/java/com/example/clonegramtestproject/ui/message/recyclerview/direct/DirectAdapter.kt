@@ -102,7 +102,7 @@ class DirectAdapter(private val currentUID: String) :
                     userMessageModel.messageUid.orEmpty(),
                     getPreLastMessage(userMessageModel)
                 )
-                R.id.editMessage -> rvListener?.editMessage(userMessageModel)
+                R.id.editMessage -> rvListener?.editMessage(userMessageModel,userMessageModel == messageList.last())
             }
             false
         }
@@ -236,7 +236,7 @@ class DirectAdapter(private val currentUID: String) :
 
         fun deleteMessageForMeListener(messageUID: String, prelastMessage: MessageModel?)
 
-        fun editMessage(message: MessageModel)
+        fun editMessage(message: MessageModel,isLastMessage : Boolean)
 
     }
 

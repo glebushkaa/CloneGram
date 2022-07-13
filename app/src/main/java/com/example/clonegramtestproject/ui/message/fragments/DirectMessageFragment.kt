@@ -2,9 +2,6 @@ package com.example.clonegramtestproject.ui.message.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.Transition
-import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
@@ -15,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.ui.message.DirectUserDialog
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
@@ -38,20 +36,18 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
     private var originalSoftInputMode: Int? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private val animations : Animations by inject()
+    private val animations: Animations by inject()
+
+    private var dialog: DirectUserDialog? = null
+
+    companion object {
+        private const val IMAGE_PATH = "image/*"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let { uri ->
-                lifecycleScope.launch {
-                    binding.apply {
-                        editHolder.visibility = View.VISIBLE
-                        Glide.with(requireContext())
-                            .load(uri)
-                            .into(imageHolder)
-                    }
-                    viewModel.lastUri = uri
-                }
+                viewModel.doSendAction(uri = uri)
             }
         }
         super.onCreate(savedInstanceState)
@@ -68,6 +64,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         setLiveDataObservers()
         setUserPicture()
         setSoftInputMode()
+        setDialog()
     }
 
     override fun onStart() {
@@ -78,9 +75,18 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         }
     }
 
+    private fun setDialog() {
+        viewModel.apply {
+            dialog = DirectUserDialog(user)
+        }
+    }
+
     private fun setUserPicture() {
         viewModel.user?.userPicture?.let {
-            Glide.with(requireContext()).load(it).circleCrop().into(binding.profileIcon)
+            Glide.with(requireContext())
+                .load(it)
+                .circleCrop()
+                .into(binding.profileIcon)
         }
     }
 
@@ -108,7 +114,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             it.getParcelable<CommonModel>(USER)?.let { user ->
                 viewModel.user = user
             }
-            it.getString(MY_USERNAME)?.let{ myUsername ->
+            it.getString(MY_USERNAME)?.let { myUsername ->
                 viewModel.myUsername = myUsername
             }
         }
@@ -130,33 +136,28 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                 userMessageModel: MessageModel,
                 prelastMessage: MessageModel?
             ) {
-                lifecycleScope.launch {
-                    viewModel.deleteMessage(userMessageModel, prelastMessage)
-                }
+                viewModel.deleteMessage(userMessageModel, prelastMessage)
             }
 
             override fun deleteMessageForMeListener(
                 messageUID: String,
                 prelastMessage: MessageModel?
             ) {
-                lifecycleScope.launch {
-                    viewModel.deleteMessageForMe(messageUID, prelastMessage)
-                }
+                viewModel.deleteMessageForMe(messageUID, prelastMessage)
             }
 
-            override fun editMessage(message: MessageModel) {
-                lifecycleScope.launch {
-                    binding.apply {
-                        editHolder.visibility = View.VISIBLE
-                        animations.showEditHolder(editHolder,inputHolder)
-                        etMessageField.setText(message.message)
-                        nameHolder.text = viewModel.myUsername
-                        messageHolder.text = message.message
-                    }
-                    message.message?.length?.let { binding.etMessageField.setSelection(it) }
-                    viewModel.isEditMessage = true
-                    viewModel.editedMessageInfo = message
+            override fun editMessage(message: MessageModel,isLastMessage : Boolean) {
+                binding.apply {
+                    editHolder.visibility = View.VISIBLE
+                    animations.showEditHolder(editHolder)
+                    etMessageField.setText(message.message)
+                    nameHolder.text = viewModel.myUsername
+                    messageHolder.text = message.message
                 }
+                message.message?.length?.let { binding.etMessageField.setSelection(it) }
+                viewModel.isEditMessage = true
+                viewModel.isEditedMessageLast = isLastMessage
+                viewModel.editedMessageInfo = message
             }
 
         })
@@ -178,7 +179,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         binding.apply {
 
             bPhotoPicker.setOnClickListener {
-                fileChooserContract?.launch("image/*")
+                fileChooserContract?.launch(IMAGE_PATH)
             }
 
             etMessageField.addTextChangedListener {
@@ -187,13 +188,9 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
             bSendMessage.setOnClickListener {
                 val text = etMessageField.text.toString().trim()
-                viewModel.doSendAction(text)
+                viewModel.doSendAction(text = text)
                 etMessageField.setText("")
                 editHolder.visibility = View.GONE
-
-                lifecycleScope.launch {
-                    viewModel.sendNotification(text)
-                }
             }
 
             bBack.setOnClickListener {
@@ -201,11 +198,15 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             }
 
             cancelBtn.setOnClickListener {
-                Glide.with(requireContext()).clear(imageHolder)
                 nameHolder.text = null
                 messageHolder.text = null
                 etMessageField.setText("")
+                animations.hideEditHolder(editHolder)
                 editHolder.visibility = View.GONE
+            }
+
+            profileIcon.setOnClickListener {
+                dialog?.show(parentFragmentManager, "DIALOG")
             }
         }
 

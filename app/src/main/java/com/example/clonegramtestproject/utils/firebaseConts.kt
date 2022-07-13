@@ -15,6 +15,7 @@ const val PERMISSION_NODE = "permission"
 const val SEEN_NODE = "seen"
 const val PICTURE_NODE = "userPicture"
 const val TOKEN_NODE = "tokens"
+const val BIO_NODE = "userBio"
 
 //Firebase Storage Database Nodes
 const val CHATS_PICTURES_NODE = "chatsPictures"

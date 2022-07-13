@@ -19,9 +19,10 @@ import org.koin.java.KoinJavaComponent.inject
 class SettingsViewModel(
     private val sOperator: StorageOperator,
     private val rtUser: RealtimeUser,
-    private val cmHelper: CMHelper,
-    currentUser: FirebaseUser?
+    private val cmHelper: CMHelper
 ) : ViewModel() {
+
+    private val currentUser = FirebaseAuth.getInstance().currentUser
 
     var phoneNumber = currentUser?.phoneNumber
     var user: CommonModel? = null
@@ -29,6 +30,12 @@ class SettingsViewModel(
 
     suspend fun pushUserPicture(uri: Uri) = withContext(Dispatchers.IO) {
         sOperator.pushUserPicture(uri)
+    }
+
+    fun changeBio(bio : String){
+        viewModelScope.launch(Dispatchers.IO){
+            rtUser.changeBio(bio)
+        }
     }
 
     fun changeUsername() {

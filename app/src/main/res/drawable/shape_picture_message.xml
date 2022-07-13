@@ -7,7 +7,7 @@
     </corners>
 
     <solid
-        android:color="@color/app_color_red">
+        android:color="?appColor">
     </solid>
 
 </shape>

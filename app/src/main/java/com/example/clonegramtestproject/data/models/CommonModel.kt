@@ -15,5 +15,6 @@ class CommonModel(
     val uid : String? = null,
     val singleChat : Boolean? = null,
     val userPicture : String? = null,
-    val tokens : HashMap<String?, TokenModel?>? = null
+    val tokens : HashMap<String?, TokenModel?>? = null,
+    val userBio : String? = null
 ) : Parcelable

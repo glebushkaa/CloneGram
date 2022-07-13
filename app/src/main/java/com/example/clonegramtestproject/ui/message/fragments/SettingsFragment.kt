@@ -19,6 +19,7 @@ import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
+import com.example.clonegramtestproject.ui.message.SettingsProgressDialog
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
@@ -35,7 +36,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
     private val sharedPrefsHelper : SharedPrefsHelper by inject()
-    private val animator : Animations by inject()
+
+    private var dialog = SettingsProgressDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(
@@ -62,14 +64,17 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setViews() {
         binding?.apply {
-            viewModel.user?.userPicture?.let {
-                Glide.with(requireContext())
-                    .load(it)
-                    .circleCrop()
-                    .into(bChangePhoto)
+            viewModel.apply {
+                user?.userPicture?.let {
+                    Glide.with(requireContext())
+                        .load(it)
+                        .circleCrop()
+                        .into(bChangePhoto)
+                }
+                etUsername.setText(user?.username)
+                tvPhone.text = phoneNumber
+                etBio.setText(user?.userBio)
             }
-            etUsername.setText(viewModel.user?.username)
-            tvPhone.text = viewModel.phoneNumber
         }
     }
 
@@ -81,16 +86,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private suspend fun changeUserPicture(uri: Uri) {
         binding?.apply {
-            animator.showItem(progressContainer,1f)
-
-            changeIsEnabledAllViews(true)
+            dialog.show(parentFragmentManager,"SETTINGS")
             viewModel.pushUserPicture(uri)
             Glide.with(requireContext()).load(uri)
                 .circleCrop()
                 .into(bChangePhoto)
-
-            animator.hideItem(progressContainer)
-            changeIsEnabledAllViews(false)
+            dialog.dismiss()
         }
     }
 
@@ -127,6 +128,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 )
             }
 
+            bChangeBio.setOnClickListener{
+                viewModel.changeBio(etBio.text.toString())
+            }
 
             bChangeUsername.setOnClickListener {
                 etUsername.text.toString().trim().apply {
@@ -285,21 +289,5 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
         button.icon = ResourcesCompat
             .getDrawable(resources, R.drawable.ic_check_flag, null)
-    }
-
-    private fun changeIsEnabledAllViews(enabled: Boolean) {
-        binding?.apply {
-            val buttonArray = arrayListOf(
-                bAskQuestion, bEnglish,
-                bUkrainian, bRussian,
-                bPurpleTheme, bGreenTheme,
-                bBlueTheme, bRedTheme,
-                bYellowTheme, bBack,
-                bLogo, bChangePhoto, bChangeUsername, etUsername
-            )
-            buttonArray.forEach {
-                it.isEnabled = !enabled
-            }
-        }
     }
 }

@@ -5,30 +5,36 @@ import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.data.models.TokenModel
 import com.example.clonegramtestproject.utils.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RealtimeUser(
     firebaseDatabase: FirebaseDatabase,
-    private val currentUser: FirebaseUser?,
-    private val auth: FirebaseAuth
 ) {
+    private val auth = FirebaseAuth.getInstance()
+    private val refMessages = firebaseDatabase.getReference(MESSAGES_NODE)
+    private val refUsers = firebaseDatabase.getReference(USERS_NODE)
 
-    private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
-    private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
-    private val currentUID = currentUser?.uid
+    private val currentUser = auth.currentUser
+    private val currentUID = currentUser?.uid.orEmpty()
 
     companion object {
         const val tenDays = 864000000
     }
 
+    fun changeBio(bio : String){
+        refUsers
+            .child(currentUID)
+            .child(BIO_NODE)
+            .setValue(bio)
+    }
+
     suspend fun setUserPicture(userPictureLink: String) {
         withContext(Dispatchers.IO) {
-            databaseRefUsers
+            refUsers
                 .child(
-                    currentUser?.uid.orEmpty()
+                    currentUID
                 )
                 .child(PICTURE_NODE)
                 .setValue(userPictureLink)
@@ -38,17 +44,17 @@ class RealtimeUser(
     suspend fun deleteChatForCurrentUser(chatUID: String) {
         withContext(Dispatchers.IO) {
             setNewMessagesPermissions(chatUID)
-            databaseRefMessages
+            refMessages
                 .child(chatUID)
                 .child(PERMISSION_LIST_NODE)
-                .child(currentUID.orEmpty())
+                .child(currentUID)
                 .setValue(false)
         }
     }
 
     private suspend fun setNewMessagesPermissions(chatUID: String) =
         withContext(Dispatchers.IO) {
-            databaseRefMessages
+            refMessages
                 .child(chatUID)
                 .child(DIALOGUES_NODE)
                 .let { ref ->
@@ -72,7 +78,7 @@ class RealtimeUser(
 
     suspend fun setUserToken(token: TokenModel) {
         withContext(Dispatchers.IO) {
-            databaseRefUsers
+            refUsers
                 .child(currentUser?.uid.orEmpty())
                 .child(TOKEN_NODE)
                 .child(token.token.orEmpty())
@@ -86,8 +92,8 @@ class RealtimeUser(
 
     suspend fun deleteUser() {
         withContext(Dispatchers.IO) {
-            databaseRefUsers
-                .child(currentUser?.uid.orEmpty())
+            refUsers
+                .child(currentUID)
                 .removeValue()
                 .addOnSuccessListener {
                     currentUser?.delete()
@@ -98,8 +104,8 @@ class RealtimeUser(
 
     suspend fun changeUsername(username: String?) {
         withContext(Dispatchers.IO) {
-            databaseRefUsers
-                .child(currentUser?.uid.orEmpty())
+            refUsers
+                .child(currentUID)
                 .updateChildren(
                     mapOf(USERNAME_NODE to username)
                 )
@@ -108,8 +114,8 @@ class RealtimeUser(
 
     suspend fun deleteToken(token: String) {
         withContext(Dispatchers.IO) {
-            databaseRefUsers
-                .child(currentUser?.uid.orEmpty())
+            refUsers
+                .child(currentUID)
                 .child(TOKEN_NODE)
                 .child(token)
                 .removeValue()

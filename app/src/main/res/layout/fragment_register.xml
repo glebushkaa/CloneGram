@@ -55,6 +55,7 @@
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="15"
             android:fontFamily="@font/montserrat_sb"
             android:textCursorDrawable="@drawable/shape_cursor_login" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -67,6 +68,7 @@
         android:layout_marginStart="54dp"
         android:layout_marginEnd="54dp"
         android:layout_marginTop="16dp"
+        android:maxEms="15"
         android:hint="@string/surname"
         app:helperText="@string/optional"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +80,7 @@
             android:id="@+id/etSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="15"
             android:textCursorDrawable="@drawable/shape_cursor_login"
             android:fontFamily="@font/montserrat_sb" />
 

@@ -1,6 +1,5 @@
 package com.example.clonegramtestproject.data.retrofit
 
-import android.util.Log
 import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.data.models.RequestModel
 

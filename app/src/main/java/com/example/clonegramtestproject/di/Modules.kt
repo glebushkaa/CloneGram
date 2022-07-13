@@ -40,7 +40,7 @@ val activityViewModelModule = module {
 
 val startViewModelModule = module {
     viewModel{
-        StartViewModel(get(),get(),get(),get())
+        StartViewModel(get(),get(),get())
     }
 }
 
@@ -50,10 +50,10 @@ val loginViewModelModule = module {
         LoginViewModel()
     }
     viewModel {
-        RegisterViewModel(get(),get(),get(),get())
+        RegisterViewModel(get(),get(),get())
     }
     viewModel{
-        VerifyViewModel(get(),get(),get(),get())
+        VerifyViewModel(get(),get(),get())
     }
     viewModel{
         CountryViewModel()
@@ -63,16 +63,16 @@ val loginViewModelModule = module {
 val messageViewModelsModule = module {
 
     viewModel {
-        DirectMessageViewModel(get(), get(),get(),get(),get())
+        DirectMessageViewModel(get(), get(),get(),get())
     }
     viewModel{
-        GeneralMessageViewModel(get(),get(),get(),get(),get())
+        GeneralMessageViewModel(get(),get(),get(),get())
     }
     viewModel{
         FindNewUserViewModel(get())
     }
     viewModel {
-        SettingsViewModel(get(),get(),get(),get())
+        SettingsViewModel(get(),get(),get())
     }
 }
 
@@ -117,8 +117,6 @@ val sharedPrefsModule = module {
 
 val firebaseModule = module {
 
-    fun provideAuth() = FirebaseAuth.getInstance()
-
     fun provideCurrentUser() = FirebaseAuth.getInstance().currentUser
 
     fun provideDatabase() = Firebase.database
@@ -127,18 +125,16 @@ val firebaseModule = module {
 
     factory { provideStorageRef() }
 
-    factory { provideAuth() }
-
     factory { provideDatabase() }
 
     factory { provideCurrentUser() }
 
-    factory { RealtimeGetter(get(),get()) }
-    factory { RealtimeMessage(get(),get()) }
-    factory { RealtimeNewUser(get(),get()) }
-    factory { RealtimeUser(get(),get(),get()) }
+    factory { RealtimeGetter(get()) }
+    factory { RealtimeMessage(get()) }
+    factory { RealtimeNewUser(get()) }
+    factory { RealtimeUser(get()) }
 
-    factory { StorageOperator(get(),get(),get(),get()) }
+    factory { StorageOperator(get(),get())}
 
     factory { CMHelper() }
 

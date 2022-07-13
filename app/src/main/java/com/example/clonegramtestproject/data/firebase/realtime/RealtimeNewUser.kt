@@ -5,6 +5,7 @@ import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
 import com.example.clonegramtestproject.utils.PERMISSION_LIST_NODE
 import com.example.clonegramtestproject.utils.USERS_NODE
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -16,11 +17,13 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class RealtimeNewUser(
-    firebaseDatabase: FirebaseDatabase,
-    currentUser: FirebaseUser?
+    firebaseDatabase: FirebaseDatabase
 ) {
 
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
+
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUser = auth.currentUser
     private val currentUID = currentUser?.uid
 
 

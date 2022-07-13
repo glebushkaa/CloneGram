@@ -3,22 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.message.fragments.DirectMessageFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/directBackground"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
         android:alpha="0.3"
-        app:srcCompat="@drawable/background_gradient"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp">
-    </androidx.appcompat.widget.AppCompatImageView>
+        app:srcCompat="@drawable/background_gradient"></androidx.appcompat.widget.AppCompatImageView>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -43,8 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
             app:layout_constraintVertical_bias="1.0"
             app:stackFromEnd="true"
-            tools:listitem="@layout/incoming_message_item">
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/incoming_message_item"></androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/bottomHolder"
@@ -55,26 +52,11 @@
 
             <LinearLayout
                 android:id="@+id/editHolder"
-                android:visibility="gone"
-                android:alpha="0"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_height="36dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_gravity="center|start">
-                    <ImageView
-                        android:id="@+id/imageHolder"
-                        android:adjustViewBounds="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitStart">
-                    </ImageView>
-                </com.google.android.material.card.MaterialCardView>
+                android:alpha="0"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -86,42 +68,39 @@
                         android:id="@+id/nameHolder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
+                        android:paddingStart="20dp"
                         android:paddingTop="5dp"
-                        android:textColor="@color/white">
-                    </TextView>
+                        android:textColor="@color/white"
+                        android:textStyle="bold"></TextView>
 
                     <TextView
                         android:id="@+id/messageHolder"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="start|center"
-                        android:textColor="@color/text_black"
                         android:alpha="0.6"
-                        >
-                    </TextView>
+                        android:gravity="start|center"
+                        android:paddingStart="20dp"
+                        android:textColor="@color/text_black"></TextView>
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancelBtn"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:insetBottom="0dp"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:insetTop="0dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    app:backgroundTint="@color/grey_85"
-                    app:icon="@drawable/ic_cross"
-                    app:iconSize="16dp"
-                    android:stateListAnimator="@null"
                     android:backgroundTint="@color/grey_85"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:stateListAnimator="@null"
+                    app:backgroundTint="@color/grey_85"
+                    app:cornerRadius="60dp"
+                    app:icon="@drawable/ic_cross"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:cornerRadius="60dp"
-                    >
-                </com.google.android.material.button.MaterialButton>
+                    app:iconSize="16dp"></com.google.android.material.button.MaterialButton>
 
             </LinearLayout>
 
@@ -141,21 +120,20 @@
                     style="@style/Widget.Material3.MaterialTimePicker.ImageButton"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="6dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_gravity="center"
                     android:layout_weight="1.4"
-                    android:layout_marginStart="6dp"
+                    android:background="?appColor"
                     android:stateListAnimator="@null"
                     app:backgroundTint="?appColor"
-                    android:background="?appColor"
                     app:elevation="0dp"
+                    app:icon="@drawable/ic_image"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconSize="30dp"
-                    app:icon="@drawable/ic_image"
-                    app:iconTint="@null">
-                </com.google.android.material.button.MaterialButton>
+                    app:iconTint="@null"></com.google.android.material.button.MaterialButton>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etMessageField"
@@ -180,10 +158,10 @@
                     android:id="@+id/bSendMessage"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="6dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="1.4"
                     android:background="?appColor"
                     android:enabled="false"
@@ -192,11 +170,10 @@
                     android:stateListAnimator="@null"
                     app:backgroundTint="?appColor"
                     app:icon="@drawable/ic_send"
-                    app:iconSize="30dp"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconTint="@null">
-                </com.google.android.material.button.MaterialButton>
+                    app:iconSize="30dp"
+                    app:iconTint="@null"></com.google.android.material.button.MaterialButton>
             </LinearLayout>
 
         </LinearLayout>
@@ -219,8 +196,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:backgroundTint="?appColor"
             android:background="?appColor"
+            app:backgroundTint="?appColor"
             app:icon="@drawable/ic_purple_back"
             app:iconGravity="top"
             app:iconTint="@color/white">
@@ -230,17 +207,17 @@
             android:id="@+id/profileIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginStart="50dp"
             android:layout_gravity="center"
-            android:scaleType="fitXY"
-           android:src="@drawable/ic_profile_circle">
+            android:layout_marginStart="50dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_profile_circle">
         </androidx.appcompat.widget.AppCompatImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
             android:layout_marginStart="8dp"
+            android:layout_weight="0.6"
             android:orientation="vertical">
 
             <TextView
@@ -248,20 +225,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_sb"
-                tools:text="Имя"
+                android:textAppearance="@style/Toolbar.TitleText"
                 android:textColor="@color/white"
-                android:textAppearance="@style/Toolbar.TitleText">
-            </TextView>
+                tools:text="Имя"></TextView>
+
             <TextView
                 android:id="@+id/tvDirectSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_sb"
-                tools:text="+380988010071"
-                android:textColor="@color/white"
                 android:alpha="0.7"
-                android:textAppearance="@style/Toolbar.SubTitleText">
-            </TextView>
+                android:fontFamily="@font/montserrat_sb"
+                android:textAppearance="@style/Toolbar.SubTitleText"
+                android:textColor="@color/white"
+                tools:text="+380988010071"></TextView>
 
         </LinearLayout>
 
@@ -275,9 +251,9 @@
             android:layout_weight="1"
             app:icon="@drawable/ic_logo"
             app:iconSize="32dp"
-            app:iconTint="@color/white">
-        </com.google.android.material.button.MaterialButton>
+            app:iconTint="@color/white"></com.google.android.material.button.MaterialButton>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

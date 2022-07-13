@@ -32,9 +32,10 @@ import kotlin.coroutines.suspendCoroutine
 class VerifyViewModel(
     private val rtGetter: RealtimeGetter,
     private val rtUser : RealtimeUser,
-    private val cmHelper: CMHelper,
-    private val auth : FirebaseAuth
+    private val cmHelper: CMHelper
 ) : ViewModel() {
+
+    private val auth = FirebaseAuth.getInstance()
 
     var phoneNumber: String? = null
     var username: String? = null

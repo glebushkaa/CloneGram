@@ -13,7 +13,7 @@ import com.example.clonegramtestproject.data.models.NotificationModel
 import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
 import com.example.clonegramtestproject.utils.DIALOGUES_NODE
 import com.example.clonegramtestproject.utils.MESSAGES_NODE
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -26,28 +26,33 @@ class DirectMessageViewModel(
     private val rtMessage: RealtimeMessage,
     private val sOperator: StorageOperator,
     private val retrofitHelper: RetrofitHelper,
-    currentUser: FirebaseUser?,
     firebaseDatabase: FirebaseDatabase
 ) : ViewModel() {
 
+    companion object {
+        private const val PICTURE_NOTIFICATION_TEXT = "*picture*"
+    }
+
     var user: CommonModel? = null
-    var myUsername : String? = null
+    var myUsername: String? = null
 
     var isEditMessage = false
     var editedMessageInfo: MessageModel? = null
-    var lastUri : Uri? = null
+    var isEditedMessageLast = false
 
     private var messageListener: ValueEventListener? = null
 
+    private val currentUser = FirebaseAuth.getInstance().currentUser
     val currentUID = currentUser?.uid
     private val refMessages = firebaseDatabase.getReference(MESSAGES_NODE)
 
     val messagesLiveData = MutableLiveData<List<MessageModel>>()
 
-    fun pushMessagePicture(uri: Uri) =
-        sOperator.pushMessagePicture(uri,user?.chatUID.orEmpty())
+    private suspend fun pushMessagePicture(uri: Uri) =
+        sOperator.pushMessagePicture(uri, user?.chatUID.orEmpty())
 
-    suspend fun sendNotification(body: String) {
+
+    private suspend fun sendNotification(body: String) {
         user?.apply {
             tokens?.forEach { token ->
                 retrofitHelper.sendNotification(
@@ -122,7 +127,7 @@ class DirectMessageViewModel(
         }
     }
 
-    private fun sendMessage(text: String) {
+    private fun sendMessage(text: String, picture: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             rtMessage.sendMessage(
                 userUID = user?.uid.orEmpty(),
@@ -134,7 +139,7 @@ class DirectMessageViewModel(
                     uid = currentUID,
                     message = text,
                     timestamp = System.currentTimeMillis(),
-                    picture = false
+                    picture = picture
                 ),
                 user?.chatUID.orEmpty()
             )
@@ -153,7 +158,7 @@ class DirectMessageViewModel(
         }
     }
 
-    fun setLastMessage(text: String?, picture: Boolean) {
+    private fun setLastMessage(text: String?, picture: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             rtMessage.setLastMessage(
                 arrayListOf(currentUID.orEmpty(), user?.uid.orEmpty()),
@@ -167,20 +172,30 @@ class DirectMessageViewModel(
         }
     }
 
-    fun doSendAction(text: String) {
-        if (isEditMessage) {
-            editMessage(text, editedMessageInfo?.messageUid.orEmpty())
-            isEditMessage = false
-            editedMessageInfo = null
-            setLastMessage(text, false)
-        } else {
-            lastUri?.let { uri ->
-                pushMessagePicture(uri)
+    fun doSendAction(
+        text: String? = null,
+        uri: Uri? = null
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isEditMessage) {
+                editMessage(text.orEmpty(), editedMessageInfo?.messageUid.orEmpty())
+                if (isEditedMessageLast) {
+                    setLastMessage(text, false)
+                }
+                isEditedMessageLast = false
+                isEditMessage = false
+                editedMessageInfo = null
+
+            } else {
+                uri?.let {
+                    sendMessage(pushMessagePicture(uri), true)
+                    sendNotification(PICTURE_NOTIFICATION_TEXT)
+                } ?: run {
+                    sendMessage(text.orEmpty(), false)
+                    sendNotification(text.orEmpty())
+                }
+                setLastMessage(text, uri?.equals(null) == false)
             }
-           /* pushMessagePicture(uri)
-            setLastMessage(null, true)
-            sendNotification(getString(R.string.picture))*//*
-            setLastMessage(text, false)*/
         }
     }
 

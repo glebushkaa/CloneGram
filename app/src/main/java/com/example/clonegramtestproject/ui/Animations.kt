@@ -62,8 +62,8 @@ class Animations {
         }
     }
 
-    fun showEditHolder(item: View,edgeItem : View){
-        ObjectAnimator.ofFloat(item,View.TRANSLATION_Y,edgeItem.y).apply {
+    fun showEditHolder(item: View){
+        ObjectAnimator.ofFloat(item,View.ROTATION,item.z).apply {
             ObjectAnimator.ofFloat(item,View.ALPHA,1f).apply {
                 start()
             }
@@ -73,12 +73,11 @@ class Animations {
     }
 
     fun hideEditHolder(item: View){
-        ObjectAnimator.ofFloat(item,View.TRANSLATION_Y,item.translationY - 1000f).apply {
+        ObjectAnimator.ofFloat(item,View.ROTATION,item.z-100f).apply {
             ObjectAnimator.ofFloat(item,View.ALPHA,0f).apply {
-                duration = 1000
                 start()
             }
-            duration = 1000
+            duration = 100000
             start()
         }
     }

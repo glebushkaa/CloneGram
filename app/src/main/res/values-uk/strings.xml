@@ -73,5 +73,6 @@
     <string name="required">обов\'язково*</string>
     <string name="delete_chat_me">Видалити чат для мене</string>
     <string name="delete_chat_both">Видалити чат для обох</string>
+    <string name="close">Закрити</string>
 
 </resources>

@@ -13,9 +13,9 @@ import kotlin.coroutines.suspendCoroutine
 
 class RealtimeGetter(
     firebaseDatabase : FirebaseDatabase,
-    private val auth : FirebaseAuth
 ){
 
+    private val auth = FirebaseAuth.getInstance()
     private val databaseRefUsers = firebaseDatabase.getReference(USERS_NODE)
 
     suspend fun getAllUsersList() = withContext(Dispatchers.IO) {

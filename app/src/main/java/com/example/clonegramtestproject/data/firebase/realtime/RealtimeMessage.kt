@@ -3,17 +3,20 @@ package com.example.clonegramtestproject.data.firebase.realtime
 import com.example.clonegramtestproject.data.models.LastMessageModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.utils.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RealtimeMessage(
-    firebaseDatabase: FirebaseDatabase,
-    currentUser: FirebaseUser?
+    firebaseDatabase: FirebaseDatabase
 ) {
 
     private val databaseRefMessages = firebaseDatabase.getReference(MESSAGES_NODE)
+
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUser = auth.currentUser
     private val currentUID = currentUser?.uid.orEmpty()
 
     suspend fun setLastMessage(
