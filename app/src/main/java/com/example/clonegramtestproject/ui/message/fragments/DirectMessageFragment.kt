@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.ui.message.DirectUserDialog
+import com.example.clonegramtestproject.ui.message.dialogs.DirectUserDialog
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding

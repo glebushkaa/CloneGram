@@ -1,5 +1,6 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -7,6 +8,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
@@ -15,11 +18,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
-import com.example.clonegramtestproject.ui.message.SettingsProgressDialog
+import com.example.clonegramtestproject.ui.message.dialogs.SettingsProgressDialog
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
@@ -35,7 +37,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var sharedPreferences: SharedPreferences? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private val sharedPrefsHelper : SharedPrefsHelper by inject()
+    private val sharedPrefsHelper: SharedPrefsHelper by inject()
 
     private var dialog = SettingsProgressDialog()
 
@@ -44,7 +46,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             ActivityResultContracts.GetContent()
         ) {
             it?.let {
-                lifecycleScope.launch {
+                if (requireContext().contentResolver.getType(it)?.endsWith("/gif") == true) {
+                    requireContext().showToast("GIF")
+                } else {
                     changeUserPicture(it)
                 }
             }
@@ -84,9 +88,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
-    private suspend fun changeUserPicture(uri: Uri) {
+    private fun changeUserPicture(uri: Uri) {
         binding?.apply {
-            dialog.show(parentFragmentManager,"SETTINGS")
+            dialog.show(parentFragmentManager, "SETTINGS")
             viewModel.pushUserPicture(uri)
             Glide.with(requireContext()).load(uri)
                 .circleCrop()
@@ -128,7 +132,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 )
             }
 
-            bChangeBio.setOnClickListener{
+            bChangeBio.setOnClickListener {
                 viewModel.changeBio(etBio.text.toString())
             }
 
@@ -147,7 +151,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setInfoFromSharedPrefs() {
-        sharedPreferences = requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
         sharedPreferences?.let {
             val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
             setLangSelectedColor(lang.orEmpty())
@@ -234,7 +239,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun addTextChangeListeners() {
         binding?.apply {
-            etUsername.addTextChangedListener{
+            etUsername.addTextChangedListener {
                 val text = etUsername.text.toString().trim()
                 bChangeUsername.isActivated = text != viewModel.user?.username
             }

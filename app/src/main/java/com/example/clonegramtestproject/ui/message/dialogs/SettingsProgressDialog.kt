@@ -1,4 +1,4 @@
-package com.example.clonegramtestproject.ui.message
+package com.example.clonegramtestproject.ui.message.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

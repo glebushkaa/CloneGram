@@ -28,8 +28,10 @@ class SettingsViewModel(
     var user: CommonModel? = null
     var username: String? = null
 
-    suspend fun pushUserPicture(uri: Uri) = withContext(Dispatchers.IO) {
-        sOperator.pushUserPicture(uri)
+    fun pushUserPicture(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO){
+            sOperator.pushUserPicture(uri)
+        }
     }
 
     fun changeBio(bio : String){
