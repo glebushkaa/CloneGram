@@ -1,21 +1,21 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.drawable.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.webkit.MimeTypeMap
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
@@ -25,10 +25,10 @@ import com.example.clonegramtestproject.ui.message.dialogs.SettingsProgressDialo
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -56,6 +56,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentSettingsBinding.bind(view)
 
@@ -64,7 +65,41 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         addTextChangeListeners()
         getArgs()
         setViews()
+        binding?.apply{
+
+            val background: Drawable = themeFrame.blue.background
+            if (background is ShapeDrawable) {
+                (background as ShapeDrawable).paint.color =
+                    resources.getColor(R.color.app_color_red,null)
+            } else if (background is GradientDrawable) {
+                background.setColor(resources.getColor(R.color.app_color_red,null))
+            } else if (background is ColorDrawable) {
+                (background as ColorDrawable).color =
+                    resources.getColor(R.color.app_color_red,null)
+            }
+           /*themeFrame.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                requireActivity().findViewById<RadioButton>(checkedId)?.apply {
+                    when (this.id) {
+                        R.id.red -> themeFrame.changeTheme.setTextColor(resources.getColor(R.color.app_color_red,null))
+//                        R.id.yellow -> changeTheme.setTextColor(resources.getColor(R.color.app_color_yellow,null))
+                        R.id.green -> themeFrame.changeTheme.setTextColor(resources.getColor(R.color.app_color_green,null))
+                        R.id.blue -> themeFrame.changeTheme.setTextColor(resources.getColor(R.color.app_color_blue,null))
+//                        R.id.purple -> changeTheme.setTextColor(resources.getColor(R.color.app_color_purple,null))
+                    }
+                }
+            }*/
+        }
     }
+
+
+    fun Drawable.overrideColor(@ColorInt colorInt: Int) {
+        when (this) {
+            is GradientDrawable -> setColor(colorInt)
+            is ShapeDrawable -> paint.color = colorInt
+            is ColorDrawable -> color = colorInt
+        }
+    }
+
 
     private fun setViews() {
         binding?.apply {
@@ -157,8 +192,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
             setLangSelectedColor(lang.orEmpty())
 
-            val theme = sharedPrefsHelper.getThemeSettings(it)
-            setThemeSelectedIcon(theme.orEmpty())
+            sharedPrefsHelper.getThemeSettings(it)
+            /*setThemeSelectedIcon(theme.orEmpty())*/
         }
     }
 
@@ -215,7 +250,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setOnClickListenersForThemeButtons() {
         binding?.apply {
-            bYellowTheme.setOnClickListener {
+           /* bYellowTheme.setOnClickListener {
                 setThemeColor(YELLOW_THEME)
             }
 
@@ -233,7 +268,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
             bBlueTheme.setOnClickListener {
                 setThemeColor(BLUE_THEME)
-            }
+            }*/
         }
     }
 
@@ -256,10 +291,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             resources.getColor(R.color.white, null)
         )
 
-        setThemeSelectedIcon(color)
+        /*setThemeSelectedIcon(color)*/
     }
 
-    private fun setThemeSelectedIcon(color: String) {
+   /* private fun setThemeSelectedIcon(color: String) {
         binding?.apply {
             val buttonArray = arrayListOf(
                 bYellowTheme, bRedTheme, bBlueTheme, bGreenTheme, bPurpleTheme
@@ -272,7 +307,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 RED_THEME -> setButtonIcon(buttonArray, bRedTheme)
             }
         }
-    }
+    }*/
 
     private fun setLangButtonColor(
         buttonArray: ArrayList<MaterialButton>,

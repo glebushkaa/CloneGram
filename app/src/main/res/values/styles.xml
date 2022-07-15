@@ -102,6 +102,17 @@
         <item name="android:popupBackground">@drawable/menu_shape</item>
     </style>
 
+    <style name="themeRadioButtonStyle" parent="">
+
+        <item name="android:gravity">center</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/theme_selector</item>
+
+    </style>
+
 
 
 </resources>

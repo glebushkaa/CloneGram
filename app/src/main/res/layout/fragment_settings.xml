@@ -182,113 +182,19 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        <FrameLayout
-            android:id="@+id/changerThemeContainer"
+        <include
+            android:id="@+id/themeFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/background_color_instead_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.121"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bioContainer">
-
-            <TextView
-                android:id="@+id/change_theme_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="28dp"
-                android:text="@string/change_theme_color"
-                android:textColor="@color/black"
-                android:textSize="20sp"></TextView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/change_theme_color">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/changeThemeColorLinear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/change_theme_color">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bYellowTheme"
-                        style="@style/themeButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:textAllCaps="false"
-                        app:backgroundTint="@color/app_color_yellow"
-                        app:icon="@drawable/ic_check_flag"></com.google.android.material.button.MaterialButton>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bPurpleTheme"
-                        style="@style/themeButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="20dp"
-                        app:backgroundTint="@color/app_color_purple"></com.google.android.material.button.MaterialButton>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bRedTheme"
-                        style="@style/themeButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="20dp"
-                        app:backgroundTint="@color/app_color_red"></com.google.android.material.button.MaterialButton>
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="30dp"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bGreenTheme"
-                        style="@style/themeButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="20dp"
-                        app:backgroundTint="@color/app_color_green"></com.google.android.material.button.MaterialButton>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bBlueTheme"
-                        style="@style/themeButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="20dp"
-                        app:backgroundTint="@color/app_color_blue"></com.google.android.material.button.MaterialButton>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </LinearLayout>
-
-        </FrameLayout>
+            layout="@layout/theme_frame" />
 
         <FrameLayout
             android:id="@+id/changerLanguageContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/background_color_instead_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/changerThemeContainer">
+            android:background="@color/background_color_instead_white">
 
             <TextView
                 android:id="@+id/change_language"
@@ -298,7 +204,8 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/change_language"
                 android:textColor="@color/black"
-                android:textSize="20sp"></TextView>
+                android:textSize="20sp">
+            </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -51,6 +51,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/icon_settings_opener.xml" value="0.338" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/icon_sign_in.xml" value="0.325" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/incoming_message_shape.xml" value="0.2195" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/k.xml" value="0.125" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/login_shape.xml" value="0.22291666666666668" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/menu_shape.xml" value="0.1455" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/purple_polygon_backgorund.xml" value="0.325" />
@@ -63,6 +64,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_chronometer.xml" value="0.2835" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_country_code.xml" value="0.326" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_cursor_login.xml" value="0.298" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_default_theme_button.xml" value="0.125" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_delete_account.xml" value="0.297" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_direct_input.xml" value="0.2825" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_disabled_language_button.xml" value="0.297" />
@@ -77,13 +79,17 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_phone_number.xml" value="0.3055" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_picture_message.xml" value="0.1905" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_rounded_button.xml" value="0.2785" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_selected_theme_button.xml" value="0.125" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_selected_theme_color_button.xml" value="0.251" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_sign_in.xml" value="0.22291666666666668" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_sign_out.xml" value="0.297" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_sign_up.xml" value="0.22291666666666668" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_spinner.xml" value="0.1655" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_user_card.xml" value="0.256" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/shape_verify_phone.xml" value="0.1865" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/theme_selector.xml" value="0.1655" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/vector.xml" value="0.3535" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/drawable/white_stroke.xml" value="0.1655" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/.xml" value="0.22278481012658227" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/comfortaa.xml" value="0.20625" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/font/comfortaa_bold.xml" value="0.20625" />
@@ -106,7 +112,7 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login.xml (land)" value="0.20833333333333334" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_login_land.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_register.xml" value="0.33" />
-        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_sign_up.xml" value="0.22" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/fragment_start.xml" value="0.26849080803762293" />
@@ -122,6 +128,8 @@
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/outgoing_picture_message_item.xml" value="0.1" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/register_fragment.xml" value="0.2744762719110731" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/settings_progress_dialog.xml" value="0.23354958294717332" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/theme_frame.xml" value="0.33" />
+        <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/theme_item.xml" value="0.28388200085506626" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/layout/user_dialog.xml" value="0.15228426395939088" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20625" />
         <entry key="..\:/Users/38099/AndroidStudioProjects/CloneGram/app/src/main/res/menu/direct_menu.xml" value="0.2546875" />
