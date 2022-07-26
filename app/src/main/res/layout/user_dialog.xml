@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="240dp"
-    android:background="@drawable/shape_user_card"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shapeAppearanceOverlay="@style/directDialogStyle"
+    style="@style/directDialogStyle"
+    app:cardBackgroundColor="?appColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_gravity="start|top"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -19,7 +22,6 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-
             android:scaleType="fitXY"
             android:src="@drawable/ic_profile_circle">
         </androidx.appcompat.widget.AppCompatImageView>
@@ -35,9 +37,8 @@
                 android:id="@+id/usernameField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_sb"
                 android:textAppearance="@style/Toolbar.TitleText"
-                android:textColor="@color/white"
+                android:textColor="@color/poor_white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Имя">
@@ -48,9 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:fontFamily="@font/montserrat_sb"
                 android:textAppearance="@style/Toolbar.SubTitleText"
-                android:textColor="@color/white"
+                android:textColor="@color/poor_white"
                 tools:text="+380988010071">
             </TextView>
 
@@ -62,23 +62,15 @@
         android:id="@+id/bioField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
+         android:layout_marginTop="80dp"
+        android:layout_gravity="top|start"
+        android:gravity="start"
+        android:alpha="0.8"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="54dp"
         android:layout_marginEnd="30dp"
         tools:text="Bio: I from Ukraine dsajdjasodnasoindoiasnoidna9odasnud"
-        android:textColor="@color/white">
+        android:textColor="@color/poor_white">
     </TextView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/finishBtn"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:textSize="14dp"
-        android:text="@string/close"
-        android:textColor="@color/white">
-    </com.google.android.material.button.MaterialButton>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

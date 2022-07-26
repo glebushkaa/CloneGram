@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="@color/background_white"
     tools:context=".ui.login.fragments.LoginFragment"
     tools:layout_editor_absoluteX="24dp"
     tools:layout_editor_absoluteY="7dp">
@@ -15,9 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:fontFamily="@font/inter_bold"
         android:text="@string/enter_your_phone"
-        android:textColor="@color/white"
+        android:textColor="@color/poor_black"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,118 +27,103 @@
     </TextView>
 
     <TextView
-        android:layout_width="250dp"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/montserrat_sb"
+        android:layout_marginTop="8dp"
+        android:alpha="0.6"
         android:gravity="center"
+        android:textSize="14sp"
         android:text="@string/text_under_enter_phone"
-        android:textColor="@color/white"
-        android:alpha="0.8"
+        android:textColor="@color/poor_black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
     </TextView>
 
     <com.google.android.material.button.MaterialButton
+        style="@style/countryButtonStyle"
         android:id="@+id/bCountries"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="70dp"
-        android:maxLength="25"
-        android:layout_marginEnd="70dp"
-        android:background="@drawable/shape_of_country_button"
-        android:singleLine="true"
-        android:fontFamily="@font/montserrat_sb"
+        android:layout_height="44dp"
         android:hint="@string/country"
-        android:gravity="start"
-        android:textAllCaps="false"
-        android:textColor="@color/text_black"
-        android:textSize="14sp"
-        app:backgroundTint="@color/background_color_instead_white"
-        app:icon="@drawable/ic_countries_next"
-        app:iconGravity="end"
-        app:iconTint="@color/grey_85"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.139" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="70dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/countryCodeCardStyle"
+        android:id="@+id/materialCardView"
+        android:layout_width="60dp"
+        android:layout_height="44dp"
+        app:shapeAppearanceOverlay="@style/countryCodeCardStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bCountries">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1.8"
-            android:paddingStart="12dp"
-            android:gravity="center"
-            android:background="@drawable/shape_country_code"
-            android:fontFamily="@font/montserrat_sb"
-            android:textColor="@color/black"
-            android:text="@string/plus">
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:gravity="center|start"
+            android:paddingStart="8dp"
+            android:textSize="18sp"
+            android:text="+"
+            android:textColor="@color/poor_black">
         </TextView>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etCode"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="1.5"
-            android:maxLength="4"
-            android:layout_marginStart="-1dp"
-            android:paddingStart="5dp"
-            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:background="@color/poor_white"
             android:inputType="number"
-            android:textSize="14sp"
-            android:fontFamily="@font/montserrat_sb"
-            android:background="@color/white" />
+            android:gravity="start|center"
+            android:maxLength="4"
+            android:textColor="@color/poor_black"
+            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:textSize="16sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        style="@style/phoneCardStyle"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+        app:layout_constraintTop_toBottomOf="@+id/bCountries"
+        app:shapeAppearanceOverlay="@style/phoneCardStyle">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="0.6"
-            android:maxLength="15"
-            android:textCursorDrawable="@drawable/shape_cursor_login"
-            android:paddingStart="10dp"
-            android:layout_marginStart="1dp"
+            android:layout_height="44dp"
+            android:background="@color/poor_white"
             android:inputType="number"
-            android:textSize="14sp"
-            android:fontFamily="@font/montserrat_sb"
-            android:background="@drawable/shape_phone_number">
+            android:gravity="center|start"
+            android:layout_gravity="center"
+            android:maxLength="15"
+            android:paddingStart="10dp"
+            android:textColor="@color/poor_black"
+            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:textSize="16sp">
 
         </androidx.appcompat.widget.AppCompatEditText>
+    </com.google.android.material.card.MaterialCardView>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
+        style="@style/nextButtonStyle"
         android:id="@+id/bSignIn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:backgroundTint="@color/background_color_instead_white"
-        app:borderWidth="0dp"
-        app:fabCustomSize="60dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat3"
-        app:maxImageSize="24dp"
-        app:srcCompat="@drawable/ic_go_next"
-        app:tint="?appColor" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

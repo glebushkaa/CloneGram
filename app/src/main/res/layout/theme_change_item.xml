@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/background_white"
+    app:cardElevation="0dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_theme_color"
+        android:textColor="@color/poor_black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <HorizontalScrollView
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bYellowTheme"
+                style="@style/themeButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/app_color_yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bPurpleTheme"
+                style="@style/themeButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                app:backgroundTint="@color/app_color_purple"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bRedTheme"
+                style="@style/themeButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                app:backgroundTint="@color/app_color_red"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bDarkPurpleTheme"
+                style="@style/themeButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                app:backgroundTint="@color/app_color_dark_purple"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bBlueTheme"
+                style="@style/themeButtonStyle"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                app:backgroundTint="@color/app_color_blue"/>
+
+            <com.google.android.material.button.MaterialButton
+            android:id="@+id/bOrangeTheme"
+            style="@style/themeButtonStyle"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/app_color_orange"/>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</com.google.android.material.card.MaterialCardView>

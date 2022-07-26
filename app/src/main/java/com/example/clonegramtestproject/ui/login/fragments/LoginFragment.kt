@@ -25,6 +25,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var binding: FragmentLoginBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().changeStatusBarColor(
+            resources.getColor(R.color.background_white, null)
+        )
         binding = FragmentLoginBinding.bind(view)
         setOnClickListeners()
         addOnTextChangedListener()

@@ -34,7 +34,7 @@
     <string name="optional">optional*</string>
     <string name="enter_your_phone">Your phone number</string>
     <string name="welcome_to_login" >Welcome,</string>
-    <string name="register_text">Enter your name and surname\nIt will be displayed to others</string>
+    <string name="register_text">It will be displayed to others</string>
     <string name="enter_correct_name">Enter correct name!</string>
     <string name="plus">+</string>
     <string name="sync_contacts">Sync contacts</string>
@@ -73,5 +73,6 @@
     <string name="delete_chat_me">Delete chat for me</string>
     <string name="delete_chat_both">Delete chat for both</string>
     <string name="close">Close</string>
+    <string name="enter_user_data">Enter user data</string>
 
 </resources>

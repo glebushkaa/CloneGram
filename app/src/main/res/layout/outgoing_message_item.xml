@@ -30,12 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:fontFamily="@font/montserrat_sb"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp"
-            android:textColor="@color/white"
+            android:textColor="@color/poor_white"
             android:textSize="14sp"
             tools:text="Текст который должен тут быть">
         </TextView>
@@ -47,8 +46,7 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="5dp"
             android:alpha="0.6"
-            android:fontFamily="@font/montserrat_sb"
-            android:textColor="@color/white"
+            android:textColor="@color/poor_white"
             android:textSize="10sp"
             tools:text="9:23">
         </TextView>
@@ -61,10 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:alpha="0.8"
+        android:alpha="0.6"
         android:layout_gravity="end"
         android:text="@string/seen"
-        android:textColor="@color/black"
+        android:textColor="@color/poor_black"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardMessage">

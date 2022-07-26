@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.ui.start.viewmodel.StartViewModel
 import com.example.clonegramtestproject.utils.USER
+import com.example.clonegramtestproject.utils.changeStatusBarColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel

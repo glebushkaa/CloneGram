@@ -126,8 +126,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
             searchView.setOnCloseListener {
                 animations.closeSearchView(
                     bSearch = bSearch,
-                    searchView = searchView,
-                    edgeElement = bLogo
+                    searchView = searchView
                 )
                 false
             }

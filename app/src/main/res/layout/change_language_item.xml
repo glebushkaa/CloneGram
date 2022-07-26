@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="120dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/background_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_language"
+        android:textColor="@color/poor_black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/ukrainian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ukrainian"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/poor_black"/>
+
+    <TextView
+        android:id="@+id/russian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/russian"
+        android:layout_marginTop="76dp"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/poor_black"/>
+
+    <TextView
+        android:id="@+id/english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/english"
+        android:layout_marginTop="101dp"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/poor_black"/>
+
+    <RadioGroup
+        android:id="@+id/langGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp">
+
+        <RadioButton
+            android:id="@+id/ukrainianBtn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:button="@null"
+            android:background="@drawable/language_radio_btn_selector" />
+
+        <RadioButton
+            android:id="@+id/russianBtn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:button="@null"
+            android:background="@drawable/language_radio_btn_selector" />
+
+        <RadioButton
+            android:id="@+id/englishBtn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:button="@null"
+            android:background="@drawable/language_radio_btn_selector" />
+
+    </RadioGroup>
+</com.google.android.material.card.MaterialCardView>

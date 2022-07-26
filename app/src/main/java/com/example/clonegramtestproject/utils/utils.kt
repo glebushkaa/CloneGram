@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 
 fun Context.showToast(text : String){
@@ -31,4 +33,13 @@ fun closeSoftKeyboard(view: View,activity : Activity) {
 
 fun Window.getSoftInputMode() : Int {
     return attributes.softInputMode
+}
+
+fun Activity.changeStatusBarColor(color: Int) {
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    window.statusBarColor = color
+}
+
+fun MaterialButton.changeStrokeWidth(width : Int){
+    strokeWidth = width
 }

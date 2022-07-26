@@ -22,10 +22,9 @@
         android:layout_gravity="start"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:fontFamily="@font/montserrat_sb"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
-        android:textColor="@color/white"
+        android:textColor="@color/poor_white"
         android:textSize="14sp"
         tools:text="Текст который должен тут быть">
     </TextView>
@@ -37,8 +36,7 @@
         android:layout_gravity="start|bottom"
         android:layout_marginStart="5dp"
         android:alpha="0.6"
-        android:fontFamily="@font/montserrat_sb"
-        android:textColor="@color/white"
+        android:textColor="@color/poor_white"
         android:textSize="10sp"
         tools:text="9:23">
     </TextView>

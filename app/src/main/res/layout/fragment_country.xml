@@ -7,66 +7,56 @@
     android:orientation="vertical"
     tools:context=".ui.login.fragments.CountryFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/toolbarCard"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="?appColor">
+        app:cardBackgroundColor="?appColor">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:icon="@drawable/ic_purple_back"
-            app:iconGravity="top"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:paddingTop="12dp"
+            android:insetBottom="0dp"
+            android:insetTop="0dp"
             app:backgroundTint="?appColor"
             android:background="?appColor"
-            android:layout_weight="1"
-            app:iconTint="@color/white">
+            app:iconTint="@color/poor_white">
         </com.google.android.material.button.MaterialButton>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
+            android:layout_marginStart="60dp"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:layout_weight="0.5"
             >
         </androidx.appcompat.widget.SearchView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bSearch"
-            android:layout_width="match_parent"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            app:iconGravity="end"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:insetBottom="0dp"
+            android:insetTop="0dp"
             android:paddingTop="5dp"
             app:backgroundTint="?appColor"
             android:background="?appColor"
-            android:layout_weight="1"
             android:layout_gravity="end"
             app:icon="@drawable/ic_search"
+            app:iconSize="24dp"
             app:iconTint="@color/white"
             style="@style/Widget.MaterialComponents.Button.TextButton">
         </com.google.android.material.button.MaterialButton>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bLogo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_weight="1"
-            app:backgroundTint="?appColor"
-            android:background="?appColor"
-            android:layout_gravity="end"
-            android:layout_marginEnd="0dp"
-            app:icon="@drawable/ic_logo"
-            app:iconSize="32dp"
-            app:iconTint="@color/white"
-            >
-        </com.google.android.material.button.MaterialButton>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCountries"

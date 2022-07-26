@@ -4,34 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="@color/background_white"
     tools:context=".ui.login.fragments.VerifyNumberFragment">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:src="@drawable/ic_sms_tracking"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </ImageView>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/montserrat_sb"
+        android:layout_marginTop="120dp"
         android:text="@string/enter_code"
-        android:textColor="@color/white"
-        android:textSize="26sp"
+        android:textColor="@color/poor_black"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+        app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
     <TextView
@@ -39,50 +28,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="70dp"
         android:gravity="center"
-        android:fontFamily="@font/montserrat_sb"
         android:text="@string/sent_message"
-        android:textColor="@color/white"
-        android:alpha="0.8"
+        android:textColor="@color/poor_black"
+        android:alpha="0.6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etVerifyPhone"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/verifyCard"
         android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:hint="_ _ _ _ _ _"
-        android:maxLength="6"
-        android:background="@drawable/shape_of_country_button"
-        android:textCursorDrawable="@drawable/shape_cursor_login"
-        android:fontFamily="@font/montserrat_sb"
-        android:inputType="number"
-        app:hintTextColor="@color/grey_95"
+        android:layout_height="44dp"
+        android:layout_marginTop="60dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/poor_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOnPhoneSend"
         app:layout_constraintVertical_bias="0.031">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etVerifyPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="_ _ _ _ _ _"
+            android:maxLength="6"
+            android:background="@color/poor_white"
+            android:textCursorDrawable="@drawable/shape_cursor_login"
+            android:inputType="number"
+            app:hintTextColor="@color/grey_95" />
+    </com.google.android.material.card.MaterialCardView>
 
-    </androidx.appcompat.widget.AppCompatEditText>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat2"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/sendCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal"
+        app:cardElevation="0dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.6"
+        app:cardBackgroundColor="@color/background_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etVerifyPhone">
+        app:layout_constraintTop_toBottomOf="@+id/verifyCard">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/bSendAgain"
@@ -90,53 +86,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:fontFamily="@font/montserrat_sb"
+            android:padding="0dp"
+            android:gravity="center"
+            android:backgroundTint="@color/background_white"
+            android:layout_gravity="center|start"
             android:stateListAnimator="@null"
+            android:layout_marginEnd="52dp"
             android:text="@string/send_code_again"
             android:textAllCaps="false"
-            android:textColor="@color/background_color_instead_white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat2"
-            app:layout_constraintHorizontal_bias="0.206"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2" />
+            android:textColor="@color/poor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/verifyCard" />
 
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|end"
             android:countDown="true"
-            android:fontFamily="@font/montserrat_sb"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/inputVerifyPhone"
+            android:gravity="bottom|start"
+            android:textColor="@color/poor_black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/open_sans_condensed_bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/inputVerifyPhone"
-            app:layout_constraintTop_toTopOf="@+id/inputVerifyPhone">
-        </Chronometer>
+            app:layout_constraintStart_toEndOf="@+id/bSendAgain"
+            tools:layout_editor_absoluteY="330dp" />
+    </com.google.android.material.card.MaterialCardView>
 
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bNext"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:backgroundTint="@color/background_color_instead_white"
-        app:borderWidth="0dp"
-        app:fabCustomSize="60dp"
+        style="@style/nextButtonStyle"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2"
-        app:maxImageSize="24dp"
-        app:srcCompat="@drawable/ic_go_next"
-        app:tint="?appColor" />
+        app:layout_constraintTop_toBottomOf="@+id/sendCard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

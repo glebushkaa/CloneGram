@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    android:orientation="vertical"
+    android:background="?appColor"
     tools:context=".ui.start.fragment.StartFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_logo" />
+        android:outlineProvider="bounds"
+        android:layout_marginBottom="100dp"
+        android:tint="@color/poor_white"
+        android:src="@drawable/ic_start_icon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
         android:layout_marginBottom="20dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/montserrat_alternates_black"
         android:text="@string/app_name"
-        android:textColor="@color/white"
+        android:textColor="@color/poor_white"
         android:textSize="20sp">
     </TextView>
 
-</LinearLayout>
+</FrameLayout>

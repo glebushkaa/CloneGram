@@ -11,17 +11,14 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@null</item>
+        <item name="android:statusBarColor" >@null</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@null</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="background">@color/background_white</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
         <item name="appColor">@null</item>
-        <item name="startBackgroundGradientColor">@null</item>
-        <item name="endBackgroundGradientColor">@null</item>
-        <item name="centerBackgroundGradientColor">@null</item>
-        <item name="highlightAppColor">@null</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.YellowClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -34,17 +31,14 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/app_color_yellow</item>
+        <item name="android:statusBarColor" >@color/app_color_yellow</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_yellow</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
         <item name="appColor">@color/app_color_yellow</item>
-        <item name="startBackgroundGradientColor">#FF6C00</item>
-        <item name="endBackgroundGradientColor">#FF9C00</item>
-        <item name="centerBackgroundGradientColor">#FF8C00</item>
-        <item name="highlightAppColor">#FF7C00</item>
-        <!-- Customize your theme here. -->
+        <item name="highlightColor">@color/highlight_color_yellow</item>
     </style>
 
     <style name="Theme.RedClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -57,20 +51,17 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/app_color_red</item>
+        <item name="android:statusBarColor" >@color/app_color_red</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_red</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
         <item name="appColor">@color/app_color_red</item>
-        <item name="startBackgroundGradientColor">#FF4152</item>
-        <item name="endBackgroundGradientColor">#FF6482</item>
-        <item name="centerBackgroundGradientColor">#FF6162</item>
-        <item name="highlightAppColor">#FF4355</item>
-        <!-- Customize your theme here. -->
+        <item name="highlightColor">@color/highlight_color_red</item>
     </style>
 
-    <style name="Theme.GreenClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.DarkPurpleClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/app_color_red</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -80,17 +71,14 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/app_color_green</item>
+        <item name="android:statusBarColor" >@color/app_color_dark_purple</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
-        <item name="android:colorEdgeEffect">@color/app_color_green</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="android:colorEdgeEffect">@color/app_color_dark_purple</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
-        <item name="appColor">@color/app_color_green</item>
-        <item name="startBackgroundGradientColor">#56A76F</item>
-        <item name="endBackgroundGradientColor">#3E8F2E</item>
-        <item name="centerBackgroundGradientColor">#56A24F</item>
-        <item name="highlightAppColor">#56A16F</item>
-        <!-- Customize your theme here. -->
+        <item name="appColor">@color/app_color_dark_purple</item>
+        <item name="highlightColor">@color/highlight_color_dark_purple</item>
     </style>
 
     <style name="Theme.PurpleClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -103,17 +91,14 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/app_color_purple</item>
+        <item name="android:statusBarColor" >@color/app_color_purple</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_purple</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
         <item name="appColor">@color/app_color_purple</item>
-        <item name="startBackgroundGradientColor">#9E39BF</item>
-        <item name="endBackgroundGradientColor">#9E97CF</item>
-        <item name="centerBackgroundGradientColor">#9E69BF</item>
-        <item name="highlightAppColor">#9E77CF</item>
-        <!-- Customize your theme here. -->
+        <item name="highlightColor">@color/highlight_color_purple</item>
     </style>
 
     <style name="Theme.BlueClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -126,17 +111,34 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/app_color_blue</item>
+        <item name="android:statusBarColor" >@color/app_color_blue</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_blue</item>
-        <item name="fontFamily">@font/montserrat_sb</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
 
         <item name="appColor">@color/app_color_blue</item>
-        <item name="startBackgroundGradientColor">#001FD9</item>
-        <item name="endBackgroundGradientColor">#005CB2</item>
-        <item name="centerBackgroundGradientColor">#004AB6</item>
-        <item name="highlightAppColor">#003CB2</item>
-        <!-- Customize your theme here. -->
+        <item name="highlightColor">@color/highlight_color_blue</item>
+    </style>
+
+    <style name="Theme.OrangeClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/app_color_red</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" >@color/app_color_orange</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:colorEdgeEffect">@color/app_color_orange</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
+
+        <item name="appColor">@color/app_color_orange</item>
+        <item name="highlightColor">@color/highlight_color_orange</item>
     </style>
 
     <style name="yourstyle" parent="">

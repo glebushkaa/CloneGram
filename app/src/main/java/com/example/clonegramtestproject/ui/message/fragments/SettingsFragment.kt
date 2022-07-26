@@ -3,30 +3,26 @@ package com.example.clonegramtestproject.ui.message.fragments
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.data.language.LanguageHelper
 import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
 import com.example.clonegramtestproject.ui.message.SettingsProgressDialog
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -35,7 +31,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var sharedPreferences: SharedPreferences? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private val sharedPrefsHelper : SharedPrefsHelper by inject()
+    private val sharedPrefsHelper: SharedPrefsHelper by inject()
+    private val langHelper: LanguageHelper by inject()
 
     private var dialog = SettingsProgressDialog()
 
@@ -54,7 +51,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentSettingsBinding.bind(view)
-
         setInfoFromSharedPrefs()
         setOnClickListeners()
         addTextChangeListeners()
@@ -86,7 +82,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private suspend fun changeUserPicture(uri: Uri) {
         binding?.apply {
-            dialog.show(parentFragmentManager,"SETTINGS")
+            dialog.show(parentFragmentManager, "SETTINGS")
             viewModel.pushUserPicture(uri)
             Glide.with(requireContext()).load(uri)
                 .circleCrop()
@@ -128,45 +124,61 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 )
             }
 
-            bChangeBio.setOnClickListener{
+            bChangeBio.setOnClickListener {
                 viewModel.changeBio(etBio.text.toString())
             }
 
             bChangeUsername.setOnClickListener {
-                etUsername.text.toString().trim().apply {
-                    if (this == viewModel.username) {
-                        showSoftKeyboard(etUsername, requireActivity())
-                    } else {
-                        viewModel.username = this
-                        viewModel.changeUsername()
-                    }
-                }
+                changeUsername()
+            }
+        }
+    }
 
+    private fun changeUsername() {
+        binding?.apply {
+            etUsername.text.toString().trim().apply {
+                if (this == viewModel.username) {
+                    showSoftKeyboard(etUsername, requireActivity())
+                } else {
+                    viewModel.username = this
+                    viewModel.changeUsername()
+                }
             }
         }
     }
 
     private fun setInfoFromSharedPrefs() {
-        sharedPreferences = requireActivity().getSharedPreferences(settingsName, Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireActivity().getSharedPreferences(
+                settingsName, Context.MODE_PRIVATE
+            )
         sharedPreferences?.let {
             val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
-            setLangSelectedColor(lang.orEmpty())
+            setCheckedLangButton(lang.orEmpty())
 
             val theme = sharedPrefsHelper.getThemeSettings(it)
-            setThemeSelectedIcon(theme.orEmpty())
+            setSelectedColorTheme(theme.orEmpty())
+        }
+    }
+
+    private fun setCheckedLangButton(lang: String) {
+        binding?.changeLanguageItem?.apply {
+            when (lang) {
+                UKR -> langGroup.check(R.id.ukrainianBtn)
+                RU -> langGroup.check(R.id.russianBtn)
+                EN -> langGroup.check(R.id.englishBtn)
+            }
         }
     }
 
     private fun setOnClickListenersForLangButtons() {
-        binding?.apply {
-            bEnglish.setOnClickListener {
-                setLanguage(EN)
-            }
-            bUkrainian.setOnClickListener {
-                setLanguage(UKR)
-            }
-            bRussian.setOnClickListener {
-                setLanguage(RU)
+        binding?.changeLanguageItem?.apply {
+            langGroup.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.ukrainianBtn -> setLanguage(UKR)
+                    R.id.englishBtn -> setLanguage(EN)
+                    R.id.russianBtn -> setLanguage(RU)
+                }
             }
         }
     }
@@ -174,15 +186,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setLanguage(lang: String) {
         setLangSharedPrefs(lang)
-        setLangSelectedColor(lang)
-
-        Locale.setDefault(Locale(lang))
-        val config = Configuration()
-        config.locale = Locale(lang)
-        requireContext().resources.updateConfiguration(
-            config,
-            requireContext().resources.displayMetrics
-        )
+        langHelper.setLanguage(lang, requireContext())
         showSnackbar(
             requireView(),
             getString(R.string.change_lang_will_be),
@@ -196,30 +200,17 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         )?.apply()
     }
 
-    private fun setLangSelectedColor(
-        lang: String
-    ) {
-        binding?.apply {
-            when (lang) {
-                EN -> setLangButtonColor(arrayListOf(bRussian, bUkrainian), bEnglish)
-                UKR -> setLangButtonColor(arrayListOf(bRussian, bEnglish), bUkrainian)
-                RU -> setLangButtonColor(arrayListOf(bEnglish, bUkrainian), bRussian)
-            }
-        }
-    }
-
     private fun setOnClickListenersForThemeButtons() {
-        binding?.apply {
+        binding?.changerThemeContainer?.apply {
             bYellowTheme.setOnClickListener {
                 setThemeColor(YELLOW_THEME)
             }
-
             bRedTheme.setOnClickListener {
                 setThemeColor(RED_THEME)
             }
 
-            bGreenTheme.setOnClickListener {
-                setThemeColor(GREEN_THEME)
+            bDarkPurpleTheme.setOnClickListener {
+                setThemeColor(DARK_PURPLE_THEME)
             }
 
             bPurpleTheme.setOnClickListener {
@@ -229,12 +220,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             bBlueTheme.setOnClickListener {
                 setThemeColor(BLUE_THEME)
             }
+            bOrangeTheme.setOnClickListener {
+                setThemeColor(ORANGE_THEME)
+            }
         }
     }
 
     private fun addTextChangeListeners() {
         binding?.apply {
-            etUsername.addTextChangedListener{
+            etUsername.addTextChangedListener {
                 val text = etUsername.text.toString().trim()
                 bChangeUsername.isActivated = text != viewModel.user?.username
             }
@@ -245,49 +239,42 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         sharedPreferences?.edit()?.putString(
             themePreferencesName, color
         )?.apply()
+        setSelectedColorTheme(color)
         showSnackbar(
             requireView(),
             getString(R.string.change_theme_will_be),
             resources.getColor(R.color.white, null)
         )
-
-        setThemeSelectedIcon(color)
     }
 
-    private fun setThemeSelectedIcon(color: String) {
-        binding?.apply {
-            val buttonArray = arrayListOf(
-                bYellowTheme, bRedTheme, bBlueTheme, bGreenTheme, bPurpleTheme
+    private fun setSelectedColorTheme(theme : String){
+        binding?.changerThemeContainer?.apply {
+            val id = when(theme){
+                YELLOW_THEME -> bYellowTheme.id
+                RED_THEME -> bRedTheme.id
+                BLUE_THEME -> bBlueTheme.id
+                PURPLE_THEME -> bPurpleTheme.id
+                DARK_PURPLE_THEME -> bDarkPurpleTheme.id
+                else -> bOrangeTheme.id
+            }
+            changeThemeButton(id)
+        }
+    }
+
+    private fun changeThemeButton(btnId : Int){
+        binding?.changerThemeContainer?.apply {
+            val btnList = arrayListOf(
+                bYellowTheme,bOrangeTheme,bPurpleTheme,
+                bBlueTheme,bRedTheme,bDarkPurpleTheme
             )
-            when (color) {
-                YELLOW_THEME -> setButtonIcon(buttonArray, bYellowTheme)
-                GREEN_THEME -> setButtonIcon(buttonArray, bGreenTheme)
-                BLUE_THEME -> setButtonIcon(buttonArray, bBlueTheme)
-                PURPLE_THEME -> setButtonIcon(buttonArray, bPurpleTheme)
-                RED_THEME -> setButtonIcon(buttonArray, bRedTheme)
+
+            btnList.forEach {
+                if(it.id != btnId){
+                    it.changeStrokeWidth(0)
+                }else{
+                    it.changeStrokeWidth(10)
+                }
             }
         }
-    }
-
-    private fun setLangButtonColor(
-        buttonArray: ArrayList<MaterialButton>,
-        button: MaterialButton
-    ) {
-        buttonArray.forEach {
-            it.setBackgroundColor(resources.getColor(R.color.grey_95, null))
-        }
-        button.setBackgroundColor(resources.getColor(R.color.selected_blue, null))
-    }
-
-    private fun setButtonIcon(
-        buttonArray: ArrayList<MaterialButton>,
-        button: MaterialButton
-    ) {
-        buttonArray.remove(button)
-        buttonArray.forEach {
-            it.icon = null
-        }
-        button.icon = ResourcesCompat
-            .getDrawable(resources, R.drawable.ic_check_flag, null)
     }
 }

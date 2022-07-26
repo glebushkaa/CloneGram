@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearContainer"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginTop="1dp"
-    android:layout_marginBottom="1dp"
-    android:background="@drawable/rounded_corners_shape"
-    android:elevation="10dp"
-    android:orientation="horizontal"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@color/poor_white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/userIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="10dp"
+        android:layout_gravity="center|start"
+        android:layout_marginStart="20dp"
         android:adjustViewBounds="true"
-        android:background="@color/background_color_instead_white"
+        android:background="@color/poor_white"
         android:scaleType="fitXY"
         android:src="@drawable/ic_profile_circle">
     </androidx.appcompat.widget.AppCompatImageView>
@@ -30,8 +26,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="4dp"
         android:orientation="vertical">
 
         <TextView
@@ -39,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_sb"
             android:textAppearance="@style/Toolbar.TitleText"
             android:textColor="@color/text_black"
             android:textStyle="bold"
@@ -50,23 +45,22 @@
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/montserrat_sb"
             android:lines="1"
             android:textAppearance="@style/Toolbar.SubTitleText"
-            android:textColor="@color/grey_95"
+            android:textColor="@color/poor_black"
+            android:alpha="0.6"
             tools:text="привет как дела!!!!!">
         </TextView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/timestamp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_sb"
-        android:gravity="end"
+        android:textColor="@color/poor_black"
+        android:layout_gravity="end"
         android:paddingTop="10dp"
         android:paddingEnd="15dp"
         tools:text="9:35">
     </TextView>
-</androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

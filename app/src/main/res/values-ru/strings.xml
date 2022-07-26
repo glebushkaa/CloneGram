@@ -35,7 +35,7 @@
     <string name="optional">необязательно*</string>
     <string name="enter_your_phone">Ваш номер телефона</string>
     <string name="welcome_to_login">Добро пожаловать,</string>
-    <string name="register_text">Введите свое имя и фамилию \nЕго смогут увидеть другие людям</string>
+    <string name="register_text">Его смогут увидеть другие людям</string>
     <string name="enter_correct_name">Укажите правильное имя!</string>
     <string name="plus">+</string>
     <string name="sync_contacts">Sync contacts</string>
@@ -74,5 +74,6 @@
     <string name="delete_chat_me">Удалить чат для меня</string>
     <string name="delete_chat_both">Удалить чат для обоих</string>
     <string name="close">Закрыть</string>
+    <string name="enter_user_data">Введите данные пользователя</string>
 
 </resources>

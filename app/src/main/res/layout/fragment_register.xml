@@ -4,46 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="@color/background_white"
     tools:context=".ui.login.fragments.RegisterFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
+    <TextView
+        android:id="@+id/userData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:src="@drawable/ic_user_octagon"
+        android:text="@string/enter_user_data"
+        android:textColor="@color/poor_black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="120dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </androidx.appcompat.widget.AppCompatImageView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="70dp"
-        android:fontFamily="@font/montserrat_sb"
+        android:alpha="0.6"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/register_text"
-        android:textColor="@color/white"
-        android:alpha="0.8"
+        android:textColor="@color/poor_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/userData" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputName"
-        style="@style/registerEditTextAppearance"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/nameCard"
+        style="@style/registerCardStyle"
+        app:shapeAppearanceOverlay="@style/registerCardStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="54dp"
+        android:layout_marginTop="60dp"
         android:hint="@string/name"
         app:helperText="@string/required"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,55 +50,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRegister">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:maxLength="15"
-            android:fontFamily="@font/montserrat_sb"
+            android:hint="@string/name"
+            android:paddingStart="12dp"
+            android:textColor="@color/poor_black"
+            android:textColorHint="@color/grey_85"
+            android:background="@color/poor_white"
             android:textCursorDrawable="@drawable/shape_cursor_login" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/registerEditTextAppearance"
-        android:id="@+id/inputSurname"
+    <com.google.android.material.card.MaterialCardView
+        style="@style/registerCardStyle"
+        android:id="@+id/surnameCard"
+        app:shapeAppearanceOverlay="@style/registerCardStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="54dp"
-        android:layout_marginEnd="54dp"
         android:layout_marginTop="16dp"
-        android:maxEms="15"
-        android:hint="@string/surname"
-        app:helperText="@string/optional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputName">
-
-        <com.google.android.material.textfield.TextInputEditText
+        app:layout_constraintTop_toBottomOf="@+id/nameCard">
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSurname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:maxLength="15"
-            android:textCursorDrawable="@drawable/shape_cursor_login"
-            android:fontFamily="@font/montserrat_sb" />
+            android:paddingStart="12dp"
+            android:textColor="@color/poor_black"
+            android:textColorHint="@color/grey_85"
+            android:background="@color/poor_white"
+            android:hint="@string/surname"
+            android:textCursorDrawable="@drawable/shape_cursor_login" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bRegister"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:backgroundTint="@color/background_color_instead_white"
-        app:borderWidth="0dp"
-        app:fabCustomSize="60dp"
-        app:maxImageSize="24dp"
+        style="@style/nextButtonStyle"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputSurname"
-        app:srcCompat="@drawable/ic_go_next"
-        app:tint="?appColor" />
+        app:layout_constraintTop_toBottomOf="@+id/surnameCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

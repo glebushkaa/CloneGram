@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/headerStyle"
+    app:shapeAppearanceOverlay="@style/headerStyle"
+
     android:layout_width="300dp"
-    android:layout_height="160dp"
-    android:orientation="vertical"
-    android:background="@drawable/shape_header">
+    android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/userPicture"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="20dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_profile_circle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        android:src="@drawable/ic_profile_circle">
     </ImageView>
 
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="24dp"
-        android:fontFamily="@font/montserrat_sb"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPicture"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="110dp"
+        android:textColor="@color/poor_black"
+        android:textSize="18sp"
+        android:letterSpacing="0"
         tools:text="Глебушка">
     </TextView>
 
@@ -39,13 +35,12 @@
         android:id="@+id/tvPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/text_black"
-        android:alpha="0.7"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="60dp"
+        android:letterSpacing="0"
+        android:textColor="@color/poor_black"
+        android:alpha="0.6"
+        android:textSize="14sp"
         tools:text="+380991729342">
     </TextView>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

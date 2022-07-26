@@ -55,8 +55,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentDirectMessageBinding.bind(view)
-
-        setBackgroundHeight()
         getArgs()
         setTextForViews()
         initAdapter()
@@ -95,18 +93,6 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
         requireActivity().window.setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
         )
-    }
-
-    private fun setBackgroundHeight() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val display = requireContext().display
-            display?.height?.let {
-                binding.directBackground.layoutParams.height = it
-            }
-        } else {
-            val display = requireActivity().windowManager.defaultDisplay
-            binding.directBackground.layoutParams.height = display.height
-        }
     }
 
     private fun getArgs() {
@@ -206,7 +192,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             }
 
             profileIcon.setOnClickListener {
-                dialog?.show(parentFragmentManager, "DIALOG")
+                dialog?.show(parentFragmentManager,"dialog")
             }
         }
 

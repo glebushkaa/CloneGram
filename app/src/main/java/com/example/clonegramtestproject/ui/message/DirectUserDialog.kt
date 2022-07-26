@@ -3,26 +3,30 @@ package com.example.clonegramtestproject.ui.message
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.UserDialogBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DirectUserDialog(
-    val user : CommonModel? = null
-) : DialogFragment() {
+    val user: CommonModel? = null
+) : BottomSheetDialogFragment() {
 
     private var binding: UserDialogBinding? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = UserDialogBinding.inflate(layoutInflater)
-        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        val dialog = builder.setView(binding?.root).create()
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.shape_user_card)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = UserDialogBinding.inflate(inflater)
         setViews()
-        dialog.setClickListener()
-        return dialog
+        return binding?.root
     }
 
     private fun setViews() {
@@ -37,12 +41,6 @@ class DirectUserDialog(
                     }
                 }
             }
-        }
-    }
-
-    private fun AlertDialog.setClickListener() {
-        binding?.finishBtn?.setOnClickListener {
-            cancel()
         }
     }
 }

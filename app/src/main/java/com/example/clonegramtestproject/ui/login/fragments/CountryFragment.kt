@@ -1,6 +1,7 @@
 package com.example.clonegramtestproject.ui.login.fragments
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
@@ -17,6 +18,7 @@ import com.example.clonegramtestproject.ui.login.recylerview.CountryAdapter
 import com.example.clonegramtestproject.ui.login.viewmodels.CountryViewModel
 import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
 import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
+import com.example.clonegramtestproject.utils.changeStatusBarColor
 import com.example.clonegramtestproject.utils.closeSoftKeyboard
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -30,15 +32,24 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
     private var binding: FragmentCountryBinding? = null
     private var adapter: CountryAdapter? = null
 
-    private val animations : Animations by inject()
+    private val animations: Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().changeStatusBarColor(getColorAppColor())
         binding = FragmentCountryBinding.bind(view)
         getArgs()
         setOnClickListeners()
         setOnQueryTextListener()
         changeSearchViewTextColor()
         initAdapter()
+    }
+
+    private fun getColorAppColor(): Int {
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(
+            R.attr.appColor, typedValue, true
+        )
+        return typedValue.data
     }
 
     private fun setOnClickListeners() {
@@ -50,7 +61,7 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
             }
 
             searchView.setOnCloseListener {
-                animations.closeSearchView(bSearch, searchView, bLogo)
+                animations.closeSearchView(bSearch, searchView,toolbarCard)
                 false
             }
 
@@ -73,7 +84,7 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
                 }
 
                 override fun onQueryTextChange(text: String?): Boolean {
-                    lifecycleScope.launch{
+                    lifecycleScope.launch {
                         val a = async {
                             viewModel.filterList(text)
                         }

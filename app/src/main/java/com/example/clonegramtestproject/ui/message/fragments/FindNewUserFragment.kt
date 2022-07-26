@@ -99,7 +99,7 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
             }
 
             searchView.setOnCloseListener {
-                animations.closeSearchView(bSearch, searchView, bLogo)
+                animations.closeSearchView(bSearch, searchView)
                 false
             }
 

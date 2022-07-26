@@ -12,9 +12,10 @@ class SharedPrefsHelper {
             when (sharedPreferences.getString(themePreferencesName, "")) {
                 YELLOW_THEME -> theme.applyStyle(R.style.Theme_YellowClonegram, true)
                 RED_THEME -> theme.applyStyle(R.style.Theme_RedClonegram, true)
-                GREEN_THEME -> theme.applyStyle(R.style.Theme_GreenClonegram, true)
+                DARK_PURPLE_THEME -> theme.applyStyle(R.style.Theme_DarkPurpleClonegram, true)
                 PURPLE_THEME -> theme.applyStyle(R.style.Theme_PurpleClonegram, true)
                 BLUE_THEME -> theme.applyStyle(R.style.Theme_BlueClonegram, true)
+                ORANGE_THEME -> theme.applyStyle(R.style.Theme_OrangeClonegram, true)
             }
         } else {
             sharedPreferences.edit()?.putString(
