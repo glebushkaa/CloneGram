@@ -2,4 +2,5 @@
 <resources>
     <attr name="appColor" format="color" />
     <attr name="highlightColor" format="color"/>
+    <attr name="gradient" format="color"/>
 </resources>

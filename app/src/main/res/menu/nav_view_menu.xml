@@ -5,13 +5,15 @@
     <item
         android:id="@+id/settings_item"
         android:title="@string/settings"
-        android:icon="@drawable/ic_settings"
-        >
-    </item>
+        android:icon="@drawable/ic_settings"/>
 
     <item
         android:id="@+id/findNewUser"
         android:title="@string/find_user"
-        android:icon="@drawable/ic_user_search">
-    </item>
+        android:icon="@drawable/ic_user_search"/>
+
+    <item
+        android:id="@+id/premium"
+        android:title="@string/premium"
+        android:icon="@drawable/ic_fire"/>
 </menu>

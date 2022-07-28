@@ -165,9 +165,9 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
                 if (etVerifyPhone.length() == 6) {
                     verifyCode()
                 } else {
-                    showSnackbar(
-                        requireView(), getString(R.string.code_length),
-                        resources.getColor(R.color.red, null)
+                    requireView().showSnackbar(
+                        text = getString(R.string.code_length),
+                        textColor = resources.getColor(R.color.red, null)
                     )
                 }
             }
@@ -186,9 +186,9 @@ class VerifyNumberFragment : Fragment(R.layout.fragment_verify_number) {
             checkVerificationCode(viewModel.getCredential())
         } catch (e: Exception) {
             binding?.bNext?.isEnabled = true
-            showSnackbar(
-                requireView(), getString(R.string.wrong_code),
-                resources.getColor(R.color.red, null)
+            requireView().showSnackbar(
+                text = getString(R.string.wrong_code),
+                textColor = resources.getColor(R.color.red, null)
             )
         }
     }

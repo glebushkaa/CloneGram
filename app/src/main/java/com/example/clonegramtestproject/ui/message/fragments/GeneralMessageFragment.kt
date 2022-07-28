@@ -3,24 +3,20 @@ package com.example.clonegramtestproject.ui.message.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentGeneralMessageBinding
+import com.example.clonegramtestproject.databinding.HeaderBinding
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.message.recyclerview.general.GeneralAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageViewModel
-import com.example.clonegramtestproject.utils.ALL_USER_LIST
-import com.example.clonegramtestproject.utils.MY_USERNAME
-import com.example.clonegramtestproject.utils.UID_LIST
-import com.example.clonegramtestproject.utils.USER
+import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,10 +27,11 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
 
     private var adapter: GeneralAdapter? = null
     private var binding: FragmentGeneralMessageBinding? = null
-    private val animations : Animations by inject()
+    private val animations: Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentGeneralMessageBinding.bind(view)
+        requireActivity().changeStatusBarColor(requireContext().getColorAppColor())
         changeSearchViewColor()
         setOnClickListeners()
         setDrawerNavigation()
@@ -52,6 +49,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
             setTextForViews()
         }
     }
+
 
     private fun addObserverListeners() {
         viewModel.allMessagedUsersLiveData.observe(viewLifecycleOwner) {
@@ -73,7 +71,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                             R.id.general_to_direct,
                             bundleOf(
                                 USER to user,
-                                MY_USERNAME to viewModel.user?.username
+                                MY_USER_DATA to viewModel.user
                             )
                         )
                     }
@@ -100,15 +98,19 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
     }
 
     private fun setTextForViews() {
-        val headerView = binding?.navMenu?.getHeaderView(0)
-        val userPicture = headerView?.findViewById<ImageView>(R.id.userPicture)
-        viewModel.user?.userPicture?.let {
-            if (userPicture != null) {
+        binding?.navMenu?.getHeaderView(0)?.let { HeaderBinding.bind(it) }?.apply {
+            viewModel.user?.userPicture?.let {
                 Glide.with(requireContext()).load(it).circleCrop().into(userPicture)
             }
+            tvUsername.text = viewModel.user?.username
+            tvPhone.text = viewModel.phoneNumber
+            viewModel.user?.apply {
+                if(premium && premiumBadge != null){
+                    premiumIcon.visibility = View.VISIBLE
+                    premiumIcon.setPremiumIcon(premiumBadge)
+                }
+            }
         }
-        headerView?.findViewById<TextView>(R.id.tvUsername)?.text = viewModel.user?.username
-        headerView?.findViewById<TextView>(R.id.tvPhone)?.text = viewModel.phoneNumber
     }
 
     private fun setOnClickListeners() {
@@ -126,7 +128,8 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
             searchView.setOnCloseListener {
                 animations.closeSearchView(
                     bSearch = bSearch,
-                    searchView = searchView
+                    searchView = searchView,
+                    toolbar = toolbarCard
                 )
                 false
             }
@@ -158,6 +161,17 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                             )
                         )
                     }
+
+                    R.id.premium -> {
+                        drawer.closeDrawer(GravityCompat.START)
+                        requireActivity().changeStatusBarColor(
+                            resources.getColor(R.color.background_white, null)
+                        )
+                        findNavController().navigate(
+                            R.id.general_to_premium,
+                            bundleOf(USER to viewModel.user)
+                        )
+                    }
                 }
                 true
             }
@@ -171,6 +185,7 @@ class GeneralMessageFragment : Fragment(R.layout.fragment_general_message) {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return false
                     }
+
                     override fun onQueryTextChange(text: String?): Boolean {
                         lifecycleScope.launch {
                             viewModel.filterText(text?.lowercase()).let {

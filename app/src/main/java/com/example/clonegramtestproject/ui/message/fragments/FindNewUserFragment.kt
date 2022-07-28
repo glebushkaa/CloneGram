@@ -5,13 +5,12 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.FragmentFindNewUserBinding
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.message.recyclerview.newuser.NewUserAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.FindNewUserViewModel
 import com.example.clonegramtestproject.utils.ALL_USER_LIST
@@ -79,7 +78,9 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
                                 phone = user.phone,
                                 chatUID = chatUID,
                                 uid = user.uid,
-                                userPicture = user.userPicture
+                                userPicture = user.userPicture,
+                                premium = user.premium,
+                                premiumBadge = user.premiumBadge
                             ),
                         )
                     )
@@ -99,7 +100,11 @@ class FindNewUserFragment : Fragment(R.layout.fragment_find_new_user) {
             }
 
             searchView.setOnCloseListener {
-                animations.closeSearchView(bSearch, searchView)
+                animations.closeSearchView(
+                    bSearch = bSearch,
+                    searchView = searchView,
+                    toolbar = toolbarCard
+                )
                 false
             }
 

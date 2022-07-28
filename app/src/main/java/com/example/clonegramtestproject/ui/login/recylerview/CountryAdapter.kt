@@ -1,13 +1,9 @@
 package com.example.clonegramtestproject.ui.login.recylerview
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CodesModel
 import com.example.clonegramtestproject.databinding.CountryItemBinding
 
@@ -47,15 +43,17 @@ class CountryAdapter(
         private val country = binding.tvCountryName
         private val countryCode = binding.tvCountryCode
 
-        fun bind(){
-            val flag = countryFlags[oldArrayList[adapterPosition].code]
-            country.text = "$flag ${oldArrayList[adapterPosition].name}"
-            countryCode.text = oldArrayList[adapterPosition].dial_code
+        fun bind() {
+            oldArrayList[bindingAdapterPosition].apply {
+                val flag = countryFlags[code]
+                country.text = "$flag $name"
+                countryCode.text = dial_code
+            }
         }
 
         init {
             itemView.setOnClickListener {
-                clickListener(adapterPosition)
+                clickListener(bindingAdapterPosition)
             }
         }
     }

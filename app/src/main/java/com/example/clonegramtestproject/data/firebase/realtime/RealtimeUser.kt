@@ -30,6 +30,13 @@ class RealtimeUser(
             .setValue(bio)
     }
 
+    fun setPremiumIcon(icon : Int){
+        refUsers
+            .child(currentUID)
+            .child(ICON_NODE)
+            .setValue(icon)
+    }
+
     suspend fun setUserPicture(userPictureLink: String) {
         withContext(Dispatchers.IO) {
             refUsers
@@ -78,11 +85,13 @@ class RealtimeUser(
 
     suspend fun setUserToken(token: TokenModel) {
         withContext(Dispatchers.IO) {
-            refUsers
-                .child(currentUser?.uid.orEmpty())
-                .child(TOKEN_NODE)
-                .child(token.token.orEmpty())
-                .setValue(token)
+            currentUser?.let {
+                refUsers
+                    .child(it.uid)
+                    .child(TOKEN_NODE)
+                    .child(token.token.orEmpty())
+                    .setValue(token)
+            }
         }
     }
 

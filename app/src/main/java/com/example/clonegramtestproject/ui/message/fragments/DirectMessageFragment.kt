@@ -1,6 +1,6 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -12,16 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
-import com.example.clonegramtestproject.ui.message.DirectUserDialog
+import com.example.clonegramtestproject.ui.message.dialogs.DirectUserDialog
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.data.models.MessageModel
 import com.example.clonegramtestproject.databinding.FragmentDirectMessageBinding
 import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.message.recyclerview.direct.DirectAdapter
 import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
-import com.example.clonegramtestproject.utils.MY_USERNAME
-import com.example.clonegramtestproject.utils.USER
-import com.example.clonegramtestproject.utils.getSoftInputMode
+import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,13 +40,12 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
 
     companion object {
         private const val IMAGE_PATH = "image/*"
+        private const val PREMIUM_TYPE = "/gif"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let { uri ->
-                viewModel.doSendAction(uri = uri)
-            }
+            it?.getSelectedPicture()
         }
         super.onCreate(savedInstanceState)
     }
@@ -100,8 +97,8 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             it.getParcelable<CommonModel>(USER)?.let { user ->
                 viewModel.user = user
             }
-            it.getString(MY_USERNAME)?.let { myUsername ->
-                viewModel.myUsername = myUsername
+            it.getParcelable<CommonModel>(MY_USER_DATA)?.let { user ->
+                viewModel.myUser = user
             }
         }
     }
@@ -111,6 +108,10 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             viewModel.user?.apply {
                 tvDirectTitle.text = username
                 tvDirectSubtitle.text = phone
+                if(premium && premiumBadge != null){
+                    premiumIcon.visibility = View.VISIBLE
+                    premiumIcon.setPremiumIcon(premiumBadge)
+                }
             }
         }
     }
@@ -137,7 +138,7 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
                     editHolder.visibility = View.VISIBLE
                     animations.showEditHolder(editHolder)
                     etMessageField.setText(message.message)
-                    nameHolder.text = viewModel.myUsername
+                    nameHolder.text = viewModel.user?.username
                     messageHolder.text = message.message
                 }
                 message.message?.length?.let { binding.etMessageField.setSelection(it) }
@@ -196,6 +197,21 @@ class DirectMessageFragment : Fragment(R.layout.fragment_direct_message) {
             }
         }
 
+    }
+
+    private fun Uri?.getSelectedPicture() {
+        this?.let {
+            if (requireContext().contentResolver.getType(it)
+                    ?.endsWith(PREMIUM_TYPE) == true && viewModel.myUser?.premium == false
+            ) {
+                requireView().showSnackbar(
+                    text = getString(R.string.gif_image_premium),
+                    backgroundTint = resources.getColor(R.color.app_color_red, null)
+                )
+            } else {
+                viewModel.doSendAction(uri = it)
+            }
+        }
     }
 
     override fun onPause() {

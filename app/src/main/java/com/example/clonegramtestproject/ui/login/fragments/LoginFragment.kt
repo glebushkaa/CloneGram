@@ -6,12 +6,11 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.ui.activity.activity.MainActivity
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.databinding.FragmentLoginBinding
+import com.example.clonegramtestproject.ui.activity.activity.MainActivity
 import com.example.clonegramtestproject.ui.login.viewmodels.LoginViewModel
 import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding = FragmentLoginBinding.bind(view)
         setOnClickListeners()
         addOnTextChangedListener()
-        showSoftKeyboard(binding!!.etCode, requireActivity())
+        requireActivity().showSoftKeyboard(requireView())
 
         viewModel.fillCountryCodesList(
             (requireActivity() as MainActivity)
@@ -71,7 +70,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.setCountry()?.let {
                     bCountries.text = it
                     if (etCode.length() > 2) {
-                        showSoftKeyboard(etPhone, requireActivity())
+                        requireActivity().showSoftKeyboard(etPhone)
                     }
                 }
             }

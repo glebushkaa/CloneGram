@@ -1,8 +1,6 @@
 package com.example.clonegramtestproject.ui.message.fragments
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -14,10 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
+import com.example.clonegramtestproject.changeIconButton
 import com.example.clonegramtestproject.data.language.LanguageHelper
-import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
+import com.example.clonegramtestproject.data.sharedPrefs.PrefsHelper
 import com.example.clonegramtestproject.databinding.FragmentSettingsBinding
-import com.example.clonegramtestproject.ui.message.SettingsProgressDialog
+import com.example.clonegramtestproject.setSelectedColorTheme
+import com.example.clonegramtestproject.setSelectedIcon
+import com.example.clonegramtestproject.ui.message.dialogs.SettingsProgressDialog
 import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
 import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.launch
@@ -28,34 +29,115 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private val viewModel by viewModel<SettingsViewModel>()
     private var binding: FragmentSettingsBinding? = null
-    private var sharedPreferences: SharedPreferences? = null
     private var fileChooserContract: ActivityResultLauncher<String>? = null
 
-    private val sharedPrefsHelper: SharedPrefsHelper by inject()
+    private val prefsHelper: PrefsHelper by inject()
     private val langHelper: LanguageHelper by inject()
 
     private var dialog = SettingsProgressDialog()
 
+    companion object {
+        private const val ASK_URL = "https://t.me/mykotlinapps"
+        private const val PREMIUM_TYPE = "/gif"
+        private const val IMAGE_PATH = "image/*"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         fileChooserContract = registerForActivityResult(
             ActivityResultContracts.GetContent()
-        ) {
-            it?.let {
-                lifecycleScope.launch {
-                    changeUserPicture(it)
-                }
-            }
-        }
+        ) { it.getSelectedPicture() }
         super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentSettingsBinding.bind(view)
         setInfoFromSharedPrefs()
-        setOnClickListeners()
+        setCheckedLangListener()
         addTextChangeListeners()
         getArgs()
         setViews()
+        setPremiumFunctions(viewModel.user?.premium == true)
+        setClickListeners()
+        setThemeClickListeners()
+        setIconClickListener()
+    }
+
+    private fun setPremiumFunctions(premium: Boolean) {
+        binding?.apply {
+            if (premium) {
+                changerIconPremium.root.visibility = View.VISIBLE
+
+                changerThemeContainer.apply {
+                    val btnList = arrayListOf(bOrangeTheme, bGreenTheme)
+                    btnList.forEach {
+                        it.apply {
+                            icon = null
+                            alpha = 1f
+                            isEnabled = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setClickListeners() {
+        binding?.apply {
+            bChangePhoto.setOnClickListener { fileChooserContract?.launch(IMAGE_PATH) }
+            bBack.setOnClickListener { findNavController().popBackStack() }
+            bSignOut.setOnClickListener {
+                viewModel.signOut()
+                findNavController().navigate(R.id.settings_to_login)
+            }
+            bDelete.setOnClickListener {
+                viewModel.deleteUser()
+                findNavController().navigate(R.id.settings_to_login)
+            }
+            bAskQuestion.setOnClickListener {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(ASK_URL)
+                    )
+                )
+            }
+            bChangeBio.setOnClickListener { viewModel.changeBio(etBio.text.toString()) }
+            bChangeUsername.setOnClickListener { changeUsername() }
+
+        }
+    }
+
+    private fun setThemeClickListeners() {
+        binding?.changerThemeContainer?.apply {
+            bGreenTheme.setOnClickListener { setThemeColor(GREEN_THEME) }
+            bYellowTheme.setOnClickListener { setThemeColor(YELLOW_THEME) }
+            bRedTheme.setOnClickListener { setThemeColor(RED_THEME) }
+            bPurpleTheme.setOnClickListener { setThemeColor(PURPLE_THEME) }
+            bDarkPurpleTheme.setOnClickListener { setThemeColor(DARK_PURPLE_THEME) }
+            bOrangeTheme.setOnClickListener { setThemeColor(ORANGE_THEME) }
+            bBlueTheme.setOnClickListener { setThemeColor(BLUE_THEME) }
+        }
+    }
+
+    private fun setIconClickListener() {
+        binding?.changerIconPremium?.apply {
+            disabled.setOnClickListener {
+                changeIconButton(disabled.id)
+                viewModel.setPremiumIcon(DISABLED)
+            }
+            fire.setOnClickListener {
+                changeIconButton(fire.id)
+                viewModel.setPremiumIcon(FIRE)
+            }
+            star.setOnClickListener {
+                changeIconButton(star.id)
+                viewModel.setPremiumIcon(STAR)
+            }
+            heart.setOnClickListener {
+                changeIconButton(heart.id)
+                viewModel.setPremiumIcon(HEART)
+            }
+        }
     }
 
     private fun setViews() {
@@ -70,6 +152,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 etUsername.setText(user?.username)
                 tvPhone.text = phoneNumber
                 etBio.setText(user?.userBio)
+                user?.premiumBadge?.let { binding?.changerIconPremium?.setSelectedIcon(it) }
             }
         }
     }
@@ -80,56 +163,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
-    private suspend fun changeUserPicture(uri: Uri) {
-        binding?.apply {
-            dialog.show(parentFragmentManager, "SETTINGS")
-            viewModel.pushUserPicture(uri)
-            Glide.with(requireContext()).load(uri)
-                .circleCrop()
-                .into(bChangePhoto)
-            dialog.dismiss()
-        }
-    }
-
-    private fun setOnClickListeners() {
-        setOnClickListenersForThemeButtons()
-        setOnClickListenersForLangButtons()
-
-        binding?.apply {
-
-            bChangePhoto.setOnClickListener {
-                fileChooserContract?.launch("image/*")
-            }
-
-            bBack.setOnClickListener {
-                findNavController().popBackStack()
-            }
-
-            bSignOut.setOnClickListener {
-                viewModel.signOut()
-                findNavController().navigate(R.id.settings_to_login)
-            }
-
-            bDelete.setOnClickListener {
-                viewModel.deleteUser()
-                findNavController().navigate(R.id.settings_to_login)
-            }
-
-            bAskQuestion.setOnClickListener {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://t.me/mykotlinapps")
-                    )
-                )
-            }
-
-            bChangeBio.setOnClickListener {
-                viewModel.changeBio(etBio.text.toString())
-            }
-
-            bChangeUsername.setOnClickListener {
-                changeUsername()
+    private fun changeUserPicture(uri: Uri) {
+        lifecycleScope.launch {
+            binding?.apply {
+                dialog.show(parentFragmentManager, "settings")
+                viewModel.pushUserPicture(uri)
+                Glide.with(requireContext()).load(uri)
+                    .circleCrop()
+                    .into(bChangePhoto)
+                dialog.dismiss()
             }
         }
     }
@@ -138,7 +180,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding?.apply {
             etUsername.text.toString().trim().apply {
                 if (this == viewModel.username) {
-                    showSoftKeyboard(etUsername, requireActivity())
+                    requireActivity().showSoftKeyboard(etUsername)
                 } else {
                     viewModel.username = this
                     viewModel.changeUsername()
@@ -148,82 +190,34 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setInfoFromSharedPrefs() {
-        sharedPreferences =
-            requireActivity().getSharedPreferences(
-                settingsName, Context.MODE_PRIVATE
-            )
-        sharedPreferences?.let {
-            val lang = sharedPrefsHelper.getLanguageSettings(it, getString(R.string.lang))
-            setCheckedLangButton(lang.orEmpty())
+        val lang = prefsHelper.getLanguageSettings(getString(R.string.lang))
+        binding?.changeLanguageItem?.langGroup?.setCheckedLangButton(lang.orEmpty())
 
-            val theme = sharedPrefsHelper.getThemeSettings(it)
-            setSelectedColorTheme(theme.orEmpty())
-        }
+        val theme = prefsHelper.getThemeSettings()
+        binding?.changerThemeContainer?.setSelectedColorTheme(theme.orEmpty())
     }
 
-    private fun setCheckedLangButton(lang: String) {
-        binding?.changeLanguageItem?.apply {
-            when (lang) {
-                UKR -> langGroup.check(R.id.ukrainianBtn)
-                RU -> langGroup.check(R.id.russianBtn)
-                EN -> langGroup.check(R.id.englishBtn)
-            }
-        }
-    }
-
-    private fun setOnClickListenersForLangButtons() {
+    private fun setCheckedLangListener() {
         binding?.changeLanguageItem?.apply {
             langGroup.setOnCheckedChangeListener { _, id ->
-                when (id) {
-                    R.id.ukrainianBtn -> setLanguage(UKR)
-                    R.id.englishBtn -> setLanguage(EN)
-                    R.id.russianBtn -> setLanguage(RU)
+                val lang = when (id) {
+                    R.id.ukrainianBtn -> UKR
+                    R.id.russianBtn -> RU
+                    else -> EN
                 }
+                setLanguage(lang)
             }
         }
     }
 
 
     private fun setLanguage(lang: String) {
-        setLangSharedPrefs(lang)
+        prefsHelper.editLang(lang)
         langHelper.setLanguage(lang, requireContext())
-        showSnackbar(
-            requireView(),
-            getString(R.string.change_lang_will_be),
-            resources.getColor(R.color.white, null)
+        requireView().showSnackbar(
+            text = getString(R.string.change_lang_will_be),
+            textColor = resources.getColor(R.color.white, null)
         )
-    }
-
-    private fun setLangSharedPrefs(lang: String) {
-        sharedPreferences?.edit()?.putString(
-            languagePreferencesName, lang
-        )?.apply()
-    }
-
-    private fun setOnClickListenersForThemeButtons() {
-        binding?.changerThemeContainer?.apply {
-            bYellowTheme.setOnClickListener {
-                setThemeColor(YELLOW_THEME)
-            }
-            bRedTheme.setOnClickListener {
-                setThemeColor(RED_THEME)
-            }
-
-            bDarkPurpleTheme.setOnClickListener {
-                setThemeColor(DARK_PURPLE_THEME)
-            }
-
-            bPurpleTheme.setOnClickListener {
-                setThemeColor(PURPLE_THEME)
-            }
-
-            bBlueTheme.setOnClickListener {
-                setThemeColor(BLUE_THEME)
-            }
-            bOrangeTheme.setOnClickListener {
-                setThemeColor(ORANGE_THEME)
-            }
-        }
     }
 
     private fun addTextChangeListeners() {
@@ -236,44 +230,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setThemeColor(color: String) {
-        sharedPreferences?.edit()?.putString(
-            themePreferencesName, color
-        )?.apply()
-        setSelectedColorTheme(color)
-        showSnackbar(
-            requireView(),
-            getString(R.string.change_theme_will_be),
-            resources.getColor(R.color.white, null)
+        prefsHelper.editTheme(color)
+        binding?.changerThemeContainer?.setSelectedColorTheme(color)
+        requireView().showSnackbar(
+            text = getString(R.string.change_theme_will_be),
+            textColor = resources.getColor(R.color.white, null)
         )
     }
 
-    private fun setSelectedColorTheme(theme : String){
-        binding?.changerThemeContainer?.apply {
-            val id = when(theme){
-                YELLOW_THEME -> bYellowTheme.id
-                RED_THEME -> bRedTheme.id
-                BLUE_THEME -> bBlueTheme.id
-                PURPLE_THEME -> bPurpleTheme.id
-                DARK_PURPLE_THEME -> bDarkPurpleTheme.id
-                else -> bOrangeTheme.id
-            }
-            changeThemeButton(id)
-        }
-    }
-
-    private fun changeThemeButton(btnId : Int){
-        binding?.changerThemeContainer?.apply {
-            val btnList = arrayListOf(
-                bYellowTheme,bOrangeTheme,bPurpleTheme,
-                bBlueTheme,bRedTheme,bDarkPurpleTheme
-            )
-
-            btnList.forEach {
-                if(it.id != btnId){
-                    it.changeStrokeWidth(0)
-                }else{
-                    it.changeStrokeWidth(10)
-                }
+    private fun Uri?.getSelectedPicture() {
+        this?.let {
+            if (requireContext().contentResolver.getType(it)
+                    ?.endsWith(PREMIUM_TYPE) == true && viewModel.user?.premium == false
+            ) {
+                requireView().showSnackbar(
+                    text = getString(R.string.gif_image_premium),
+                    backgroundTint = resources.getColor(R.color.app_color_red, null)
+                )
+            } else {
+                changeUserPicture(it)
             }
         }
     }

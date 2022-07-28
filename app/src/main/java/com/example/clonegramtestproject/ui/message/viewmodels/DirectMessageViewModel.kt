@@ -34,7 +34,7 @@ class DirectMessageViewModel(
     }
 
     var user: CommonModel? = null
-    var myUsername: String? = null
+    var myUser : CommonModel? = null
 
     var isEditMessage = false
     var editedMessageInfo: MessageModel? = null

@@ -1,32 +1,16 @@
 package com.example.clonegramtestproject.ui.login.viewmodels
 
-import android.content.SharedPreferences
 import android.os.CountDownTimer
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeGetter
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.data.models.TokenModel
-import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
-import com.example.clonegramtestproject.ui.login.fragments.VerifyNumberFragment
-import com.example.clonegramtestproject.utils.PHONE
-import com.example.clonegramtestproject.utils.USERNAME
-import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class VerifyViewModel(

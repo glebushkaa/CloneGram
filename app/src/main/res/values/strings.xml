@@ -33,7 +33,7 @@
     <string name="sent_message">We\'ve sent a SMS with verification code to your phone</string>
     <string name="optional">optional*</string>
     <string name="enter_your_phone">Your phone number</string>
-    <string name="welcome_to_login" >Welcome,</string>
+    <string name="welcome_to_login">Welcome,</string>
     <string name="register_text">It will be displayed to others</string>
     <string name="enter_correct_name">Enter correct name!</string>
     <string name="plus">+</string>
@@ -74,5 +74,16 @@
     <string name="delete_chat_both">Delete chat for both</string>
     <string name="close">Close</string>
     <string name="enter_user_data">Enter user data</string>
+    <string name="gif_image_premium">You can\'t set GIF image! You need Premium to do this.</string>
+    <string name="premium">Premium</string>
+    <string name="badges">Badges</string>
+    <string name="premium_description">Get unique features and support us by purchasing Premium.</string>
+    <string name="able_send_gif">You will be able to send GIF\'s in chat</string>
+    <string name="set_anim_avatars">You can set animated avatars</string>
+    <string name="change_theme_colors">You will be able to set new theme colors</string>
+    <string name="unique_icon">You will get unique icon near your username</string>
+    <string name="buy_premium">Buy Premium only for 1$</string>
+    <string name="bought_premium">You have bought Premium</string>
+    <string name="bio">Bio:</string>
 
 </resources>

@@ -30,9 +30,9 @@ class Animations {
     fun closeSearchView(
         bSearch: Button,
         searchView: androidx.appcompat.widget.SearchView,
-        toolbar : View? = null
+        toolbar : View
     ) {
-        ObjectAnimator.ofFloat(bSearch, View.X, toolbar!!.width - 150f).apply {
+        ObjectAnimator.ofFloat(bSearch, View.X, toolbar.width - 150f).apply {
             ObjectAnimator.ofFloat(bSearch, View.ALPHA, 1f).apply {
                 start()
             }

@@ -2,15 +2,6 @@
     <!-- Base application theme. -->
 
     <style name="Theme.ClearClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_yellow</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" >@null</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@null</item>
@@ -22,15 +13,6 @@
     </style>
 
     <style name="Theme.YellowClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_yellow</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/app_color_yellow</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_yellow</item>
@@ -39,18 +21,10 @@
 
         <item name="appColor">@color/app_color_yellow</item>
         <item name="highlightColor">@color/highlight_color_yellow</item>
+        <item name="gradient">@color/app_color_orange</item>
     </style>
 
     <style name="Theme.RedClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_red</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/app_color_red</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_red</item>
@@ -59,18 +33,10 @@
 
         <item name="appColor">@color/app_color_red</item>
         <item name="highlightColor">@color/highlight_color_red</item>
+        <item name="gradient">@color/app_color_yellow</item>
     </style>
 
     <style name="Theme.DarkPurpleClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_red</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/app_color_dark_purple</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_dark_purple</item>
@@ -79,18 +45,11 @@
 
         <item name="appColor">@color/app_color_dark_purple</item>
         <item name="highlightColor">@color/highlight_color_dark_purple</item>
+        <item name="gradient">@color/app_color_green</item>
     </style>
 
     <style name="Theme.PurpleClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_red</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+
         <item name="android:statusBarColor" >@color/app_color_purple</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_purple</item>
@@ -99,18 +58,11 @@
 
         <item name="appColor">@color/app_color_purple</item>
         <item name="highlightColor">@color/highlight_color_purple</item>
+        <item name="gradient">@color/app_color_blue</item>
     </style>
 
     <style name="Theme.BlueClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_red</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+
         <item name="android:statusBarColor" >@color/app_color_blue</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_blue</item>
@@ -119,18 +71,11 @@
 
         <item name="appColor">@color/app_color_blue</item>
         <item name="highlightColor">@color/highlight_color_blue</item>
+        <item name="gradient">@color/app_color_purple</item>
     </style>
 
     <style name="Theme.OrangeClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/app_color_red</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+
         <item name="android:statusBarColor" >@color/app_color_orange</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:colorEdgeEffect">@color/app_color_orange</item>
@@ -139,6 +84,20 @@
 
         <item name="appColor">@color/app_color_orange</item>
         <item name="highlightColor">@color/highlight_color_orange</item>
+        <item name="gradient">@color/app_color_yellow</item>
+    </style>
+
+    <style name="Theme.GreenClonegram" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="android:statusBarColor" >@color/app_color_green</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:colorEdgeEffect">@color/app_color_green</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="bottomSheetDialogTheme">@style/customBottomSheepDialog</item>
+
+        <item name="appColor">@color/app_color_green</item>
+        <item name="highlightColor">@color/highlight_color_green</item>
+        <item name="gradient">@color/app_color_dark_purple</item>
     </style>
 
     <style name="yourstyle" parent="">

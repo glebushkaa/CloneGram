@@ -75,5 +75,16 @@
     <string name="delete_chat_both">Видалити чат для обох</string>
     <string name="close">Закрити</string>
     <string name="enter_user_data">Введіть дані користувача</string>
+    <string name="gif_image_premium">Ви не можете встановити GIF зображення! Для цього вам потрібен Premium.</string>
+    <string name="premium">Premium</string>
+    <string name="badges">Значки</string>
+    <string name="premium_description">Отримайте унікальні функції та підтримайте нас, купивши Premium</string>
+    <string name="able_send_gif">Ви зможете надсилати GIF-зображення в чат</string>
+    <string name="set_anim_avatars">Ви можете встановити анімовані аватарки</string>
+    <string name="change_theme_colors">Ви зможете встановити нові кольори теми</string>
+    <string name="unique_icon">Ви отримаєте унікальний значок поруч із вашим ім\'ям користувача</string>
+    <string name="buy_premium">Купити Premium всього за 1$</string>
+    <string name="bought_premium">Ви купили Premium</string>
+    <string name="bio">Опис:</string>
 
 </resources>

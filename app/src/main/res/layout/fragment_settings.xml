@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background_white"
     tools:context=".ui.message.fragments.SettingsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
+        android:background="@color/background_white"
         android:orientation="vertical"
-        android:background="@color/background_white">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/background_white"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/toolbarCard"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="0dp"
                 app:cardBackgroundColor="?appColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bBack"
@@ -43,11 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCard">
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/bChangePhoto"
@@ -81,7 +75,7 @@
                         android:textColor="@color/poor_black"
                         android:textCursorDrawable="@drawable/shape_cursor_login"
                         android:textSize="16sp"
-                        tools:text="gle.bushkaa"/>
+                        tools:text="gle.bushkaa" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvPhone"
@@ -95,18 +89,22 @@
                     </androidx.appcompat.widget.AppCompatTextView>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/bChangeUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/ic_check_flag"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="26dp"
                     app:backgroundTint="?appColor"
+                    android:backgroundTint="?appColor"
                     app:elevation="5dp"
-                    app:fabCustomSize="28dp"
-                    app:maxImageSize="12dp"
-                    app:tint="@color/white"/>
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="8dp"
+                    app:cornerRadius="30dp"
+                    app:icon="@drawable/ic_check_flag"
+                    app:tint="@color/poor_white"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -118,20 +116,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/background_white"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userInfoContainer">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
-                    android:text="Bio:"
+                    android:text="@string/bio"
                     android:textColor="@color/poor_black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etBio"
@@ -146,82 +140,82 @@
                     android:textColor="@color/poor_black"
                     android:textCursorDrawable="@drawable/shape_cursor_login"
                     android:textSize="16sp"
-                    tools:text="The merge then was difficult because one contributor had changed many things and corrected the indentation in many places."/>
+                    tools:text="The merge then was difficult because one contributor had changed many things and corrected the indentation in many places." />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/bChangeBio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:src="@drawable/ic_check_flag"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="24dp"
                     app:backgroundTint="?appColor"
+                    android:backgroundTint="?appColor"
                     app:elevation="5dp"
-                    app:fabCustomSize="28dp"
-                    app:maxImageSize="12dp"
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="8dp"
+                    app:cornerRadius="30dp"
+                    app:icon="@drawable/ic_check_flag"
                     app:tint="@color/poor_white"/>
-
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <include
-                android:id="@+id/changerThemeContainer"
+                android:id="@+id/changerIconPremium"
+                layout="@layout/icon_change_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp" />
+
+            <include
+                android:id="@+id/changerThemeContainer"
                 layout="@layout/theme_change_item"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bioContainer" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
 
             <include
                 android:id="@+id/changeLanguageItem"
                 layout="@layout/change_language_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/changerThemeContainer" />
+                android:layout_marginTop="20dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bSignOut"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center|start"
-                android:backgroundTint="@color/sign_out_grey"
-                android:layout_marginTop="50dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:backgroundTint="@color/sign_out_grey"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:letterSpacing="0"
                 android:text="@string/sign_out"
                 android:textAllCaps="false"
                 android:textColor="@color/poor_black"
                 android:textSize="12sp"
-                app:cornerRadius="10dp"
-                android:letterSpacing="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include" />
+                app:cornerRadius="10dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bDelete"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center|start"
-                app:cornerRadius="10dp"
-                android:layout_marginTop="20dp"
-                android:insetBottom="0dp"
-                android:insetTop="0dp"
-                android:gravity="center"
-                android:backgroundTint="@color/app_color_red"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/app_color_red"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0"
                 android:text="@string/delete_account"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                android:letterSpacing="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bSignOut"/>
+                app:cornerRadius="10dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bAskQuestion"
@@ -237,26 +231,20 @@
                 android:text="@string/ask_a_question"
                 android:textAllCaps="false"
                 android:textColor="@color/app_color_blue"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bDelete" />
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:alpha="0.2"
+                android:gravity="center"
                 android:text="@string/clonegram_version_1_0"
                 android:textColor="@color/poor_black"
-                android:alpha="0.2"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/bAskQuestion"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
 

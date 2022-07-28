@@ -7,14 +7,10 @@ import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeUser
 import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.data.models.CommonModel
-import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 
 class SettingsViewModel(
     private val sOperator: StorageOperator,
@@ -28,8 +24,12 @@ class SettingsViewModel(
     var user: CommonModel? = null
     var username: String? = null
 
-    suspend fun pushUserPicture(uri: Uri) = withContext(Dispatchers.IO) {
-        sOperator.pushUserPicture(uri)
+    suspend fun pushUserPicture(uri: Uri) = sOperator.pushUserPicture(uri)
+
+    fun setPremiumIcon(icon : Int){
+        viewModelScope.launch(Dispatchers.IO){
+            rtUser.setPremiumIcon(icon)
+        }
     }
 
     fun changeBio(bio : String){

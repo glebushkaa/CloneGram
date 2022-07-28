@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/background_white"
+    android:layout_height="match_parent"
+    tools:context=".ui.message.fragments.PremiumFragment">
+
+    <ScrollView
+        android:background="@color/background_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_white">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bBack"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:backgroundTint="@color/background_white"
+                app:backgroundTint="@color/background_white"
+                app:iconTint="@color/poor_black"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:background="@color/background_white"
+                app:icon="@drawable/ic_next"
+                app:iconPadding="0dp"
+                app:iconGravity="textStart"
+                android:elevation="0dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:rotation="180" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center|top"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="90dp"
+                app:cardBackgroundColor="@color/background_white"
+                android:layout_marginTop="40dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/diamond"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/premium"
+                android:textStyle="bold"
+                android:textColor="@color/poor_black"
+                android:textSize="30sp"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="160dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/poor_black"
+                android:alpha="0.6"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="210dp"
+                android:text="@string/premium_description"/>
+
+            <LinearLayout
+                android:layout_marginTop="270dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/firstPremiumCardStyle"
+                    app:shapeAppearanceOverlay="@style/firstPremiumCardStyle">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_upload"/>
+
+                    <TextView
+                        style="@style/textPremiumCardStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/able_send_gif"
+                        android:layout_marginStart="60dp"/>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/premiumCardStyle"
+                    app:shapeAppearanceOverlay="@style/premiumCardStyle">
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_portrait"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="19dp"/>
+                    <TextView
+                        style="@style/textPremiumCardStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_anim_avatars"
+                        android:layout_marginStart="64dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/premiumCardStyle"
+                    app:shapeAppearanceOverlay="@style/premiumCardStyle">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_colors"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="19dp"/>
+                    <TextView
+                        style="@style/textPremiumCardStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change_theme_colors"
+                        android:layout_marginStart="64dp"/>
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/premiumCardStyle"
+                    app:shapeAppearanceOverlay="@style/premiumCardStyle">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_fire_material"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="19dp"/>
+                    <TextView
+                        style="@style/textPremiumCardStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unique_icon"
+                        android:layout_marginStart="64dp"/>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buyPremium"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/button_gradient"
+        app:backgroundTint="@null"
+        android:backgroundTint="@null"
+        app:cornerRadius="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:letterSpacing="0"
+        android:textColor="@color/poor_white"
+        android:text="@string/buy_premium"
+        android:insetBottom="0dp"
+        android:insetTop="0dp"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

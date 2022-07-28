@@ -51,7 +51,7 @@
             android:background="?appColor"
             android:layout_gravity="end"
             app:icon="@drawable/ic_search"
-            app:iconSize="24dp"
+            app:iconSize="18dp"
             app:iconTint="@color/white"
             style="@style/Widget.MaterialComponents.Button.TextButton">
         </com.google.android.material.button.MaterialButton>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,17 +9,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/change_theme_color"
         android:textColor="@color/poor_black"
-        android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"/>
+        android:textStyle="bold" />
 
     <HorizontalScrollView
-        android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginTop="60dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -30,52 +29,47 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bYellowTheme"
                 style="@style/themeButtonStyle"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
                 android:textAllCaps="false"
-                app:backgroundTint="@color/app_color_yellow"/>
+                app:backgroundTint="@color/app_color_yellow" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bPurpleTheme"
                 style="@style/themeButtonStyle"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                app:backgroundTint="@color/app_color_purple"/>
+                app:backgroundTint="@color/app_color_purple" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bRedTheme"
                 style="@style/themeButtonStyle"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                app:backgroundTint="@color/app_color_red"/>
+                app:backgroundTint="@color/app_color_red" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bDarkPurpleTheme"
                 style="@style/themeButtonStyle"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                app:backgroundTint="@color/app_color_dark_purple"/>
+                app:backgroundTint="@color/app_color_dark_purple" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bBlueTheme"
                 style="@style/themeButtonStyle"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                app:backgroundTint="@color/app_color_blue"/>
+                app:backgroundTint="@color/app_color_blue" />
 
             <com.google.android.material.button.MaterialButton
-            android:id="@+id/bOrangeTheme"
-            style="@style/themeButtonStyle"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/app_color_orange"/>
+                android:id="@+id/bOrangeTheme"
+                style="@style/themeButtonStyle"
+                android:alpha="0.8"
+                app:icon="@drawable/ic_lock"
+                app:iconTint="@color/poor_black"
+                android:enabled="false"
+                app:backgroundTint="@color/app_color_orange" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bGreenTheme"
+                style="@style/themeButtonStyle"
+                android:alpha="0.8"
+                android:layout_marginEnd="20dp"
+                app:icon="@drawable/ic_lock"
+                app:iconTint="@color/poor_black"
+                android:enabled="false"
+                app:backgroundTint="@color/app_color_green" />
         </LinearLayout>
 
     </HorizontalScrollView>

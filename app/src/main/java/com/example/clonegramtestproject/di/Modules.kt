@@ -1,5 +1,8 @@
 package com.example.clonegramtestproject.di
 
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.clonegramtestproject.data.firebase.cloudMessaging.CMHelper
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeGetter
 import com.example.clonegramtestproject.data.firebase.realtime.RealtimeMessage
@@ -9,22 +12,21 @@ import com.example.clonegramtestproject.data.firebase.storage.StorageOperator
 import com.example.clonegramtestproject.data.language.LanguageHelper
 import com.example.clonegramtestproject.data.retrofit.ChatApi
 import com.example.clonegramtestproject.data.retrofit.RetrofitHelper
-import com.example.clonegramtestproject.data.sharedPrefs.SharedPrefsHelper
+import com.example.clonegramtestproject.data.sharedPrefs.PrefsHelper
 import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.activity.viewmodel.ActivityViewModel
 import com.example.clonegramtestproject.ui.login.viewmodels.CountryViewModel
 import com.example.clonegramtestproject.ui.login.viewmodels.LoginViewModel
 import com.example.clonegramtestproject.ui.login.viewmodels.RegisterViewModel
 import com.example.clonegramtestproject.ui.login.viewmodels.VerifyViewModel
-import com.example.clonegramtestproject.ui.message.viewmodels.DirectMessageViewModel
-import com.example.clonegramtestproject.ui.message.viewmodels.FindNewUserViewModel
-import com.example.clonegramtestproject.ui.message.viewmodels.GeneralMessageViewModel
-import com.example.clonegramtestproject.ui.message.viewmodels.SettingsViewModel
+import com.example.clonegramtestproject.ui.message.viewmodels.*
 import com.example.clonegramtestproject.ui.start.viewmodel.StartViewModel
+import com.example.clonegramtestproject.utils.settingsName
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -33,29 +35,29 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val FCM_BASE_URL = "https://fcm.googleapis.com/"
 
 val activityViewModelModule = module {
-    viewModel{
+    viewModel {
         ActivityViewModel(get())
     }
 }
 
 val startViewModelModule = module {
-    viewModel{
-        StartViewModel(get(),get(),get())
+    viewModel {
+        StartViewModel(get(), get(), get())
     }
 }
 
 val loginViewModelModule = module {
 
-    viewModel{
+    viewModel {
         LoginViewModel()
     }
     viewModel {
-        RegisterViewModel(get(),get(),get())
+        RegisterViewModel(get(), get(), get())
     }
-    viewModel{
-        VerifyViewModel(get(),get(),get())
+    viewModel {
+        VerifyViewModel(get(), get(), get())
     }
-    viewModel{
+    viewModel {
         CountryViewModel()
     }
 }
@@ -63,16 +65,19 @@ val loginViewModelModule = module {
 val messageViewModelsModule = module {
 
     viewModel {
-        DirectMessageViewModel(get(), get(),get(),get())
+        DirectMessageViewModel(get(), get(), get(), get())
     }
-    viewModel{
-        GeneralMessageViewModel(get(),get(),get(),get())
+    viewModel {
+        GeneralMessageViewModel(get(), get(), get(), get())
     }
-    viewModel{
+    viewModel {
         FindNewUserViewModel(get())
     }
     viewModel {
-        SettingsViewModel(get(),get(),get())
+        SettingsViewModel(get(), get(), get())
+    }
+    viewModel {
+        PremiumViewModel()
     }
 }
 
@@ -94,24 +99,26 @@ val retrofitModule = module {
     single { provideRetrofit() }
 
     single { RetrofitHelper(get()) }
-
 }
 
-val animationsModule = module{
-
+val animationsModule = module {
     single { Animations() }
-
 }
 
 val languageModule = module {
-
     single { LanguageHelper() }
-
 }
 
 val sharedPrefsModule = module {
 
-    single { SharedPrefsHelper() }
+    fun provideSharedPref(app: Application): SharedPreferences {
+        return app.applicationContext.getSharedPreferences(
+            settingsName,
+            Context.MODE_PRIVATE
+        )
+    }
+    single { provideSharedPref(androidApplication()) }
+    single { PrefsHelper(get()) }
 
 }
 
@@ -134,7 +141,7 @@ val firebaseModule = module {
     factory { RealtimeNewUser(get()) }
     factory { RealtimeUser(get()) }
 
-    factory { StorageOperator(get(),get())}
+    factory { StorageOperator(get(), get()) }
 
     factory { CMHelper() }
 

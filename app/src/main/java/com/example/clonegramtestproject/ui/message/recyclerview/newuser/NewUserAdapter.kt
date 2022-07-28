@@ -3,15 +3,12 @@ package com.example.clonegramtestproject.ui.message.recyclerview.newuser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
-import com.example.clonegramtestproject.databinding.HeaderBinding
 import com.example.clonegramtestproject.databinding.NewUserItemBinding
+import com.example.clonegramtestproject.utils.setPremiumIcon
 
 class NewUserAdapter(private val clickListener: (user: CommonModel) -> Unit) :
     RecyclerView.Adapter<NewUserAdapter.UsersViewHolder>() {
@@ -23,15 +20,19 @@ class NewUserAdapter(private val clickListener: (user: CommonModel) -> Unit) :
 
         fun bind() {
             binding.apply {
-                tvUsername.text = oldUsersList[adapterPosition].username
-                tvPhone.text = oldUsersList[adapterPosition].phone
-
-                oldUsersList[adapterPosition].userPicture?.let {
-                    Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
-                }
-
-                itemView.setOnClickListener {
-                    clickListener(oldUsersList[adapterPosition])
+                oldUsersList[bindingAdapterPosition].apply {
+                    tvUsername.text = username
+                    tvPhone.text = phone
+                    if(premium && premiumBadge != null){
+                        premiumIcon.visibility = View.VISIBLE
+                        premiumIcon.setPremiumIcon(premiumBadge)
+                    }
+                    userPicture?.let {
+                        Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
+                    }
+                    itemView.setOnClickListener {
+                        clickListener(oldUsersList[bindingAdapterPosition])
+                    }
                 }
             }
         }

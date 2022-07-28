@@ -17,6 +17,7 @@
     <color name="app_color_red">#FF6C6C</color>
     <color name="app_color_purple">#C76CFF</color>
     <color name="app_color_blue">#6C8CFF</color>
+    <color name="app_color_green">#51B679</color>
 
     <color name="highlight_color_yellow">#FFA414</color>
     <color name="highlight_color_red">#FF1E1E</color>
@@ -24,6 +25,7 @@
     <color name="highlight_color_dark_purple">#6732FF</color>
     <color name="highlight_color_purple">#AE29FF</color>
     <color name="highlight_color_orange">#FF5C28</color>
+    <color name="highlight_color_green">#51B68B</color>
     <!--App theme colors-->
 
     <color name="subtitle_color">#BFD1D8</color>

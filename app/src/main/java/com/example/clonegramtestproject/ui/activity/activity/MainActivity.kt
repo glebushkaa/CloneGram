@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.apply {
-            getThemeSettings(theme, getSharedPrefs())
-            getLangSettings(getSharedPrefs(),getString(R.string.lang))?.let {
+            getThemeSettings(theme)
+            getLangSettings(getString(R.string.lang))?.let {
                 langHelper.setLanguage(it, baseContext)
             }
             getCountryCodeList(getInputStream())
@@ -38,7 +38,4 @@ class MainActivity : AppCompatActivity() {
 
     private fun getInputStream(): InputStream =
         assets.open("CountryCodes_${getString(R.string.lang)}.json")
-
-
-    private fun getSharedPrefs() = getSharedPreferences(settingsName, Context.MODE_PRIVATE)
 }

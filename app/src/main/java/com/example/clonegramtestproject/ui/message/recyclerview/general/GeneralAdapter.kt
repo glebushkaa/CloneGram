@@ -1,6 +1,7 @@
 package com.example.clonegramtestproject.ui.message.recyclerview.general
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.models.CommonModel
 import com.example.clonegramtestproject.databinding.ItemGeneralMessageBinding
+import com.example.clonegramtestproject.utils.setPremiumIcon
 import java.text.SimpleDateFormat
 
 class GeneralAdapter(private val currentUID : String) : RecyclerView.Adapter<GeneralAdapter.GeneralViewHolder>() {
@@ -24,7 +26,7 @@ class GeneralAdapter(private val currentUID : String) : RecyclerView.Adapter<Gen
 
         fun bind() {
             binding.apply {
-                oldUsersArrayList[adapterPosition].apply {
+                oldUsersArrayList[bindingAdapterPosition].apply {
                     userPicture?.let {
                         Glide.with(userIcon.context).load(it).circleCrop().into(userIcon)
                     }
@@ -33,6 +35,11 @@ class GeneralAdapter(private val currentUID : String) : RecyclerView.Adapter<Gen
                         tvMessage.text = userIcon.context.getString(R.string.picture)
                     } else {
                         tvMessage.text = lastMessage?.get(currentUID)?.message
+                    }
+
+                    if(premium && premiumBadge != null){
+                        premiumIcon.visibility = View.VISIBLE
+                        premiumIcon.setPremiumIcon(premiumBadge)
                     }
 
                     lastMessage?.get(currentUID)?.timestamp?.let {

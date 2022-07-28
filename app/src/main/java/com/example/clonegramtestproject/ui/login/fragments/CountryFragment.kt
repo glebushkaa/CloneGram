@@ -1,25 +1,20 @@
 package com.example.clonegramtestproject.ui.login.fragments
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.R
 import com.example.clonegramtestproject.data.Flags
 import com.example.clonegramtestproject.databinding.FragmentCountryBinding
+import com.example.clonegramtestproject.ui.Animations
 import com.example.clonegramtestproject.ui.login.recylerview.CountryAdapter
 import com.example.clonegramtestproject.ui.login.viewmodels.CountryViewModel
-import com.example.clonegramtestproject.utils.CHOSEN_COUNTRY
-import com.example.clonegramtestproject.utils.COUNTRY_CODE_ARR
-import com.example.clonegramtestproject.utils.changeStatusBarColor
-import com.example.clonegramtestproject.utils.closeSoftKeyboard
+import com.example.clonegramtestproject.utils.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -35,21 +30,13 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
     private val animations: Animations by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().changeStatusBarColor(getColorAppColor())
+        requireActivity().changeStatusBarColor(requireContext().getColorAppColor())
         binding = FragmentCountryBinding.bind(view)
         getArgs()
         setOnClickListeners()
         setOnQueryTextListener()
         changeSearchViewTextColor()
         initAdapter()
-    }
-
-    private fun getColorAppColor(): Int {
-        val typedValue = TypedValue()
-        requireContext().theme.resolveAttribute(
-            R.attr.appColor, typedValue, true
-        )
-        return typedValue.data
     }
 
     private fun setOnClickListeners() {
@@ -74,12 +61,10 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
     }
 
     private fun setOnQueryTextListener() {
-        binding!!.searchView.setOnQueryTextListener(
+        binding?.searchView?.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    closeSoftKeyboard(
-                        binding!!.searchView, requireActivity()
-                    )
+                    requireActivity().closeSoftKeyboard(binding?.searchView!!)
                     return false
                 }
 
@@ -98,10 +83,10 @@ class CountryFragment : Fragment(R.layout.fragment_country) {
     }
 
     private fun changeSearchViewTextColor() {
-        val editText: EditText =
-            binding!!.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-        editText.background = null
-        editText.setTextColor(resources.getColor(R.color.white, null))
+        val editText: EditText? =
+            binding?.searchView?.findViewById(androidx.appcompat.R.id.search_src_text)
+        editText?.background = null
+        editText?.setTextColor(resources.getColor(R.color.white, null))
     }
 
     private fun initAdapter() {

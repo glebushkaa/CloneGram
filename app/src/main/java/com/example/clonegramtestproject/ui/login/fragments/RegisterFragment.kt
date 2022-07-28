@@ -56,9 +56,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                             )
                         }
                     } else {
-                        showSnackbar(
-                            requireView(), getString(R.string.enter_correct_name),
-                            resources.getColor(R.color.red, null)
+                        requireView().showSnackbar(
+                            text = getString(R.string.enter_correct_name),
+                            textColor = resources.getColor(R.color.red, null)
                         )
                     }
                 }

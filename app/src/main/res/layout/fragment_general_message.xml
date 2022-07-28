@@ -56,7 +56,7 @@
                 android:background="?appColor"
                 android:insetBottom="0dp"
                 android:insetTop="0dp"
-                app:iconSize="24dp"
+                app:iconSize="18dp"
                 app:icon="@drawable/ic_search"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"

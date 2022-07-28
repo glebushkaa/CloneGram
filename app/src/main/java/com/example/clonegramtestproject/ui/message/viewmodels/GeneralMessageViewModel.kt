@@ -118,7 +118,9 @@ class GeneralMessageViewModel(
                                     uid = it.uid,
                                     userPicture = it.userPicture,
                                     tokens = it.tokens,
-                                    userBio = it.userBio
+                                    userBio = it.userBio,
+                                    premium = it.premium,
+                                    premiumBadge = it.premiumBadge
                                 )
                             )
                         }
